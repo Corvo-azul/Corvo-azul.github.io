@@ -17,6 +17,8 @@
   <meta property="og:description" content="Canal e experimento de seis meses: software de verdade com Claude Code, um vídeo por semana, código aberto. Sem curso, sem hype.">
   <meta property="og:image" content="https://corvoazul.com/assets/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
+  <!-- PNG mantido so para previas ja cacheadas contra o arquivo antigo; o JPEG e o canonico. -->
+  <meta property="og:image" content="https://corvoazul.com/assets/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Corvo Azul — Software de verdade construído com IA.">
@@ -29,9 +31,11 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Fontes servidas do proprio dominio. O <link> do Google bloqueava a renderizacao
+       por ~870ms no celular; estes dois preloads cobrem o texto que pinta primeiro. -->
+  <link rel="preload" href="assets/fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
