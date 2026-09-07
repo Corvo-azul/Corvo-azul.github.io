@@ -1,0 +1,118 @@
+/* Corvo Azul — Blog. Reaproveita tokens do site (grafite/papel/azul-corvo/azul-claro/cobre).
+   Tema claro é NOVO (o site principal só tem escuro) — papel como fundo, grafite como texto,
+   azul-corvo só em acento (link, tag ativa), nunca em texto corrido (contraste baixo sobre papel). */
+
+:root {
+  --bg: #F2EFE9;
+  --superficie: #FFFFFF;
+  --texto: #1A1F26;
+  --texto-fraco: #5B6270;
+  --acento: #2E5AAC;
+  --acento-hover: #234785;
+  --cobre: #9C6A3F;
+  --linha: rgba(26, 31, 38, 0.12);
+  --linha-forte: rgba(26, 31, 38, 0.22);
+
+  --display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+  --corpo: "Archivo", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --lateral: clamp(1.25rem, 5vw, 5rem);
+  --largura-post: 42rem;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme-resolvido="escuro"] {
+  --bg: #07090D;
+  --superficie: #0E1219;
+  --texto: #EDE9E1;
+  --texto-fraco: #8E98A8;
+  --acento: #7EA2E4;
+  --acento-hover: #B9CCF0;
+  --cobre: #B58256;
+  --linha: rgba(185, 204, 240, 0.10);
+  --linha-forte: rgba(185, 204, 240, 0.22);
+}
+
+* , *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body.blog {
+  margin: 0; background: var(--bg); color: var(--texto);
+  font-family: var(--corpo); font-size: 1.0625rem; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s, color .25s;
+}
+.blog img { max-width: 100%; display: block; border-radius: 10px; }
+.blog a { color: inherit; text-decoration: none; }
+.blog h1, .blog h2, .blog h3 { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12; margin: 2rem 0 0.75rem; }
+.blog h1 { font-size: clamp(1.9rem, 4vw, 2.75rem); }
+.blog h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
+.blog p { margin: 0 0 1.1rem; }
+
+/* Barra superior: marca + controles (tema / idioma / busca) */
+.blog__topo {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem var(--lateral); border-bottom: 1px solid var(--linha);
+  position: sticky; top: 0; background: var(--bg); z-index: 20;
+}
+.blog__marca { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+.blog__marca svg { width: 22px; height: auto; }
+.blog__controles { display: flex; align-items: center; gap: 0.6rem; }
+.blog__controles button {
+  font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em;
+  background: var(--superficie); color: var(--texto); border: 1px solid var(--linha-forte);
+  border-radius: 999px; padding: 0.45rem 0.85rem; cursor: pointer; transition: border-color .2s, color .2s;
+}
+.blog__controles button:hover, .blog__controles button.ativo { border-color: var(--acento); color: var(--acento); }
+.blog__controles .idiomas { display: inline-flex; border: 1px solid var(--linha-forte); border-radius: 999px; overflow: hidden; }
+.blog__controles .idiomas button { border: 0; border-radius: 0; }
+.blog__controles .idiomas button.ativo { background: var(--acento); color: #fff; }
+
+/* Faixa de navegação de canal/vídeo — topo e rodapé de todo post */
+.blog__canal {
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center;
+  padding: 0.85rem var(--lateral); background: var(--superficie); border-bottom: 1px solid var(--linha);
+  font-family: var(--mono); font-size: 0.82rem; color: var(--texto-fraco);
+}
+.blog__canal a { color: var(--acento); font-weight: 600; }
+.blog__canal a:hover { color: var(--acento-hover); }
+
+.blog__container { max-width: var(--largura-post); margin: 0 auto; padding: 2.5rem var(--lateral) 4rem; }
+.blog__container--largo { max-width: 62rem; }
+
+/* Lista de posts */
+.blog__busca { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.5rem 0 2.5rem; }
+.blog__busca .tag {
+  font-family: var(--mono); font-size: 0.78rem; padding: 0.4rem 0.85rem; border-radius: 999px;
+  border: 1px solid var(--linha-forte); color: var(--texto-fraco); cursor: pointer; background: transparent;
+}
+.blog__busca .tag.ativo, .blog__busca .tag:hover { border-color: var(--acento); color: var(--acento); }
+.blog__lista { display: flex; flex-direction: column; gap: 0; }
+.blog__item { padding: 1.6rem 0; border-bottom: 1px solid var(--linha); display: block; }
+.blog__item time { font-family: var(--mono); font-size: 0.78rem; color: var(--texto-fraco); }
+.blog__item h2 { margin: 0.3rem 0 0.4rem; font-size: 1.3rem; }
+.blog__item p { color: var(--texto-fraco); margin: 0; }
+.blog__item .tags { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.blog__item .tags span { font-family: var(--mono); font-size: 0.72rem; color: var(--acento); }
+
+/* Post: meta, TOC, corpo, ouvir, voltar ao topo */
+.post__meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.82rem; color: var(--texto-fraco); margin-bottom: 0.5rem; }
+.post__tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0 2rem; }
+.post__tags a { font-family: var(--mono); font-size: 0.78rem; color: var(--acento); border: 1px solid var(--linha-forte); border-radius: 999px; padding: 0.3rem 0.7rem; }
+.post__ouvir {
+  display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.82rem;
+  background: var(--superficie); border: 1px solid var(--linha-forte); border-radius: 999px;
+  padding: 0.5rem 1rem; cursor: pointer; color: var(--texto); margin: 0.5rem 0 2rem;
+}
+.post__ouvir:hover { border-color: var(--acento); color: var(--acento); }
+.post__toc { border: 1px solid var(--linha); border-radius: 12px; padding: 1.1rem 1.3rem; margin: 0 0 2.5rem; background: var(--superficie); }
+.post__toc summary { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; color: var(--texto-fraco); }
+.post__toc ul { margin: 0.8rem 0 0; padding-left: 1.1rem; }
+.post__toc a { color: var(--texto); }
+.post__toc a:hover { color: var(--acento); }
+.voltar-topo { display: inline-block; margin-top: 3rem; font-family: var(--mono); font-size: 0.82rem; color: var(--texto-fraco); }
+.voltar-topo:hover { color: var(--acento); }
+
+@media (max-width: 640px) {
+  .blog__topo { flex-wrap: wrap; }
+  .blog__canal { font-size: 0.78rem; }
+}
