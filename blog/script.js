@@ -55,8 +55,18 @@
       document.querySelectorAll("[data-idioma-botao]").forEach(function (b) {
         b.classList.toggle("ativo", b.getAttribute("data-idioma-botao") === id);
       });
+      // O botão de ouvir troca o próprio texto ao falar: os rótulos das duas
+      // fases precisam acompanhar o idioma, senão ele volta ao português ao parar.
+      var ouvir = document.querySelector("[data-ouvir]");
+      if (ouvir) {
+        var d = ouvir.dataset;
+        d.rotuloAtivoOuvir = id === "en" && d.rotuloOuvirEn ? d.rotuloOuvirEn : d.rotuloOuvir;
+        d.rotuloAtivoParar = id === "en" && d.rotuloPararEn ? d.rotuloPararEn : d.rotuloParar;
+        if (!ouvir.dataset.falando) ouvir.textContent = d.rotuloAtivoOuvir;
+      }
       localStorage.setItem(CHAVE_IDIOMA, id);
     }
+    window.__blogAplicarIdioma = function () { aplicar(idioma); };
     document.querySelectorAll("[data-idioma-botao]").forEach(function (b) {
       b.addEventListener("click", function () { aplicar(b.getAttribute("data-idioma-botao")); });
     });
@@ -71,15 +81,16 @@
     if (!("speechSynthesis" in window)) { botao.hidden = true; return; }
     var falando = false;
     botao.addEventListener("click", function () {
-      if (falando) { window.speechSynthesis.cancel(); falando = false; botao.textContent = botao.dataset.rotuloOuvir; return; }
+      if (falando) { window.speechSynthesis.cancel(); falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; return; }
       var corpo = document.querySelector("[data-post-corpo-pt]:not([hidden])") || document.querySelector("[data-post-corpo-pt]");
       if (!corpo) return;
       var utter = new SpeechSynthesisUtterance(corpo.innerText);
       utter.lang = "pt-BR";
-      utter.onend = function () { falando = false; botao.textContent = botao.dataset.rotuloOuvir; };
+      utter.onend = function () { falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; };
       window.speechSynthesis.speak(utter);
       falando = true;
-      botao.textContent = botao.dataset.rotuloParar;
+      botao.dataset.falando = "1";
+      botao.textContent = botao.dataset.rotuloAtivoParar || botao.dataset.rotuloParar;
     });
   }
 
@@ -105,13 +116,21 @@
     var alvos = document.querySelectorAll("[data-canal-slot]");
     if (!alvos.length) return;
     var base = document.documentElement.getAttribute("data-blog-base") || ".";
+    function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
     fetch(base + "/config.json").then(function (r) { return r.json(); }).then(function (cfg) {
+      // Os rótulos entram com data-i18n para que o botão PT/EN também os alcance.
       alvos.forEach(function (el) {
         el.innerHTML =
-          '<a href="' + cfg.canal_url + '" target="_blank" rel="noopener">▶ Canal Corvo Azul</a>' +
+          '<a href="' + esc(cfg.canal_url) + '" target="_blank" rel="noopener"' +
+            ' data-i18n-pt="▶ Canal Corvo Azul" data-i18n-en="▶ Corvo Azul channel">▶ Canal Corvo Azul</a>' +
           '<span>·</span>' +
-          '<a href="' + cfg.ultimo_video.url + '" target="_blank" rel="noopener">Vídeo mais recente: ' + cfg.ultimo_video.titulo + '</a>';
+          '<a href="' + esc(cfg.ultimo_video.url) + '" target="_blank" rel="noopener"' +
+            ' data-i18n-pt="Vídeo mais recente: ' + esc(cfg.ultimo_video.titulo) + '"' +
+            ' data-i18n-en="Latest video: ' + esc(cfg.ultimo_video.titulo_en || cfg.ultimo_video.titulo) + '">' +
+            'Vídeo mais recente: ' + esc(cfg.ultimo_video.titulo) + '</a>';
       });
+      // A faixa chega depois do primeiro aplicar(); reaplica para não ficar só em português.
+      if (typeof window.__blogAplicarIdioma === "function") window.__blogAplicarIdioma();
     }).catch(function () {});
   }
 

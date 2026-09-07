@@ -48,6 +48,10 @@ body.blog {
 .blog h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
 .blog p { margin: 0 0 1.1rem; }
 
+/* [hidden] tem especificidade menor que qualquer regra de display, entao .blog__item
+   { display:block } o anulava e o filtro de tags nao escondia nada. */
+[hidden] { display: none !important; }
+
 /* Barra superior: marca + controles (tema / idioma / busca) */
 .blog__topo {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
