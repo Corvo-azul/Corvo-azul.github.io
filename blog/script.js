@@ -41,6 +41,10 @@
     function aplicar(id) {
       idioma = id;
       document.documentElement.lang = id === "en" ? "en" : "pt-BR";
+      document.querySelectorAll("[data-i18n-ph-pt]").forEach(function (el) {
+        var ph = el.getAttribute(id === "en" ? "data-i18n-ph-en" : "data-i18n-ph-pt");
+        if (ph) el.setAttribute("placeholder", ph);
+      });
       document.querySelectorAll("[data-i18n-pt]").forEach(function (el) {
         var texto = el.getAttribute(id === "en" ? "data-i18n-en" : "data-i18n-pt");
         if (texto) el.textContent = texto;
@@ -143,10 +147,14 @@
     var atual = params.get("tag");
     function aplicar(tag) {
       chips.forEach(function (c) { c.classList.toggle("ativo", c.getAttribute("data-tag-chip") === tag); });
+      var achou = 0;
       itens.forEach(function (it) {
         var tags = (it.getAttribute("data-tags") || "").split(",");
-        it.hidden = !!tag && tags.indexOf(tag) === -1;
+        var bate = !tag || tags.indexOf(tag) !== -1;
+        it.hidden = !bate;
+        if (bate) achou++;
       });
+      mostrarVazio(!!tag && achou === 0, tag, "tag");
     }
     chips.forEach(function (c) {
       c.addEventListener("click", function () {
@@ -162,7 +170,220 @@
     aplicar(atual);
   }
 
+
+  /* ---------- Estado vazio do filtro ----------
+     Antes a lista colapsava para altura zero e a pagina parecia cortada. */
+  function mostrarVazio(mostrar, termo, tipo) {
+    var lista = document.querySelector(".blog__lista");
+    if (!lista) return;
+    var aviso = lista.querySelector(".blog__vazio");
+    if (!mostrar) { if (aviso) aviso.remove(); return; }
+    if (!aviso) {
+      aviso = document.createElement("div");
+      aviso.className = "blog__vazio";
+      lista.appendChild(aviso);
+    }
+    var en = document.documentElement.lang === "en";
+    var frase = tipo === "busca"
+      ? (en ? 'No posts match "' : 'Nenhum post encontrado para "') + termo + '".'
+      : (en ? "No posts tagged #" : "Nenhum post com a tag #") + termo + (en ? " yet." : " ainda.");
+    aviso.innerHTML = "<span>" + frase + "</span><br>" +
+      '<button type="button" data-limpar-filtro>' + (en ? "Show all" : "Ver todos") + "</button>";
+    aviso.querySelector("[data-limpar-filtro]").addEventListener("click", function () {
+      var campo = document.querySelector("[data-busca]");
+      if (tipo === "busca" && campo) {
+        campo.value = "";
+        campo.dispatchEvent(new Event("input"));
+        return;
+      }
+      var url = new URL(location.href); url.searchParams.delete("tag");
+      location.href = url.toString();
+    });
+  }
+
+  /* ---------- Busca por texto ---------- */
+  function initBusca() {
+    var campo = document.querySelector("[data-busca]");
+    var itens = document.querySelectorAll("[data-post-item]");
+    if (!campo || !itens.length) return;
+    campo.addEventListener("input", function () {
+      var q = campo.value.trim().toLowerCase();
+      var achou = 0;
+      itens.forEach(function (it) {
+        var texto = (it.innerText + " " + (it.getAttribute("data-tags") || "")).toLowerCase();
+        var bate = !q || texto.indexOf(q) !== -1;
+        it.hidden = !bate;
+        if (bate) achou++;
+      });
+      mostrarVazio(!!q && achou === 0, q, "busca");
+    });
+  }
+
+  /* ---------- Barra de progresso de leitura (so no post) ---------- */
+  function initProgresso() {
+    var artigo = document.querySelector("[data-post-corpo-pt]");
+    if (!artigo) return;
+    var barra = document.createElement("div");
+    barra.className = "progresso-leitura";
+    document.body.appendChild(barra);
+    function atualizar() {
+      // Artigo mais curto que a tela: o progresso passa a ser o da PAGINA,
+      // senao a barra ficaria travada em 0% do inicio ao fim.
+      var r = artigo.getBoundingClientRect();
+      var vao = r.height - window.innerHeight;
+      var lido;
+      if (vao > 40) {
+        lido = Math.min(1, Math.max(0, -r.top / vao));
+      } else {
+        var rolavel = document.documentElement.scrollHeight - window.innerHeight;
+        lido = rolavel > 0 ? Math.min(1, Math.max(0, window.scrollY / rolavel)) : 0;
+      }
+      barra.style.width = (lido * 100).toFixed(1) + "%";
+    }
+    window.addEventListener("scroll", atualizar, { passive: true });
+    window.addEventListener("resize", atualizar);
+    atualizar();
+  }
+
+  /* ---------- Prints ampliaveis ----------
+     Tutorial vive de detalhe de tela; a imagem so na largura do texto nao serve. */
+  function initLupa() {
+    var artigo = document.querySelector("[data-post-corpo-pt]");
+    if (!artigo) return;
+    artigo.addEventListener("click", function (e) {
+      var img = e.target.closest("img");
+      if (!img) return;
+      var cx = document.createElement("div");
+      cx.className = "lupa";
+      cx.innerHTML = '<button class="lupa__fechar" aria-label="Fechar">✕</button>';
+      var grande = document.createElement("img");
+      grande.src = img.currentSrc || img.src;
+      grande.alt = img.alt || "";
+      cx.appendChild(grande);
+      function fechar() { cx.remove(); document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; }
+      function onKey(ev) { if (ev.key === "Escape") fechar(); }
+      cx.addEventListener("click", fechar);
+      document.addEventListener("keydown", onKey);
+      document.body.style.overflow = "hidden";
+      document.body.appendChild(cx);
+    });
+  }
+
+  /* ---------- Copiar bloco de comando ---------- */
+  function initCopiar() {
+    document.querySelectorAll("article pre").forEach(function (pre) {
+      if (pre.parentElement.classList.contains("bloco-codigo")) return;
+      var caixa = document.createElement("div");
+      caixa.className = "bloco-codigo";
+      pre.parentNode.insertBefore(caixa, pre);
+      caixa.appendChild(pre);
+      var b = document.createElement("button");
+      b.className = "copiar"; b.type = "button";
+      var rotulo = document.documentElement.lang === "en" ? "copy" : "copiar";
+      b.textContent = rotulo;
+      b.addEventListener("click", function () {
+        navigator.clipboard.writeText(pre.innerText).then(function () {
+          b.textContent = document.documentElement.lang === "en" ? "copied" : "copiado";
+          setTimeout(function () { b.textContent = rotulo; }, 1600);
+        }).catch(function () { b.textContent = "erro"; });
+      });
+      caixa.appendChild(b);
+    });
+  }
+
+  /* ---------- Compartilhar ---------- */
+  function initCompartilhar() {
+    var alvo = document.querySelector("[data-compartilhar]");
+    if (!alvo) return;
+    var url = location.href.split("#")[0];
+    var titulo = document.title;
+    var en = function () { return document.documentElement.lang === "en"; };
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = en() ? "copy link" : "copiar link";
+    btn.addEventListener("click", function () {
+      navigator.clipboard.writeText(url).then(function () {
+        btn.textContent = en() ? "copied" : "copiado";
+        setTimeout(function () { btn.textContent = en() ? "copy link" : "copiar link"; }, 1600);
+      }).catch(function () {});
+    });
+    alvo.appendChild(btn);
+    var wa = document.createElement("a");
+    wa.href = "https://wa.me/?text=" + encodeURIComponent(titulo + " " + url);
+    wa.target = "_blank"; wa.rel = "noopener"; wa.textContent = "WhatsApp";
+    alvo.appendChild(wa);
+    // Menu nativo do sistema quando existir (celular)
+    if (navigator.share) {
+      var nativo = document.createElement("button");
+      nativo.type = "button";
+      nativo.textContent = en() ? "share…" : "compartilhar…";
+      nativo.addEventListener("click", function () { navigator.share({ title: titulo, url: url }).catch(function () {}); });
+      alvo.appendChild(nativo);
+    }
+  }
+
+  /* ---------- Posts relacionados (tags em comum) ---------- */
+  function initRelacionados() {
+    var alvo = document.querySelector("[data-relacionados]");
+    if (!alvo) return;
+    var base = document.documentElement.getAttribute("data-blog-base") || ".";
+    var slugAtual = alvo.getAttribute("data-slug-atual") || "";
+    var minhas = (alvo.getAttribute("data-tags") || "").split(",").filter(Boolean);
+    fetch(base + "/posts.json").then(function (r) { return r.json(); }).then(function (posts) {
+      var pontuados = posts
+        .filter(function (p) { return p.slug !== slugAtual; })
+        .map(function (p) { return { p: p, n: (p.tags || []).filter(function (t) { return minhas.indexOf(t) !== -1; }).length }; })
+        .filter(function (x) { return x.n > 0; })
+        .sort(function (a, b) { return b.n - a.n || (a.p.data < b.p.data ? 1 : -1); })
+        .slice(0, 3);
+      if (!pontuados.length) { alvo.hidden = true; return; }  // 1 post só: some, não fica vazio
+      var en = document.documentElement.lang === "en";
+      alvo.innerHTML = "<h2>" + (en ? "Related posts" : "Posts relacionados") + "</h2>" +
+        pontuados.map(function (x) {
+          return '<a href="' + base + "/" + x.p.slug + '/"><h3>' + x.p.titulo + "</h3><p>" + (x.p.resumo || "") + "</p></a>";
+        }).join("");
+      alvo.hidden = false;
+    }).catch(function () { alvo.hidden = true; });
+  }
+
+  /* ---------- CTA do quiz ----------
+     So aparece se config.json tiver quiz_url; sem isso, nada e inventado. */
+  function initQuiz() {
+    var alvo = document.querySelector("[data-quiz]");
+    if (!alvo) return;
+    var base = document.documentElement.getAttribute("data-blog-base") || ".";
+    fetch(base + "/config.json").then(function (r) { return r.json(); }).then(function (cfg) {
+      if (!cfg.quiz || !cfg.quiz.url) { alvo.hidden = true; return; }
+      var en = document.documentElement.lang === "en";
+      alvo.innerHTML =
+        "<h2>" + (en ? (cfg.quiz.titulo_en || cfg.quiz.titulo) : cfg.quiz.titulo) + "</h2>" +
+        "<p>" + (en ? (cfg.quiz.texto_en || cfg.quiz.texto) : cfg.quiz.texto) + "</p>" +
+        '<a href="' + cfg.quiz.url + '" target="_blank" rel="noopener">' +
+        (en ? (cfg.quiz.botao_en || cfg.quiz.botao) : cfg.quiz.botao) + "</a>";
+      alvo.hidden = false;
+    }).catch(function () { alvo.hidden = true; });
+  }
+
+  /* ---------- Sumario: destaca a seção atual (a coluna fixa em tela larga) ---------- */
+  function initSumarioAtivo() {
+    var links = document.querySelectorAll("[data-sumario-lista] a");
+    if (!links.length || !("IntersectionObserver" in window)) return;
+    var mapa = {};
+    links.forEach(function (a) { var id = a.getAttribute("href").slice(1); if (id) mapa[id] = a; });
+    var obs = new IntersectionObserver(function (ents) {
+      ents.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (a) { a.classList.remove("ativo"); });
+          if (mapa[e.target.id]) mapa[e.target.id].classList.add("ativo");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    Object.keys(mapa).forEach(function (id) { var el = document.getElementById(id); if (el) obs.observe(el); });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initTema(); initIdioma(); initOuvir(); initSumario(); initCanal(); initFiltroTags();
+    initBusca(); initProgresso(); initLupa(); initCopiar();
+    initCompartilhar(); initRelacionados(); initQuiz(); initSumarioAtivo();
   });
 })();

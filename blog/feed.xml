@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Corvo Azul — Blog</title>
+    <link>https://corvoazul.com/blog/</link>
+    <description>Tutoriais práticos de IA no dia a dia, com print de tela. Sem curso, sem hype.</description>
+    <language>pt-BR</language>
+    <atom:link href="https://corvoazul.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Como Integrar o Claude com o Google Sheets</title>
+      <link>https://corvoazul.com/blog/exemplo-post/</link>
+      <guid isPermaLink="true">https://corvoazul.com/blog/exemplo-post/</guid>
+      <pubDate>Mon, 07 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Passo a passo real, com prints, pra conectar o Claude na sua planilha do Google Sheets e automatizar sem escrever código.</description>
+      <category>claude</category>
+      <category>google-sheets</category>
+      <category>produtividade</category>
+    </item>
+  </channel>
+</rss>

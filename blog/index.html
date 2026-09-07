@@ -6,6 +6,7 @@
   <title>Blog — Corvo Azul</title>
   <meta name="description" content="Tutoriais práticos de Claude e IA no dia a dia — sem curso, sem hype.">
   <link rel="canonical" href="https://corvoazul.com/blog/">
+  <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="https://corvoazul.com/blog/feed.xml">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Corvo Azul">
@@ -22,6 +23,8 @@
   <meta name="twitter:image" content="https://corvoazul.com/assets/og.jpg">
 
   <link rel="icon" type="image/svg+xml" href="../assets/corvo-glifo.svg">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <link rel="shortcut icon" href="../assets/favicon-32.png">
   <link rel="preconnect" href="https://corvoazul.com">
   <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="estilo.css">
@@ -48,6 +51,12 @@
     <h1 data-i18n-pt="Tutoriais de IA pra gente que não é da área" data-i18n-en="AI tutorials for people outside tech">Tutoriais de IA pra gente que não é da área</h1>
     <p data-i18n-pt="Passo a passo real, com print de tela — sem curso, sem hype." data-i18n-en="Real step-by-step guides, with screenshots — no course, no hype.">Passo a passo real, com print de tela — sem curso, sem hype.</p>
 
+    <input class="blog__campo" type="search" data-busca
+           placeholder="Buscar por título, resumo ou tag…"
+           data-i18n-ph-pt="Buscar por título, resumo ou tag…"
+           data-i18n-ph-en="Search by title, summary or tag…"
+           aria-label="Buscar posts">
+
     <div class="blog__busca">
       <button class="tag" data-tag-chip="claude">#claude</button>
       <button class="tag" data-tag-chip="google-sheets">#google-sheets</button>
@@ -64,6 +73,12 @@
         <div class="tags"><span>#claude</span><span>#google-sheets</span><span>#produtividade</span></div>
       </a>
     </div>
+
+    <p class="blog__rodape-links">
+      <a href="arquivo/" data-i18n-pt="Arquivo completo" data-i18n-en="Full archive">Arquivo completo</a>
+      <span>·</span>
+      <a href="feed.xml">RSS</a>
+    </p>
   </main>
 
   <script src="script.js"></script>

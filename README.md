@@ -89,3 +89,15 @@ O domínio aponta para os quatro endereços do Pages, com `www` apontando para o
 ## Licença
 
 Código sob MIT. As fontes são da Open Font License. As fotos e o vídeo vieram de bancos de uso livre. O nome, o glifo e a identidade visual do Corvo Azul não estão incluídos.
+
+## Blog
+
+`blog/` é gerado em parte. Depois de mexer em `blog/posts.json`, rode:
+
+```bash
+node blog/gerar.mjs
+```
+
+Isso reescreve as páginas de tag (`blog/tag/<tag>/`), o arquivo (`blog/arquivo/`), o `blog/feed.xml` e o `sitemap.xml`. O filtro de tag por JavaScript continua existindo para quem já está no site, mas quem indexa precisa das páginas em arquivo. O `<head>` e o topo dessas páginas saem do próprio `blog/index.html`, então não há um segundo modelo para manter em dia.
+
+O CTA do quiz no fim de cada post só aparece quando `blog/config.json` tiver `quiz.url` preenchido. Vazio, o bloco fica oculto.

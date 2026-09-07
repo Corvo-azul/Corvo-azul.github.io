@@ -6,6 +6,7 @@
   <title>Como Integrar o Claude com o Google Sheets — Corvo Azul</title>
   <meta name="description" content="Passo a passo real, com prints, pra conectar o Claude na sua planilha do Google Sheets e automatizar sem escrever código.">
   <link rel="canonical" href="https://corvoazul.com/blog/exemplo-post/">
+  <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="https://corvoazul.com/blog/feed.xml">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Corvo Azul">
@@ -41,6 +42,8 @@
   </script>
 
   <link rel="icon" type="image/svg+xml" href="../../assets/corvo-glifo.svg">
+  <link rel="apple-touch-icon" href="../../assets/favicon-180.png">
+  <link rel="shortcut icon" href="../../assets/favicon-32.png">
   <link rel="stylesheet" href="../../assets/fonts/fonts.css">
   <link rel="stylesheet" href="../estilo.css">
 </head>
@@ -99,6 +102,14 @@
     <article data-post-corpo-en hidden>
       <p><em>[English version — add once this post is validated.]</em></p>
     </article>
+
+    <div class="post__compartilhar" data-compartilhar aria-label="Compartilhar este post"></div>
+
+    <!-- Só aparece quando config.json traz quiz.url; sem isso fica oculto. -->
+    <aside class="post__quiz" data-quiz hidden></aside>
+
+    <!-- Preenchido por tags em comum; com um post só, some em vez de ficar vazio. -->
+    <section class="post__relacionados" data-relacionados data-slug-atual="exemplo-post" data-tags="claude,google-sheets,produtividade" hidden></section>
 
     <a class="voltar-topo" href="#top" data-i18n-pt="↑ Voltar ao topo" data-i18n-en="↑ Back to top">↑ Voltar ao topo</a>
   </main>
