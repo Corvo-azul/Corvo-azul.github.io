@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — Corvo Azul</title>
+  <meta name="description" content="Esta página não existe. Volte para o início do Corvo Azul.">
+  <meta name="theme-color" content="#07090D">
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- Layout só desta página: o 404 é servido em qualquer caminho, então tudo aqui é raiz-absoluto. -->
+  <style>
+    .erro { min-height: 100vh; display: flex; flex-direction: column; }
+    .erro__corpo {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 7rem var(--lateral) 4rem; max-width: var(--largura); width: 100%; margin: 0 auto;
+    }
+    .erro__glifo { width: 56px; height: 56px; opacity: 0.9; margin-bottom: 2rem; }
+    .erro__codigo {
+      font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--brilho); margin-bottom: 1.25rem; display: block;
+    }
+    .erro__titulo { font-size: clamp(2.5rem, 7vw, 5rem); }
+    .erro__acoes { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; }
+  </style>
+</head>
+<body>
+
+  <div class="grao" aria-hidden="true"></div>
+
+  <div class="erro">
+    <main class="erro__corpo">
+      <img class="erro__glifo" src="/assets/corvo-glifo.svg" alt="" width="56" height="56">
+      <span class="erro__codigo">Erro 404</span>
+      <h1 class="erro__titulo">Este caminho não existe.</h1>
+      <p class="lead">O link pode estar quebrado ou a página pode ter mudado de lugar. O corvo continua no lugar de sempre.</p>
+      <div class="erro__acoes">
+        <a class="btn btn--primario" href="/">Voltar ao início</a>
+        <a class="btn btn--fantasma" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Ver o canal</a>
+      </div>
+    </main>
+
+    <footer class="rodape">
+      <div class="rodape__marca">
+        <img src="/assets/corvo-glifo.svg" alt="" width="36" height="36">
+        <span class="wordmark">Corvo Azul</span>
+      </div>
+      <div class="rodape__links">
+        <a href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>
+        <a href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://github.com/Corvo-azul" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <small>© 2026 · Software de verdade construído com IA.</small>
+    </footer>
+  </div>
+
+</body>
+</html>
