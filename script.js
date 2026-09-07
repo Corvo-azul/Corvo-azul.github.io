@@ -282,10 +282,22 @@
   }
 
   /* ---------- Prova viva: API pública do GitHub ----------
-     Sem chave (60 req/h por IP). Cache de 30 min no sessionStorage. Se falhar, o bloco nem aparece. */
+     Sem chave: 60 requisições por hora POR ENDEREÇO IP. Quem acessa atrás de CGNAT (comum nas
+     operadoras brasileiras) divide essa cota com desconhecidos, então a falha é esperada, não rara.
+     Por isso o bloco NUNCA some: sem resposta da API, mostra a versão fixa e verificável. */
   (async function githubVivo() {
     const bloco = document.getElementById('vivo');
-    if (!bloco || !window.fetch) return;
+    if (!bloco) return;
+    const resumoEl = () => document.getElementById('vivo-resumo');
+
+    // Texto fixo: só afirma o que é verdade sem consultar nada.
+    const mostrarFixo = () => {
+      const el = resumoEl();
+      if (el) el.textContent = 'código aberto em github.com/Corvo-azul';
+      bloco.classList.add('vivo--fixo');
+      bloco.hidden = false;
+    };
+    if (!window.fetch) { mostrarFixo(); return; }
     const USER = 'Corvo-azul';
     const chave = 'corvoazul.github.' + USER;
     const agora = Date.now();
@@ -300,12 +312,12 @@
           fetch(`https://api.github.com/users/${USER}`),
           fetch(`https://api.github.com/users/${USER}/repos?sort=pushed&per_page=6&type=owner`),
         ]);
-        if (!u.ok || !r.ok) return;
+        if (!u.ok || !r.ok) { mostrarFixo(); return; }  // cota estourada ou GitHub fora do ar
         const user = await u.json();
         const repos = (await r.json()).filter((x) => !x.fork);
         dados = { publicos: user.public_repos, repos: repos.map((x) => ({ n: x.name, d: x.description, u: x.html_url, p: x.pushed_at, l: x.language })) };
         try { sessionStorage.setItem(chave, JSON.stringify({ t: agora, d: dados })); } catch (e) { /* sem storage */ }
-      } catch (e) { return; }
+      } catch (e) { mostrarFixo(); return; }  // sem rede, bloqueador, CORS
     }
     const rel = (iso) => {
       const dias = Math.floor((agora - new Date(iso).getTime()) / 86400000);
