@@ -1,5 +1,6 @@
 /* Corvo Azul — Variante FINAL
-   GSAP + ScrollTrigger, Lenis, SplitType, vanilla-tilt via CDN, cada um com fallback.
+   GSAP + ScrollTrigger e SplitType via CDN, cada um com fallback. Rolagem suave e
+   inclinacao do terminal sao nativas: nao valiam uma biblioteca cada.
    Sem cursor customizado. Cursor do sistema, ponto. */
 
 (function () {
@@ -8,21 +9,16 @@
   const temGsap = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
   if (temGsap) gsap.registerPlugin(ScrollTrigger);
 
-  /* ---------- Smooth scroll ---------- */
-  let lenis = null;
-  if (!reduz && typeof Lenis !== 'undefined' && temGsap) {
-    lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
+  /* ---------- Âncoras ----------
+     A rolagem suave é a do navegador. O deslocamento que compensa a barra fixa
+     saiu do JS e virou scroll-margin-top no CSS, que é onde a plataforma resolve
+     isso desde sempre. */
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const alvo = document.querySelector(a.getAttribute('href'));
       if (!alvo) return;
       e.preventDefault();
-      if (lenis) lenis.scrollTo(alvo, { offset: -60 });
-      else alvo.scrollIntoView({ behavior: reduz ? 'auto' : 'smooth' });
+      alvo.scrollIntoView({ behavior: reduz ? 'auto' : 'smooth' });
       fecharMenu();
     });
   });
@@ -68,7 +64,7 @@
     document.body.classList.toggle('menu-aberto', aberto);
     menuBtn.setAttribute('aria-expanded', String(aberto));
     menuBtn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
-    if (lenis) { aberto ? lenis.stop() : lenis.start(); }
+    // A trava de rolagem com o menu aberto já é do CSS: body.menu-aberto { overflow: hidden }.
   }
   function fecharMenu() { if (links.classList.contains('aberto')) setMenu(false); }
   menuBtn.addEventListener('click', () => setMenu(!links.classList.contains('aberto')));
@@ -336,9 +332,22 @@
     if (temGsap && !reduz) gsap.from(bloco, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out' });
   })();
 
-  /* ---------- Tilt no terminal ---------- */
-  if (fino && !reduz && typeof VanillaTilt !== 'undefined') {
-    VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 5, speed: 900, glare: true, 'max-glare': 0.07, gyroscope: false });
+  /* ---------- Tilt no terminal ----------
+     Substitui a vanilla-tilt, que custava 2,2 KB, uma requisição e um nome global
+     para inclinar UM elemento. Aqui são dois ângulos entrando como custom
+     property; quem anima é o CSS. Mesmos 5 graus do original. */
+  if (fino && !reduz) {
+    document.querySelectorAll('[data-tilt]').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--ry', (((e.clientX - r.left) / r.width - 0.5) * 10).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', (((e.clientY - r.top) / r.height - 0.5) * -10).toFixed(2) + 'deg');
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      });
+    });
   }
 
   document.querySelectorAll('main img:not([fetchpriority])').forEach((img) => img.setAttribute('loading', 'lazy'));
