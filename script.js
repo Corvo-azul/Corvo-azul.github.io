@@ -105,14 +105,25 @@
 
   /* ---------- Hero: título letra a letra + glow amarrado ao scroll ---------- */
   const titulo = document.getElementById('hero-titulo');
+  let entrarHero;
   if (!reduz && temGsap && typeof SplitType !== 'undefined') {
     const splits = [...titulo.querySelectorAll('.linha')].map((l) => new SplitType(l, { types: 'words,chars' }));
     splits[splits.length - 1].words.slice(-2).forEach((w) => w.classList.add('brilha'));
-    gsap.from(splits.flatMap((sp) => sp.chars), { yPercent: 110, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.018, delay: 0.15 });
-    gsap.to('[data-fade]', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.15, delay: 0.7 });
+    const chars = splits.flatMap((sp) => sp.chars);
+    // O estado inicial e aplicado agora, nao no momento da entrada: se a cortina
+    // sumir antes do previsto, o titulo ja esta escondido e nada pisca.
+    gsap.set(chars, { yPercent: 110, opacity: 0 });
+    entrarHero = () => {
+      gsap.to(chars, { yPercent: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: 0.018 });
+      gsap.to('[data-fade]', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.15, delay: 0.55 });
+    };
   } else {
-    document.querySelectorAll('[data-fade]').forEach((el) => (el.style.opacity = 1));
+    entrarHero = () => document.querySelectorAll('[data-fade]').forEach((el) => (el.style.opacity = 1));
   }
+  // Quem dispara a entrada e o fim da cortina, nao um delay chutado. Sem cortina
+  // (2a visita, movimento reduzido, ou o script dela removeu o elemento), entra ja.
+  if (document.getElementById('abertura')) window.addEventListener('abertura:fim', entrarHero, { once: true });
+  else entrarHero();
   /* Vídeo do hero: se falhar, cai no sheen da variante A; com reduced-motion, fica no poster */
   const heroVideo = document.getElementById('hero-video');
   if (heroVideo) {
