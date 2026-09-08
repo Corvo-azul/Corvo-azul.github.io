@@ -17,9 +17,18 @@ const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(AQUI, '..');
 const SITE = 'https://corvoazul.com';
 
-const posts = JSON.parse(readFileSync(join(AQUI, 'posts.json'), 'utf8'))
+const declarados = JSON.parse(readFileSync(join(AQUI, 'posts.json'), 'utf8'))
   .slice()
   .sort((a, b) => (a.data < b.data ? 1 : -1));
+
+// Post declarado em posts.json sem a pasta no disco entrava no sitemap, no feed,
+// nas tags e no arquivo apontando para uma URL que devolve 404. Foi assim que o
+// exemplo-post/ ficou linkado depois de apagado. Aqui ele fica de fora e avisa.
+const posts = declarados.filter((p) => existsSync(join(AQUI, p.slug, 'index.html')));
+const semPasta = declarados.filter((p) => !posts.includes(p));
+if (semPasta.length) {
+  console.warn(`aviso: ${semPasta.length} post(s) em posts.json sem blog/<slug>/index.html, ficaram de fora: ${semPasta.map((p) => p.slug).join(', ')}`);
+}
 
 const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const dataBr = (iso) => new Date(iso + 'T12:00:00Z').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });

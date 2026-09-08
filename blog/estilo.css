@@ -213,6 +213,11 @@ body.blog {
 .bloco-codigo { position: relative; }
 .bloco-codigo pre { overflow-x: auto; }
 
+/* O site paga por dois pesos de IBM Plex Mono, mas nenhum bloco de codigo pedia
+   ela: <pre> e <code> caiam na monospace do sistema. O maior bloco da pagina
+   (o prompt, 1.716 caracteres) era o mais afetado. */
+pre, code, kbd, samp { font-family: var(--mono); }
+
 /* Bloco de prompt: o que o leitor vai copiar e colar, separado do texto por cor
    e não só por fonte. A barra azul à esquerda marca onde ele começa e termina. */
 pre.prompt {
