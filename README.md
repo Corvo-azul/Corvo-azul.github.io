@@ -60,6 +60,8 @@ curl -s <url> | openssl dgst -sha384 -binary | openssl base64 -A
 
 O Google Tag Manager é a exceção, e não dá para consertar: o `gtm.js` muda toda vez que o contêiner é publicado, e não tem versão fixa para gerar hash. Ele entra sem verificação de integridade, em todas as páginas. Quem controla o contêiner `GTM-PVCC35T5` controla o que roda no site.
 
+No blog, cada peça de JavaScript sobe isolada das outras. Navegador com dados de site bloqueados lança exceção só de encostar em `localStorage`, e antes isso derrubava tudo o que vinha depois do seletor de tema: sumário, barra de progresso, copiar, compartilhar e a faixa do canal. Agora o pior caso é perder só a peça que falhou.
+
 ## Acessibilidade e movimento
 
 `prefers-reduced-motion` desliga tudo: rolagem suave, revelações, digitação do terminal, brilho pulsante e a onda dos botões. Alvos de toque têm ao menos 44 px. O menu do celular tranca a rolagem, fecha com Esc e sai da navegação por teclado quando está fechado.

@@ -147,10 +147,6 @@
     document.querySelectorAll('[data-reveal]').forEach((el) => { el.style.opacity = 1; el.style.transform = 'none'; });
   }
 
-  /* ---------- Parallax leve nas fotos dos eixos ---------- */
-  if (!reduz && temGsap && !mqMobile.matches) {
-  }
-
   /* ---------- Contadores ---------- */
   document.querySelectorAll('[data-count]').forEach((el) => {
     const alvo = parseInt(el.dataset.count, 10);

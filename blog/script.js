@@ -6,6 +6,24 @@
   var CHAVE_TEMA = "ca-blog-tema";
   var CHAVE_IDIOMA = "ca-blog-idioma";
 
+  // Navegador com dados de site bloqueados lanca SecurityError so de TOCAR em
+  // localStorage. Sem isso, a excecao subia no primeiro init e derrubava todos os
+  // outros: sumario, barra de progresso, copiar, compartilhar e faixa do canal.
+  function ler(chave, padrao) {
+    try { return localStorage.getItem(chave) || padrao; } catch (e) { return padrao; }
+  }
+  function gravar(chave, valor) {
+    try { localStorage.setItem(chave, valor); } catch (e) { /* sem storage: só não lembra */ }
+  }
+
+  // Idioma da INTERFACE. Nao usamos <html lang> para isso porque o corpo do post
+  // segue em portugues enquanto nao houver traducao: dizer lang="en" num texto em
+  // portugues engana leitor de tela e buscador.
+  function idioma() {
+    return document.documentElement.getAttribute("data-idioma") === "en" ? "en" : "pt";
+  }
+  function ehEn() { return idioma() === "en"; }
+
   function resolverTema(pref) {
     if (pref === "claro" || pref === "escuro") return pref;
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "escuro" : "claro";
@@ -20,27 +38,27 @@
   }
 
   function initTema() {
-    var pref = localStorage.getItem(CHAVE_TEMA) || "sistema";
+    var pref = ler(CHAVE_TEMA, "sistema");
     aplicarTema(pref);
     document.querySelectorAll("[data-tema-botao]").forEach(function (b) {
       b.addEventListener("click", function () {
         pref = b.getAttribute("data-tema-botao");
-        localStorage.setItem(CHAVE_TEMA, pref);
+        gravar(CHAVE_TEMA, pref);
         aplicarTema(pref);
       });
     });
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
-      if ((localStorage.getItem(CHAVE_TEMA) || "sistema") === "sistema") aplicarTema("sistema");
+      if (ler(CHAVE_TEMA, "sistema") === "sistema") aplicarTema("sistema");
     });
   }
 
   // Idioma: troca só os textos de interface (nav, botões, rótulos) via data-i18n-pt/en.
   // O corpo do post continua só em PT até termos tradução real — ver data-i18n-post-en opcional.
   function initIdioma() {
-    var idioma = localStorage.getItem(CHAVE_IDIOMA) || "pt";
+    var atual = ler(CHAVE_IDIOMA, "pt");
     function aplicar(id) {
-      idioma = id;
-      document.documentElement.lang = id === "en" ? "en" : "pt-BR";
+      atual = id;
+      document.documentElement.setAttribute("data-idioma", id);
       document.querySelectorAll("[data-i18n-ph-pt]").forEach(function (el) {
         var ph = el.getAttribute(id === "en" ? "data-i18n-ph-en" : "data-i18n-ph-pt");
         if (ph) el.setAttribute("placeholder", ph);
@@ -51,11 +69,17 @@
       });
       var corpoEn = document.querySelector("[data-post-corpo-en]");
       var corpoPt = document.querySelector("[data-post-corpo-pt]");
+      var mostrandoEn = false;
       if (corpoEn && corpoPt) {
         var temEn = corpoEn.hasAttribute("data-disponivel");
-        corpoPt.hidden = id === "en" && temEn;
-        corpoEn.hidden = !(id === "en" && temEn);
+        mostrandoEn = id === "en" && temEn;
+        corpoPt.hidden = mostrandoEn;
+        corpoEn.hidden = !mostrandoEn;
       }
+      // <html lang> descreve o texto que esta na tela, nao o botao que foi clicado.
+      // Numa pagina de lista (sem corpo de post) quem manda e a interface.
+      var soChrome = !corpoPt;
+      document.documentElement.lang = (mostrandoEn || (soChrome && id === "en")) ? "en" : "pt-BR";
       document.querySelectorAll("[data-idioma-botao]").forEach(function (b) {
         b.classList.toggle("ativo", b.getAttribute("data-idioma-botao") === id);
       });
@@ -68,13 +92,13 @@
         d.rotuloAtivoParar = id === "en" && d.rotuloPararEn ? d.rotuloPararEn : d.rotuloParar;
         if (!ouvir.dataset.falando) ouvir.textContent = d.rotuloAtivoOuvir;
       }
-      localStorage.setItem(CHAVE_IDIOMA, id);
+      gravar(CHAVE_IDIOMA, id);
     }
-    window.__blogAplicarIdioma = function () { aplicar(idioma); };
+    window.__blogAplicarIdioma = function () { aplicar(atual); };
     document.querySelectorAll("[data-idioma-botao]").forEach(function (b) {
       b.addEventListener("click", function () { aplicar(b.getAttribute("data-idioma-botao")); });
     });
-    aplicar(idioma);
+    aplicar(atual);
   }
 
   // Botão "ouvir" — Web Speech API. Qualidade da voz depende do navegador/SO de quem visita;
@@ -138,36 +162,53 @@
     }).catch(function () {});
   }
 
-  // Filtro de tags por ?tag= na lista do blog.
+  /* ---------- Filtros da lista: tag (?tag=) e busca por texto ----------
+     Os dois escrevem no MESMO it.hidden. Enquanto eram funcoes separadas, cada
+     uma reescrevia a decisao da outra: buscar algo inexistente e depois clicar
+     numa tag fazia o post reaparecer com o campo de busca ainda preenchido.
+     Agora ha um estado so, e quem muda pede a reavaliacao dos dois criterios. */
+  var filtroTag = null;
+  var filtroBusca = "";
+
+  function aplicarFiltros() {
+    var itens = document.querySelectorAll("[data-post-item]");
+    if (!itens.length) return;
+    document.querySelectorAll("[data-tag-chip]").forEach(function (c) {
+      c.classList.toggle("ativo", c.getAttribute("data-tag-chip") === filtroTag);
+    });
+    var achou = 0;
+    itens.forEach(function (it) {
+      var tags = (it.getAttribute("data-tags") || "").split(",");
+      var bateTag = !filtroTag || tags.indexOf(filtroTag) !== -1;
+      var texto = (it.innerText + " " + (it.getAttribute("data-tags") || "")).toLowerCase();
+      var bateBusca = !filtroBusca || texto.indexOf(filtroBusca) !== -1;
+      var bate = bateTag && bateBusca;
+      it.hidden = !bate;
+      if (bate) achou++;
+    });
+    if (achou > 0) { mostrarVazio(false); return; }
+    // A busca e o filtro mais explicito para quem esta digitando, entao ela nomeia o vazio.
+    if (filtroBusca) mostrarVazio(true, filtroBusca, "busca");
+    else if (filtroTag) mostrarVazio(true, filtroTag, "tag");
+    else mostrarVazio(false);
+  }
+
   function initFiltroTags() {
     var chips = document.querySelectorAll("[data-tag-chip]");
     var itens = document.querySelectorAll("[data-post-item]");
     if (!chips.length || !itens.length) return;
-    var params = new URLSearchParams(location.search);
-    var atual = params.get("tag");
-    function aplicar(tag) {
-      chips.forEach(function (c) { c.classList.toggle("ativo", c.getAttribute("data-tag-chip") === tag); });
-      var achou = 0;
-      itens.forEach(function (it) {
-        var tags = (it.getAttribute("data-tags") || "").split(",");
-        var bate = !tag || tags.indexOf(tag) !== -1;
-        it.hidden = !bate;
-        if (bate) achou++;
-      });
-      mostrarVazio(!!tag && achou === 0, tag, "tag");
-    }
+    filtroTag = new URLSearchParams(location.search).get("tag");
     chips.forEach(function (c) {
       c.addEventListener("click", function () {
         var tag = c.getAttribute("data-tag-chip");
-        var novo = atual === tag ? null : tag;
-        atual = novo;
+        filtroTag = filtroTag === tag ? null : tag;
         var url = new URL(location.href);
-        if (novo) url.searchParams.set("tag", novo); else url.searchParams.delete("tag");
+        if (filtroTag) url.searchParams.set("tag", filtroTag); else url.searchParams.delete("tag");
         history.replaceState(null, "", url);
-        aplicar(novo);
+        aplicarFiltros();
       });
     });
-    aplicar(atual);
+    aplicarFiltros();
   }
 
 
@@ -183,39 +224,34 @@
       aviso.className = "blog__vazio";
       lista.appendChild(aviso);
     }
-    var en = document.documentElement.lang === "en";
+    var en = ehEn();
     var frase = tipo === "busca"
       ? (en ? 'No posts match "' : 'Nenhum post encontrado para "') + termo + '".'
       : (en ? "No posts tagged #" : "Nenhum post com a tag #") + termo + (en ? " yet." : " ainda.");
-    aviso.innerHTML = "<span>" + frase + "</span><br>" +
-      '<button type="button" data-limpar-filtro>' + (en ? "Show all" : "Ver todos") + "</button>";
+    aviso.innerHTML = "<span></span><br>" +
+      '<button type="button" data-limpar-filtro></button>';
+    aviso.querySelector("span").textContent = frase;
+    aviso.querySelector("[data-limpar-filtro]").textContent = en ? "Show all" : "Ver todos";
+    // "Ver todos" limpa os DOIS filtros: com so um deles limpo a lista continuaria
+    // vazia e o botao pareceria nao funcionar.
     aviso.querySelector("[data-limpar-filtro]").addEventListener("click", function () {
       var campo = document.querySelector("[data-busca]");
-      if (tipo === "busca" && campo) {
-        campo.value = "";
-        campo.dispatchEvent(new Event("input"));
-        return;
-      }
-      var url = new URL(location.href); url.searchParams.delete("tag");
-      location.href = url.toString();
+      if (campo) campo.value = "";
+      filtroBusca = "";
+      filtroTag = null;
+      var url = new URL(location.href);
+      url.searchParams.delete("tag");
+      history.replaceState(null, "", url);
+      aplicarFiltros();
     });
   }
 
-  /* ---------- Busca por texto ---------- */
   function initBusca() {
     var campo = document.querySelector("[data-busca]");
-    var itens = document.querySelectorAll("[data-post-item]");
-    if (!campo || !itens.length) return;
+    if (!campo || !document.querySelectorAll("[data-post-item]").length) return;
     campo.addEventListener("input", function () {
-      var q = campo.value.trim().toLowerCase();
-      var achou = 0;
-      itens.forEach(function (it) {
-        var texto = (it.innerText + " " + (it.getAttribute("data-tags") || "")).toLowerCase();
-        var bate = !q || texto.indexOf(q) !== -1;
-        it.hidden = !bate;
-        if (bate) achou++;
-      });
-      mostrarVazio(!!q && achou === 0, q, "busca");
+      filtroBusca = campo.value.trim().toLowerCase();
+      aplicarFiltros();
     });
   }
 
@@ -279,13 +315,16 @@
       caixa.appendChild(pre);
       var b = document.createElement("button");
       b.className = "copiar"; b.type = "button";
-      var rotulo = document.documentElement.lang === "en" ? "copy" : "copiar";
-      b.textContent = rotulo;
+      // Os data-i18n fazem o botao PT/EN alcancar este rotulo, que nasce depois
+      // do primeiro aplicar() e antes ficava congelado no idioma da carga.
+      b.setAttribute("data-i18n-pt", "copiar");
+      b.setAttribute("data-i18n-en", "copy");
+      b.textContent = ehEn() ? "copy" : "copiar";
       b.addEventListener("click", function () {
         navigator.clipboard.writeText(pre.innerText).then(function () {
-          b.textContent = document.documentElement.lang === "en" ? "copied" : "copiado";
-          setTimeout(function () { b.textContent = rotulo; }, 1600);
-        }).catch(function () { b.textContent = "erro"; });
+          b.textContent = ehEn() ? "copied" : "copiado";
+          setTimeout(function () { b.textContent = ehEn() ? "copy" : "copiar"; }, 1600);
+        }).catch(function () { b.textContent = ehEn() ? "error" : "erro"; });
       });
       caixa.appendChild(b);
     });
@@ -297,9 +336,11 @@
     if (!alvo) return;
     var url = location.href.split("#")[0];
     var titulo = document.title;
-    var en = function () { return document.documentElement.lang === "en"; };
+    var en = ehEn;
     var btn = document.createElement("button");
     btn.type = "button";
+    btn.setAttribute("data-i18n-pt", "copiar link");
+    btn.setAttribute("data-i18n-en", "copy link");
     btn.textContent = en() ? "copy link" : "copiar link";
     btn.addEventListener("click", function () {
       navigator.clipboard.writeText(url).then(function () {
@@ -316,6 +357,8 @@
     if (navigator.share) {
       var nativo = document.createElement("button");
       nativo.type = "button";
+      nativo.setAttribute("data-i18n-pt", "compartilhar…");
+      nativo.setAttribute("data-i18n-en", "share…");
       nativo.textContent = en() ? "share…" : "compartilhar…";
       nativo.addEventListener("click", function () { navigator.share({ title: titulo, url: url }).catch(function () {}); });
       alvo.appendChild(nativo);
@@ -337,7 +380,7 @@
         .sort(function (a, b) { return b.n - a.n || (a.p.data < b.p.data ? 1 : -1); })
         .slice(0, 3);
       if (!pontuados.length) { alvo.hidden = true; return; }  // 1 post só: some, não fica vazio
-      var en = document.documentElement.lang === "en";
+      var en = ehEn();
       alvo.innerHTML = "<h2>" + (en ? "Related posts" : "Posts relacionados") + "</h2>" +
         pontuados.map(function (x) {
           return '<a href="' + base + "/" + x.p.slug + '/"><h3>' + x.p.titulo + "</h3><p>" + (x.p.resumo || "") + "</p></a>";
@@ -354,7 +397,7 @@
     var base = document.documentElement.getAttribute("data-blog-base") || ".";
     fetch(base + "/config.json").then(function (r) { return r.json(); }).then(function (cfg) {
       if (!cfg.quiz || !cfg.quiz.url) { alvo.hidden = true; return; }
-      var en = document.documentElement.lang === "en";
+      var en = ehEn();
       alvo.innerHTML =
         "<h2>" + (en ? (cfg.quiz.titulo_en || cfg.quiz.titulo) : cfg.quiz.titulo) + "</h2>" +
         "<p>" + (en ? (cfg.quiz.texto_en || cfg.quiz.texto) : cfg.quiz.texto) + "</p>" +
@@ -382,8 +425,14 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initTema(); initIdioma(); initOuvir(); initSumario(); initCanal(); initFiltroTags();
-    initBusca(); initProgresso(); initLupa(); initCopiar();
-    initCompartilhar(); initRelacionados(); initQuiz(); initSumarioAtivo();
+    // Cada peca e independente das outras. Rodar em sequencia direta fazia uma
+    // excecao em qualquer uma matar todas as seguintes; isoladas, o pior caso
+    // passa a ser perder so a peca que quebrou.
+    [initTema, initIdioma, initOuvir, initSumario, initCanal, initFiltroTags,
+      initBusca, initProgresso, initLupa, initCopiar,
+      initCompartilhar, initRelacionados, initQuiz, initSumarioAtivo
+    ].forEach(function (init) {
+      try { init(); } catch (e) { if (window.console) console.error("blog: " + init.name + " falhou", e); }
+    });
   });
 })();
