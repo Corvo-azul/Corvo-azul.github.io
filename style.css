@@ -382,35 +382,6 @@ p { margin: 0; }
 .final.ativo .final__anel--2 { animation-delay: 2s; }
 @keyframes anel { 0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; } }
 
-/* Varredura de radar. É a seção mais decorada da página e aqui o exagero é o
-   ponto, mas continua em UM acento: o azul. O cobre segue só como luz difusa
-   nos glows, nunca neste feixe.
-   color-dodge em vez de opacity crua pelo mesmo motivo do glow do topo: clareia
-   a foto onde o feixe passa em vez de lavar a imagem inteira. */
-.final__varredura {
-  position: absolute; left: 50%; top: 50%;
-  width: 130vw; height: 130vw; max-width: 1500px; max-height: 1500px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: conic-gradient(from 0deg,
-    rgba(185, 204, 240, 0.95) 0deg,
-    rgba(126, 162, 228, 0.45) 6deg,
-    rgba(126, 162, 228, 0.16) 34deg,
-    rgba(46, 90, 172, 0.05) 80deg,
-    transparent 130deg,
-    transparent 360deg);
-  /* some no centro e na borda: sem a máscara vira um disco, não um feixe */
-  -webkit-mask-image: radial-gradient(closest-side, transparent 6%, #000 26%, rgba(0,0,0,.55) 58%, transparent 80%);
-  mask-image: radial-gradient(closest-side, transparent 6%, #000 26%, rgba(0,0,0,.55) 58%, transparent 80%);
-  mix-blend-mode: color-dodge;
-  filter: blur(3px);
-  opacity: 0;
-  will-change: transform;
-}
-/* Só entra depois que a timeline do CTA termina, junto com os anéis. */
-.final.ativo .final__varredura { animation: varrer 5.5s linear infinite, varreduraEntra 1.4s var(--ease) forwards; }
-@keyframes varrer { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes varreduraEntra { to { opacity: 0.85; } }
 .final .rotulo { margin-bottom: 0; }
 .final__titulo { font-size: clamp(2.6rem, 7vw, 6rem); font-weight: 800; max-width: 16ch; line-height: 0.96; text-shadow: 0 0 60px rgba(126,162,228,.25); }
 .final__titulo .linha { display: block; }
@@ -460,8 +431,6 @@ p { margin: 0; }
   .hero-corvo::after, .final-corvo::after { transform: none; opacity: 0.85; }
   .final__glow { opacity: 0.9; }
   .final__anel { display: none; }
-  /* O feixe fica, parado num ângulo. Some o movimento, não o desenho. */
-  .final.ativo .final__varredura { animation: none; opacity: 0.7; transform: translate(-50%, -50%) rotate(305deg); }
   .vivo__ponto { animation: none; }
   .grao { display: none; }
 }
