@@ -7,11 +7,11 @@
     <language>pt-BR</language>
     <atom:link href="https://corvoazul.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>Como Integrar o Claude com o Google Sheets</title>
-      <link>https://corvoazul.com/blog/exemplo-post/</link>
-      <guid isPermaLink="true">https://corvoazul.com/blog/exemplo-post/</guid>
-      <pubDate>Mon, 07 Sep 2026 12:00:00 GMT</pubDate>
-      <description>Passo a passo real, com prints, pra conectar o Claude na sua planilha do Google Sheets e automatizar sem escrever código.</description>
+      <title>Como Deixar Sua Planilha do Google Sheets Profissional com IA</title>
+      <link>https://corvoazul.com/blog/planilha-profissional-com-claude/</link>
+      <guid isPermaLink="true">https://corvoazul.com/blog/planilha-profissional-com-claude/</guid>
+      <pubDate>Tue, 08 Sep 2026 12:00:00 GMT</pubDate>
+      <description>Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.</description>
       <category>claude</category>
       <category>google-sheets</category>
       <category>produtividade</category>

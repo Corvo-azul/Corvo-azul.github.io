@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-blog-base="..">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul</title>
+  <meta name="description" content="Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.">
+  <link rel="canonical" href="https://corvoazul.com/blog/planilha-profissional-com-claude/">
+  <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="https://corvoazul.com/blog/feed.xml">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Corvo Azul">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://corvoazul.com/blog/planilha-profissional-com-claude/">
+  <meta property="og:title" content="Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul">
+  <meta property="og:description" content="Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.">
+  <meta property="og:image" content="https://corvoazul.com/blog/planilha-profissional-com-claude/img/capa.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="article:published_time" content="2026-09-08">
+  <meta property="article:tag" content="claude">
+  <meta property="article:tag" content="google-sheets">
+  <meta property="article:tag" content="produtividade">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul">
+  <meta name="twitter:description" content="Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.">
+  <meta name="twitter:image" content="https://corvoazul.com/blog/planilha-profissional-com-claude/img/capa.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Como Deixar Sua Planilha do Google Sheets Profissional com IA",
+    "description": "Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.",
+    "image": "https://corvoazul.com/blog/planilha-profissional-com-claude/img/capa.jpg",
+    "datePublished": "2026-09-08",
+    "dateModified": "2026-09-08",
+    "author": { "@type": "Organization", "name": "Corvo Azul", "url": "https://corvoazul.com/" },
+    "publisher": { "@type": "Organization", "name": "Corvo Azul", "url": "https://corvoazul.com/" },
+    "mainEntityOfPage": "https://corvoazul.com/blog/planilha-profissional-com-claude/",
+    "keywords": ["claude", "google-sheets", "produtividade"]
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="apple-touch-icon" href="../../assets/favicon-180.png">
+  <link rel="shortcut icon" href="../../assets/favicon-32.png">
+  <link rel="stylesheet" href="../../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="../estilo.css">
+</head>
+<body class="blog">
+  <header class="blog__topo">
+    <a class="blog__marca" href="../">
+      <svg viewBox="0 0 800 685.8" style="color:var(--texto)" width="20"><path fill="currentColor" fill-rule="evenodd" d="M222.0 1.9 C203.4 3.9 194.6 6.2 181.1 12.7 C148.4 28.3 126.3 55.6 107.6 103.6 C94.6 137.1 75.1 216.3 56.5 311.3 C47.3 359.1 34.2 398.5 14.9 437.4 C9.6 448.0 5.6 456.8 6.0 457.2 C6.9 458.2 19.6 453.6 30.8 448.2 C36.7 445.4 41.8 443.5 42.3 443.9 C44.6 446.3 34.4 471.7 21.8 494.0 C17.4 501.7 10.8 514.1 6.9 521.5 L0.0 535.0 L3.3 535.4 C5.1 535.6 11.5 534.2 17.7 532.4 C23.7 530.6 29.1 529.4 29.5 529.7 C30.6 531.0 25.6 540.8 12.7 562.4 C2.3 579.6 0.4 583.7 1.8 585.0 C2.7 585.9 11.3 588.5 20.8 590.6 C66.7 601.5 93.2 607.7 112.4 611.9 C120.9 613.7 130.1 615.8 132.9 616.4 C143.3 618.8 175.4 625.8 181.0 626.8 C184.2 627.3 190.9 628.7 195.7 629.9 C200.7 630.9 207.7 632.4 211.1 633.1 C214.7 633.7 224.5 635.6 232.9 637.4 C257.7 642.4 268.2 644.5 279.7 646.7 C285.7 647.7 292.9 649.1 295.7 649.7 C298.6 650.4 316.1 653.8 334.8 657.4 C353.6 661.0 371.4 664.5 374.6 665.1 C377.8 665.8 389.6 667.8 400.9 669.6 C412.1 671.4 428.0 674.0 436.1 675.4 C444.2 676.8 455.2 678.5 460.5 679.2 C465.7 679.9 473.8 681.1 478.4 681.8 C503.4 685.8 516.2 686.8 518.3 684.7 C521.2 681.8 523.4 666.0 524.0 640.8 C524.8 615.5 524.0 602.4 520.7 582.7 C519.8 577.8 519.6 573.6 519.9 573.2 C521.1 572.1 527.3 576.7 537.0 586.0 C542.8 591.5 546.7 594.5 547.8 594.0 C549.6 592.8 548.5 574.6 546.2 565.8 C540.7 544.9 533.4 526.8 525.3 514.1 C523.4 511.0 522.1 508.1 522.6 507.7 C523.0 507.3 527.3 508.2 532.0 509.7 C536.9 511.3 541.1 512.6 541.6 512.6 C544.9 512.6 537.5 496.4 524.3 474.6 C513.2 456.4 511.1 452.4 505.1 438.2 C495.1 414.6 493.2 405.3 493.2 378.6 C493.2 352.6 494.2 347.6 502.8 330.2 C513.9 307.8 529.3 294.5 553.1 286.4 C563.3 283.1 587.1 278.7 607.2 276.6 C612.9 276.1 623.3 274.9 630.3 274.3 C652.4 271.8 692.0 269.0 721.3 267.7 C736.8 267.1 752.0 266.2 754.9 265.7 C761.6 264.6 775.7 267.9 788.4 273.1 C793.5 275.3 798.1 276.6 798.6 276.1 C799.2 275.7 799.8 270.7 799.9 265.2 C800.9 243.5 792.2 223.2 771.5 199.5 C757.7 183.8 730.2 164.3 704.7 152.4 C671.2 136.7 645.4 129.1 572.6 113.8 C537.9 106.5 537.3 106.2 531.0 99.3 C515.3 82.0 494.4 62.4 483.5 54.7 C468.0 43.6 437.4 28.4 417.1 21.6 C382.7 10.2 345.7 3.5 301.3 1.1 C271.6 -0.6 240.5 -0.3 222.0 1.9 Z M405.9 112.7 C419.2 116.7 427.4 122.4 442.6 137.9 C457.5 153.0 464.3 161.3 464.3 164.3 C464.3 166.1 447.6 171.3 428.4 175.6 C416.9 178.1 391.9 177.7 383.6 174.9 C370.1 170.3 359.1 163.6 347.9 153.1 C334.1 139.9 319.2 123.1 319.8 121.2 C320.4 119.5 337.3 114.7 351.5 112.1 C356.8 111.2 369.2 110.3 378.9 110.2 C393.7 110.0 398.3 110.6 405.9 112.7 Z"/></svg>
+      Corvo Azul · Blog
+    </a>
+    <div class="blog__controles">
+      <span class="idiomas">
+        <button data-idioma-botao="pt">PT</button><button data-idioma-botao="en">EN</button>
+      </span>
+      <button data-tema-botao="claro" data-i18n-pt="Claro" data-i18n-en="Light">Claro</button>
+      <button data-tema-botao="escuro" data-i18n-pt="Escuro" data-i18n-en="Dark">Escuro</button>
+      <button data-tema-botao="sistema" data-i18n-pt="Sistema" data-i18n-en="System">Sistema</button>
+    </div>
+  </header>
+
+  <div class="blog__canal" data-canal-slot></div>
+
+  <main class="blog__container">
+    <p class="post__meta">
+      <span data-i18n-pt="Publicado em:" data-i18n-en="Published:">Publicado em:</span>
+      <time datetime="2026-09-08">08/09/2026</time>
+      <span>·</span>
+      <span data-i18n-pt="Atualizado em:" data-i18n-en="Updated:">Atualizado em:</span>
+      <time datetime="2026-09-08">08/09/2026</time>
+      <span>·</span>
+      <span data-i18n-pt="7 min de leitura" data-i18n-en="7 min read">7 min de leitura</span>
+    </p>
+    <h1>Como Deixar Sua Planilha do Google Sheets Profissional com IA</h1>
+    <p class="post__tags">
+      <a href="../?tag=claude">#claude</a>
+      <a href="../?tag=google-sheets">#google-sheets</a>
+      <a href="../?tag=produtividade">#produtividade</a>
+    </p>
+
+    <button class="post__ouvir" data-ouvir
+            data-rotulo-ouvir="🔊 Ouvir este post" data-rotulo-parar="⏸ Parar"
+            data-rotulo-ouvir-en="🔊 Listen to this post" data-rotulo-parar-en="⏸ Stop"
+            data-i18n-pt="🔊 Ouvir este post" data-i18n-en="🔊 Listen to this post">🔊 Ouvir este post</button>
+
+    <div class="post__toc" data-sumario>
+      <p class="post__toc-titulo" data-i18n-pt="Neste post" data-i18n-en="In this post">Neste post</p>
+      <ul data-sumario-lista></ul>
+    </div>
+
+    <article data-post-corpo-pt>
+      <p>Nota: os prints abaixo usam uma planilha de exemplo fictícia (proposta comercial de teste), só pra mostrar o passo a passo real — nenhum dado nela é de cliente de verdade.</p>
+
+      <h2>O problema</h2>
+      <p>Toda empresa pequena tem pelo menos uma planilha que ninguém tem coragem de mexer: cores demais, coluna larga demais, fórmula que ninguém lembra por que existe, e um "valor final" que não bate com o total. Contratar alguém pra reformatar isso do zero custa tempo ou dinheiro que muita gente não quer gastar num arquivo interno.</p>
+      <p>O que este post mostra é um jeito de resolver isso direto pelo Claude Desktop, sem escrever fórmula, sem add-on, sem curso: você conecta sua conta do Google Drive, manda a planilha e um prompt, e recebe de volta uma versão reorganizada — inclusive com erro de fórmula corrigido, não só "mais bonita".</p>
+
+      <h2>O que você precisa antes de começar</h2>
+      <p>Conta no Google com a planilha que você quer arrumar, o app Claude Desktop instalado, e uma conta Claude que tenha o recurso de conectores (Free, Pro ou superior).</p>
+
+      <h2>Passo 1 — conecte o Google Drive ao Claude</h2>
+      <p>No Claude Desktop, vá em <strong>Conectores</strong> e adicione o <strong>Google Drive</strong>. Ele pede login na sua conta Google e permissão de leitura/escrita nos arquivos — é a mesma tela de autorização que qualquer app do Google Workspace usa.</p>
+      <img src="img/02-extensao-google-drive.png" alt="Página do conector Google Drive no diretório do Claude, com o botão Connect to Claude" loading="lazy" width="1600" height="758">
+      <p>Depois de autorizar, ele aparece como <strong>Connected</strong> e fica disponível em qualquer conversa nova.</p>
+      <img src="img/03-extensao-conectada.png" alt="Conector Google Drive já conectado, mostrando as ferramentas disponíveis" loading="lazy" width="1600" height="760">
+      <p>No menu de conectores do chat, ele fica ligado junto com os outros que você já usa — e dali também dá pra procurar um arquivo específico do seu Drive direto na conversa.</p>
+      <img src="img/04-extensao-claude-desktop.png" alt="Menu de conectores do Claude Desktop com o Google Drive ativado e busca de arquivos" loading="lazy" width="1600" height="861">
+
+      <h2>Passo 2 — escreva o prompt (ou copie o meu)</h2>
+      <p>Esse é o prompt que usei. Ele não manda "deixar bonito" de forma vaga — pede pra entender a planilha antes de alterar, preservar dado e fórmula, e só melhorar organização, formatação e usabilidade:</p>
+      <pre><code>&lt;role&gt; Atue como um especialista em Excel, design de planilhas e organização de dados empresariais. &lt;/role&gt;
+&lt;objective&gt; Analise a planilha fornecida e entregue uma versão significativamente mais profissional, organizada, clara e funcional, mantendo a finalidade original do arquivo. &lt;/objective&gt;
+&lt;instructions&gt;
+1. Analise primeiro a estrutura, os dados, as fórmulas e a finalidade de cada aba antes de realizar alterações.
+2. Preserve todos os dados, informações e funcionalidades existentes, salvo quando houver erro ou inconsistência evidente.
+3. Melhore a hierarquia visual, organização, espaçamento, tipografia, cores, cabeçalhos, bordas, alinhamentos e formatos numéricos.
+4. Padronize datas, moedas, percentuais, números e demais formatos conforme o contexto.
+5. Aprimore filtros, tabelas, fórmulas, validações e outros recursos quando isso melhorar a usabilidade.
+6. Corrija inconsistências de formatação e erros evidentes sem alterar o significado dos dados.
+7. Elimine elementos visuais desnecessários e evite excesso de cores, bordas ou efeitos.
+8. Priorize clareza, legibilidade, facilidade de manutenção e aparência corporativa.
+9. Faça melhorias estruturais somente quando houver benefício claro para o usuário.
+10. Não adicione informações fictícias apenas para preencher espaços.
+&lt;/instructions&gt;
+&lt;quality_criteria&gt;
+A versão final deve parecer uma planilha empresarial desenvolvida profissionalmente: limpa, consistente, intuitiva, visualmente equilibrada e funcional.
+Antes de finalizar, verifique se:
+- os dados originais foram preservados;
+- as fórmulas continuam funcionando;
+- não existem inconsistências visuais relevantes;
+- todas as abas possuem formatação coerente;
+- a hierarquia das informações está clara;
+- a planilha permanece prática para uso diário.
+&lt;/quality_criteria&gt;
+&lt;output&gt; Entregue diretamente o arquivo Excel aprimorado. Não apenas descreva as alterações. &lt;/output&gt;</code></pre>
+      <p>Cole o link da sua planilha do Google Sheets junto com o prompt, numa conversa nova com o conector ligado.</p>
+      <img src="img/05-prompt-escrito.png" alt="Prompt de reformatação colado no Claude Desktop, junto com o arquivo da planilha original" loading="lazy" width="1600" height="860">
+      <p>É assim que a planilha de exemplo estava antes: dado solto, sem hierarquia visual, sem padronização de formato.</p>
+      <img src="img/01-planilha-aberta.png" alt="Planilha de exemplo antes da reformatação, com dados sem organização visual" loading="lazy" width="1600" height="759">
+
+      <h2>Passo 3 — deixe o Claude analisar e trabalhar</h2>
+      <p>O Claude lê a planilha inteira pelo conector antes de mexer em qualquer coisa — não só a aba ativa, as outras também, procurando referência cruzada entre elas. No meu teste, ele encontrou uma inconsistência real: uma fórmula de "valor final" que ignorava um desconto e dava um total errado, e corrigiu sozinho, avisando o que tinha mudado.</p>
+      <img src="img/06-resultado.png" alt="Resposta do Claude detalhando as mudanças estruturais feitas na planilha, incluindo a correção de uma fórmula" loading="lazy" width="1600" height="861">
+
+      <h2>Passo 4 — substitua o arquivo original</h2>
+      <p>Depois de aprovar o resultado, pedi pra ele substituir a planilha antiga pela nova, direto no Google Drive. Aqui é o único ponto do processo que pede confirmação sua: o Claude não sobrescreve nada sem perguntar.</p>
+      <img src="img/07-pedido-substituicao.png" alt="Claude pedindo permissão para usar a ferramenta Create file do Google Drive antes de substituir o arquivo" loading="lazy" width="1600" height="860">
+      <p>Vale entender as três opções antes de clicar: <strong>Negar</strong> cancela a ação; <strong>Permitir uma vez</strong> autoriza só essa substituição; <strong>Sempre permitir</strong> deixa o Claude criar/atualizar arquivos no seu Drive sem perguntar de novo nesta conversa. Pra planilha de trabalho, prefiro sempre "uma vez" — é mais uma confirmação, mas evita susto.</p>
+
+      <h2>O resultado</h2>
+      <p>A aba de proposta ficou com hierarquia visual clara, zebra striping nas linhas e a fórmula corrigida:</p>
+      <img src="img/08-resultado-sheets-1.png" alt="Aba Proposta da planilha depois de reformatada pelo Claude, com cabeçalho e tabela organizados" loading="lazy" width="1600" height="761">
+      <p>As outras abas (catálogo de serviços, financeiro com gráfico gerado automaticamente, e carteira de clientes) saíram no mesmo padrão visual — sem eu ter pedido aba por aba:</p>
+      <img src="img/09-resultado-sheets-2.png" alt="Aba Catálogo de Serviços já com o mesmo padrão visual da aba Proposta" loading="lazy" width="1600" height="757">
+      <img src="img/10-resultado-sheets-3.png" alt="Aba Financeiro com resumo e gráfico de receita por categoria gerado pelo Claude" loading="lazy" width="1600" height="761">
+      <img src="img/11-resultado-sheets-4.png" alt="Aba Clientes com formatação condicional por status e linha de total do pipeline" loading="lazy" width="1600" height="754">
+
+      <h2>Vale saber antes de fazer no seu arquivo</h2>
+      <p>Três pontos que eu não pularia: primeiro, o conector lê e pode escrever em qualquer arquivo que sua conta Google tenha acesso — não use isso numa conta compartilhada com dado de terceiro sem revisar a permissão antes. Segundo, "Sempre permitir" fica valendo pro resto daquela conversa; se você vai testar em várias planilhas, prefira confirmar uma por uma no início. Terceiro, o Claude preserva o que já existia por padrão, mas é você quem aprova a versão final antes de substituir — dá uma conferida nos números importantes (como fiz aqui, comparando os totais antes/depois) antes de aceitar.</p>
+
+      <h2>Próximo passo</h2>
+      <p>Se você tem uma planilha dessas parada, o teste mais rápido é: duplique ela (pra manter o original intacto), conecte o Drive no Claude e cole o prompt acima. Leva menos de dez minutos pra ver se o resultado serve pra você.</p>
+    </article>
+    <article data-post-corpo-en hidden>
+      <p><em>[English version — add once this post is validated.]</em></p>
+    </article>
+
+    <div class="post__compartilhar" data-compartilhar aria-label="Compartilhar este post"></div>
+
+    <!-- Só aparece quando config.json traz quiz.url; sem isso fica oculto. -->
+    <aside class="post__quiz" data-quiz hidden></aside>
+
+    <!-- Preenchido por tags em comum; com um post só, some em vez de ficar vazio. -->
+    <section class="post__relacionados" data-relacionados data-slug-atual="planilha-profissional-com-claude" data-tags="claude,google-sheets,produtividade" hidden></section>
+
+    <a class="voltar-topo" href="#top" data-i18n-pt="↑ Voltar ao topo" data-i18n-en="↑ Back to top">↑ Voltar ao topo</a>
+  </main>
+
+  <div class="blog__canal" data-canal-slot></div>
+
+  <script src="../script.js"></script>
+</body>
+</html>

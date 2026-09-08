@@ -1,10 +1,10 @@
 [
   {
-    "slug": "exemplo-post",
-    "titulo": "Como Integrar o Claude com o Google Sheets",
-    "resumo": "Passo a passo real, com prints, pra conectar o Claude na sua planilha do Google Sheets e automatizar sem escrever código.",
-    "data": "2026-09-07",
-    "atualizado": "2026-09-07",
+    "slug": "planilha-profissional-com-claude",
+    "titulo": "Como Deixar Sua Planilha do Google Sheets Profissional com IA",
+    "resumo": "Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.",
+    "data": "2026-09-08",
+    "atualizado": "2026-09-08",
     "tags": ["claude", "google-sheets", "produtividade"]
   }
 ]
