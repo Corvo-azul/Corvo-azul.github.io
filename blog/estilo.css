@@ -21,11 +21,14 @@
   --corpo: "Archivo", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
   --lateral: clamp(1.25rem, 5vw, 5rem);
-  /* Largura acompanha a tela. Com valor fixo, o respiro lateral crescia junto com
-     o viewport enquanto o container nao: a coluna de leitura ENCOLHIA de 554px em
-     1180 para 512px em 1600, e ficava travada ali ate 2560. */
-  --largura-post: clamp(42rem, 37rem + 11vw, 48rem);
+  /* Segura o texto em ~560px (~73 caracteres) de 768px para cima. Antes, com
+     largura fixa, a coluna ENCOLHIA conforme a tela crescia (554px em 1180,
+     512px em 1600), porque so o respiro lateral acompanhava o viewport. */
+  --largura-post: clamp(40rem, 35rem + 10vw, 45rem);
   --largura-larga: clamp(62rem, 54rem + 14vw, 72rem);
+  /* Print de tela nao se le em 560px. A imagem estoura a coluna do texto, que e
+     o jeito de usar a tela larga sem alongar a linha de leitura. */
+  --largura-imagem: clamp(40rem, 20rem + 40vw, 62rem);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -278,13 +281,28 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
    left deriva da propria largura do container, entao a folga nao depende de um
    numero magico que envelhece quando a largura muda. */
 @media (min-width: 1360px) {
+  /* O sumario encosta na margem esquerda em vez de acompanhar o meio da tela.
+     Ancorado em 50vw ele crescia junto com o viewport e travava a largura das
+     imagens: sobrava sempre a mesma folga, por mais larga que fosse a tela. */
   .post__toc {
     position: fixed; top: 50%; transform: translateY(-50%);
-    left: max(1.5rem, calc(50vw - var(--largura-post) / 2 - 17rem));
+    left: max(1.5rem, min(calc(50vw - var(--largura-post) / 2 - 17rem), 3rem));
     width: 15rem; max-height: 70vh; overflow-y: auto;
     margin: 0; z-index: 10;
   }
   .post__toc a.ativo { color: var(--acento); font-weight: 600; }
+
+  /* Imagem mais larga que o texto, centrada na pagina e limitada pelo espaco que
+     sobra ao lado do sumario, para nunca passar por cima dele. */
+  article picture, article > img {
+    display: block;
+    /* 40rem = duas vezes (3rem de margem + 15rem do sumario + 2rem de folga).
+       Medido: com 20rem a imagem passava 40px por cima do sumario em 1360. */
+    width: min(var(--largura-imagem), calc(100vw - 40rem));
+    max-width: none;
+    position: relative; left: 50%; transform: translateX(-50%);
+  }
+  article picture > img { width: 100%; }
 }
 
 /* 10. Celular: topo + faixa comiam 25% da tela antes do conteúdo. */
@@ -312,3 +330,20 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
    esses glifos, então eles vinham da fonte do sistema e mudavam de desenho em
    cada aparelho. Em SVG ficam iguais em todos e não esperam fonte carregar. */
 .icone { width: 0.7em; height: 0.7em; display: inline-block; vertical-align: -0.02em; margin-right: 0.4em; flex: none; }
+
+/* 11. Alvos de toque no celular. Os links de navegacao tinham 17 a 22px de
+   altura. A WCAG 2.5.8 exige 24px, e eles passavam de raspao so pela excecao
+   de espacamento. Aqui passam pelo criterio principal, sem depender de excecao.
+   O sumario fica em 32px para nao virar uma lista de 400px de altura; os botoes
+   de acao isolados vao a 44px, que e o confortavel para o polegar. */
+@media (max-width: 640px) {
+  .blog__canal a,
+  .blog__rodape-links a,
+  .blog__container > p:last-of-type a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+  .post__toc a {
+    display: flex; align-items: center; min-height: 32px;
+  }
+  .voltar-topo { min-height: 44px; display: inline-flex; align-items: center; }
+}

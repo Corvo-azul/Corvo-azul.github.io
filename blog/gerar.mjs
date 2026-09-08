@@ -72,6 +72,17 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta name="twitter:description" content="${esc(descricao)}">
   <meta name="twitter:image" content="${SITE}/assets/og.jpg">
   <meta name="yandex-verification" content="e96e78913d7ec786">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Corvo Azul", "item": "${SITE}/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "${SITE}/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "${esc(h1)}" }
+    ]
+  }
+  </script>
 </head>
 <body class="blog">
   <!-- Google Tag Manager (noscript) -->
@@ -188,9 +199,11 @@ if (orfaos.length) {
 }
 
 // As fontes do site sao subconjuntos: so carregam os glifos declarados no
-// unicode-range de assets/fonts/fonts.css. Caractere fora dessa faixa nao cai
-// para a fonte reserva, ele vira caixa vazia. A faixa e lida do proprio CSS
-// para esta checagem nao envelhecer quando o subconjunto mudar.
+// unicode-range de assets/fonts/fonts.css. Caractere fora dessa faixa CAI para a
+// fonte do sistema (testado no Chromium: Œ, Ĥ, Ω e um ideograma renderizam com a
+// largura da reserva, nao como caixa vazia). Nao quebra a pagina, mas o simbolo
+// sai com desenho diferente em cada aparelho, que foi o problema do ▶ e do ←.
+// A faixa e lida do proprio CSS para a checagem nao envelhecer com o subconjunto.
 {
   const css = readFileSync(join(RAIZ, 'assets', 'fonts', 'fonts.css'), 'utf8');
   const cobertos = new Set();
@@ -222,7 +235,7 @@ if (orfaos.length) {
   }
   if (fora.size) {
     for (const [ch, onde] of fora) {
-      console.warn(`aviso: "${ch}" (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}) esta fora do subconjunto das fontes e vai aparecer como caixa vazia — ${[...onde].join(', ')}`);
+      console.warn(`aviso: "${ch}" (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}) esta fora do subconjunto das fontes e vai sair na fonte do sistema, com desenho diferente em cada aparelho: ${[...onde].join(', ')}`);
     }
   }
 }

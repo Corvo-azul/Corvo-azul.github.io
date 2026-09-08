@@ -433,3 +433,9 @@ p { margin: 0; }
   .vivo__ponto { animation: none; }
   .grao { display: none; }
 }
+
+/* Alvos de toque no celular: os links de repositorio do bloco de prova tinham
+   17px de altura, abaixo dos 24px que a WCAG 2.5.8 pede. So folga vertical. */
+@media (max-width: 52rem) {
+  .vivo__repos a { display: inline-flex; align-items: center; min-height: 44px; }
+}
