@@ -88,7 +88,7 @@ ${topo.replace('href="/blog/"', `href="${base}/"`)}
     <div class="blog__lista">
 ${itens}
     </div>
-    <p style="margin-top:2.5rem"><a href="${base}/" style="font-family:var(--mono);font-size:.82rem;color:var(--acento)">← todos os posts</a></p>
+    <p style="margin-top:2.5rem"><a href="${base}/" style="font-family:var(--mono);font-size:.82rem;color:var(--acento)"><svg class="icone" viewBox="0 0 12 10" aria-hidden="true" focusable="false"><path d="M11 5H1m0 0l4-4M1 5l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>todos os posts</a></p>
   </main>
 
   <script src="${base}/script.js"></script>
@@ -185,6 +185,46 @@ const chips = [...modelo.matchAll(/data-tag-chip="([^"]+)"/g)].map((m) => m[1]);
 const orfaos = chips.filter((c) => !tags.includes(c));
 if (orfaos.length) {
   console.warn(`aviso: chip(s) de tag sem post em blog/index.html: ${orfaos.join(', ')}`);
+}
+
+// As fontes do site sao subconjuntos: so carregam os glifos declarados no
+// unicode-range de assets/fonts/fonts.css. Caractere fora dessa faixa nao cai
+// para a fonte reserva, ele vira caixa vazia. A faixa e lida do proprio CSS
+// para esta checagem nao envelhecer quando o subconjunto mudar.
+{
+  const css = readFileSync(join(RAIZ, 'assets', 'fonts', 'fonts.css'), 'utf8');
+  const cobertos = new Set();
+  for (const m of css.matchAll(/unicode-range:([^;]+);/g)) {
+    for (const parte of m[1].split(',')) {
+      const f = parte.trim().match(/^U\+([0-9A-Fa-f]+)(?:-([0-9A-Fa-f]+))?$/);
+      if (!f) continue;
+      const ini = parseInt(f[1], 16);
+      const fim = f[2] ? parseInt(f[2], 16) : ini;
+      for (let c = ini; c <= fim; c++) cobertos.add(c);
+    }
+  }
+  // Emoji nunca vem da fonte do site: o sistema desenha, e isso e esperado.
+  const ehEmoji = (c) => /\p{Extended_Pictographic}/u.test(String.fromCodePoint(c));
+  const arquivos = [join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html'))];
+  const fora = new Map();
+  for (const arq of arquivos) {
+    if (!existsSync(arq)) continue;
+    const texto = readFileSync(arq, 'utf8')
+      .replace(/<script[\s\S]*?<\/script>/g, '')
+      .replace(/<style[\s\S]*?<\/style>/g, '')
+      .replace(/<[^>]+>/g, ' ');
+    for (const ch of texto) {
+      const c = ch.codePointAt(0);
+      if (c < 0x20 || cobertos.has(c) || ehEmoji(c)) continue;
+      if (!fora.has(ch)) fora.set(ch, new Set());
+      fora.get(ch).add(arq.replace(RAIZ, '').replace(/\\/g, '/'));
+    }
+  }
+  if (fora.size) {
+    for (const [ch, onde] of fora) {
+      console.warn(`aviso: "${ch}" (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}) esta fora do subconjunto das fontes e vai aparecer como caixa vazia — ${[...onde].join(', ')}`);
+    }
+  }
 }
 
 // Regra mecanica do prompt de redacao (blog/PROMPT-REDACAO.md): nada de travessao

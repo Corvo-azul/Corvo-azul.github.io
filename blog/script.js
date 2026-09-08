@@ -146,8 +146,13 @@
       // Os rótulos entram com data-i18n para que o botão PT/EN também os alcance.
       alvos.forEach(function (el) {
         el.innerHTML =
-          '<a href="' + esc(cfg.canal_url) + '" target="_blank" rel="noopener"' +
-            ' data-i18n-pt="▶ Canal Corvo Azul" data-i18n-en="▶ Corvo Azul channel">▶ Canal Corvo Azul</a>' +
+          // O triangulo nao existe em nenhuma das fontes do site: vinha da fonte do
+          // sistema e mudava de desenho em cada aparelho. Em SVG fica igual em todos.
+          // Ele fica FORA do span com data-i18n, senao a troca PT/EN o apagaria.
+          '<a href="' + esc(cfg.canal_url) + '" target="_blank" rel="noopener">' +
+            '<svg class="icone" viewBox="0 0 10 12" aria-hidden="true" focusable="false">' +
+            '<path d="M1 1l8 5-8 5z" fill="currentColor"/></svg>' +
+            '<span data-i18n-pt="Canal Corvo Azul" data-i18n-en="Corvo Azul channel">Canal Corvo Azul</span></a>' +
           '<span>·</span>' +
           '<a href="' + esc(cfg.ultimo_video.url) + '" target="_blank" rel="noopener"' +
             ' data-i18n-pt="Vídeo mais recente: ' + esc(cfg.ultimo_video.titulo) + '"' +
