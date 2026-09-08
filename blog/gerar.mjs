@@ -58,6 +58,7 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta name="twitter:title" content="${esc(titulo)}">
   <meta name="twitter:description" content="${esc(descricao)}">
   <meta name="twitter:image" content="${SITE}/assets/og.jpg">
+  <meta name="yandex-verification" content="e96e78913d7ec786">
 </head>
 <body class="blog">
   <!-- Google Tag Manager (noscript) -->
