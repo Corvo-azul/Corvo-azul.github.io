@@ -71,9 +71,14 @@
       <span class="idiomas">
         <button data-idioma-botao="pt">PT</button><button data-idioma-botao="en">EN</button>
       </span>
-      <button data-tema-botao="claro" data-i18n-pt="Claro" data-i18n-en="Light">Claro</button>
-      <button data-tema-botao="escuro" data-i18n-pt="Escuro" data-i18n-en="Dark">Escuro</button>
-      <button data-tema-botao="sistema" data-i18n-pt="Sistema" data-i18n-en="System">Sistema</button>
+      <label class="tema">
+        <span class="so-leitor" data-i18n-pt="Tema" data-i18n-en="Theme">Tema</span>
+        <select data-tema-select>
+          <option value="claro" data-i18n-pt="Claro" data-i18n-en="Light">Claro</option>
+          <option value="escuro" data-i18n-pt="Escuro" data-i18n-en="Dark">Escuro</option>
+          <option value="sistema" data-i18n-pt="Sistema" data-i18n-en="System">Sistema</option>
+        </select>
+      </label>
     </div>
   </header>
 
@@ -107,35 +112,36 @@
     </div>
 
     <article data-post-corpo-pt>
-      <p>Nota: os prints abaixo usam uma planilha de exemplo fictícia (proposta comercial de teste), só pra mostrar o passo a passo real — nenhum dado nela é de cliente de verdade.</p>
+      <p>Nota: os prints usam uma planilha de exemplo fictícia, uma proposta comercial de teste. Nenhum dado ali é de cliente real.</p>
 
       <h2>O problema</h2>
-      <p>Toda empresa pequena tem pelo menos uma planilha que ninguém tem coragem de mexer: cores demais, coluna larga demais, fórmula que ninguém lembra por que existe, e um "valor final" que não bate com o total. Contratar alguém pra reformatar isso do zero custa tempo ou dinheiro que muita gente não quer gastar num arquivo interno.</p>
-      <p>O que este post mostra é um jeito de resolver isso direto pelo Claude Desktop, sem escrever fórmula, sem add-on, sem curso: você conecta sua conta do Google Drive, manda a planilha e um prompt, e recebe de volta uma versão reorganizada — inclusive com erro de fórmula corrigido, não só "mais bonita".</p>
+      <p>Toda empresa pequena tem aquela planilha que ninguém quer abrir. Cor demais, coluna larga demais, uma fórmula que ninguém lembra por que existe, e um "valor final" que não bate com o total. Você já sabe qual é a sua.</p>
+      <p>Contratar alguém pra refazer isso custa tempo ou dinheiro. E é difícil justificar esse gasto num arquivo que só roda dentro de casa.</p>
+      <p>Aqui eu mostro outro caminho: resolver direto no Claude Desktop. Sem escrever fórmula, sem instalar add-on, sem curso. Você conecta o Google Drive, manda a planilha junto com um prompt, e recebe de volta uma versão reorganizada. No meu teste ele ainda achou e corrigiu um erro de cálculo, então não é só deixar bonito.</p>
 
-      <h2>O que você precisa antes de começar</h2>
-      <p>Conta no Google com a planilha que você quer arrumar, o app Claude Desktop instalado, e uma conta Claude que tenha o recurso de conectores (Free, Pro ou superior).</p>
+      <h2>O que você precisa antes</h2>
+      <p>Três coisas: uma conta Google com a planilha que você quer arrumar, o Claude Desktop instalado, e uma conta Claude com acesso a conectores. Free, Pro ou superior serve.</p>
 
-      <h2>Passo 1 — conecte o Google Drive ao Claude</h2>
-      <p>No Claude Desktop, vá em <strong>Conectores</strong> e adicione o <strong>Google Drive</strong>. Ele pede login na sua conta Google e permissão de leitura/escrita nos arquivos — é a mesma tela de autorização que qualquer app do Google Workspace usa.</p>
+      <h2>Passo 1: conecte o Google Drive</h2>
+      <p>No Claude Desktop, abra <strong>Conectores</strong> e adicione o <strong>Google Drive</strong>. Ele pede login na sua conta Google e permissão de leitura e escrita nos arquivos. É a mesma tela de autorização que qualquer app do Google Workspace usa.</p>
       <picture>
         <source srcset="img/02-extensao-google-drive.webp" type="image/webp">
         <img src="img/02-extensao-google-drive.png" alt="Página do conector Google Drive no diretório do Claude, com o botão Connect to Claude" loading="lazy" width="1600" height="758">
       </picture>
-      <p>Depois de autorizar, ele aparece como <strong>Connected</strong> e fica disponível em qualquer conversa nova.</p>
+      <p>Depois de autorizar, ele mostra <strong>Connected</strong> e passa a ficar disponível em qualquer conversa nova.</p>
       <picture>
         <source srcset="img/03-extensao-conectada.webp" type="image/webp">
         <img src="img/03-extensao-conectada.png" alt="Conector Google Drive já conectado, mostrando as ferramentas disponíveis" loading="lazy" width="1600" height="760">
       </picture>
-      <p>No menu de conectores do chat, ele fica ligado junto com os outros que você já usa — e dali também dá pra procurar um arquivo específico do seu Drive direto na conversa.</p>
+      <p>No menu de conectores do chat ele aparece ligado junto com os outros que você já usa. Dali também dá pra buscar um arquivo específico do seu Drive sem sair da conversa.</p>
       <picture>
         <source srcset="img/04-extensao-claude-desktop.webp" type="image/webp">
         <img src="img/04-extensao-claude-desktop.png" alt="Menu de conectores do Claude Desktop com o Google Drive ativado e busca de arquivos" loading="lazy" width="1600" height="861">
       </picture>
 
-      <h2>Passo 2 — escreva o prompt (ou copie o meu)</h2>
-      <p>Esse é o prompt que usei. Ele não manda "deixar bonito" de forma vaga — pede pra entender a planilha antes de alterar, preservar dado e fórmula, e só melhorar organização, formatação e usabilidade:</p>
-      <pre><code>&lt;role&gt; Atue como um especialista em Excel, design de planilhas e organização de dados empresariais. &lt;/role&gt;
+      <h2>Passo 2: escreva o prompt, ou copie o meu</h2>
+      <p>Esse é o prompt que usei. Repare que ele não pede pra "deixar bonito", que é vago demais e dá resultado aleatório. Ele pede pra entender a planilha antes de mexer, preservar dado e fórmula, e melhorar só organização, formatação e usabilidade.</p>
+      <pre class="prompt"><code>&lt;role&gt; Atue como um especialista em Excel, design de planilhas e organização de dados empresariais. &lt;/role&gt;
 &lt;objective&gt; Analise a planilha fornecida e entregue uma versão significativamente mais profissional, organizada, clara e funcional, mantendo a finalidade original do arquivo. &lt;/objective&gt;
 &lt;instructions&gt;
 1. Analise primeiro a estrutura, os dados, as fórmulas e a finalidade de cada aba antes de realizar alterações.
@@ -146,53 +152,52 @@
 6. Corrija inconsistências de formatação e erros evidentes sem alterar o significado dos dados.
 7. Elimine elementos visuais desnecessários e evite excesso de cores, bordas ou efeitos.
 8. Priorize clareza, legibilidade, facilidade de manutenção e aparência corporativa.
-9. Faça melhorias estruturais somente quando houver benefício claro para o usuário.
-10. Não adicione informações fictícias apenas para preencher espaços.
+9. Faça melhorias estruturais somente quando houver benefício claro para o entendimento ou uso da planilha.
 &lt;/instructions&gt;
-&lt;quality_criteria&gt;
+
 A versão final deve parecer uma planilha empresarial desenvolvida profissionalmente: limpa, consistente, intuitiva, visualmente equilibrada e funcional.
+
 Antes de finalizar, verifique se:
 - os dados originais foram preservados;
 - as fórmulas continuam funcionando;
 - não existem inconsistências visuais relevantes;
 - todas as abas possuem formatação coerente;
 - a hierarquia das informações está clara;
-- a planilha permanece prática para uso diário.
-&lt;/quality_criteria&gt;
-&lt;output&gt; Entregue diretamente o arquivo Excel aprimorado. Não apenas descreva as alterações. &lt;/output&gt;</code></pre>
-      <p>Cole o link da sua planilha do Google Sheets junto com o prompt, numa conversa nova com o conector ligado.</p>
+- a planilha permanece prática para uso diário.</code></pre>
+      <p>Cole o link da sua planilha do Google Sheets junto com o prompt, numa conversa nova, com o conector ligado.</p>
       <picture>
         <source srcset="img/05-prompt-escrito.webp" type="image/webp">
         <img src="img/05-prompt-escrito.png" alt="Prompt de reformatação colado no Claude Desktop, junto com o arquivo da planilha original" loading="lazy" width="1600" height="860">
       </picture>
-      <p>É assim que a planilha de exemplo estava antes: dado solto, sem hierarquia visual, sem padronização de formato.</p>
+      <p>E era assim que a planilha estava antes. Dado solto, sem hierarquia visual, sem padrão de formato.</p>
       <picture>
         <source srcset="img/01-planilha-aberta.webp" type="image/webp">
         <img src="img/01-planilha-aberta.png" alt="Planilha de exemplo antes da reformatação, com dados sem organização visual" loading="lazy" width="1600" height="759">
       </picture>
 
-      <h2>Passo 3 — deixe o Claude analisar e trabalhar</h2>
-      <p>O Claude lê a planilha inteira pelo conector antes de mexer em qualquer coisa — não só a aba ativa, as outras também, procurando referência cruzada entre elas. No meu teste, ele encontrou uma inconsistência real: uma fórmula de "valor final" que ignorava um desconto e dava um total errado, e corrigiu sozinho, avisando o que tinha mudado.</p>
+      <h2>Passo 3: deixe ele trabalhar</h2>
+      <p>O Claude lê a planilha inteira antes de mexer em qualquer coisa. Não só a aba que está aberta: ele passa pelas outras também, procurando referência cruzada entre elas.</p>
+      <p>Foi aí que apareceu a parte mais interessante do teste. Ele achou uma inconsistência de verdade: uma fórmula de "valor final" que ignorava um desconto e devolvia um total errado. Corrigiu sozinho e avisou exatamente o que tinha mudado.</p>
       <picture>
         <source srcset="img/06-resultado.webp" type="image/webp">
         <img src="img/06-resultado.png" alt="Resposta do Claude detalhando as mudanças estruturais feitas na planilha, incluindo a correção de uma fórmula" loading="lazy" width="1600" height="861">
       </picture>
 
-      <h2>Passo 4 — substitua o arquivo original</h2>
-      <p>Depois de aprovar o resultado, pedi pra ele substituir a planilha antiga pela nova, direto no Google Drive. Aqui é o único ponto do processo que pede confirmação sua: o Claude não sobrescreve nada sem perguntar.</p>
+      <h2>Passo 4: substitua o arquivo</h2>
+      <p>Depois de aprovar o resultado, pedi pra ele trocar a planilha antiga pela nova, direto no Drive. Esse é o único ponto do processo que pede confirmação sua. O Claude não sobrescreve nada sem perguntar.</p>
       <picture>
         <source srcset="img/07-pedido-substituicao.webp" type="image/webp">
         <img src="img/07-pedido-substituicao.png" alt="Claude pedindo permissão para usar a ferramenta Create file do Google Drive antes de substituir o arquivo" loading="lazy" width="1600" height="860">
       </picture>
-      <p>Vale entender as três opções antes de clicar: <strong>Negar</strong> cancela a ação; <strong>Permitir uma vez</strong> autoriza só essa substituição; <strong>Sempre permitir</strong> deixa o Claude criar/atualizar arquivos no seu Drive sem perguntar de novo nesta conversa. Pra planilha de trabalho, prefiro sempre "uma vez" — é mais uma confirmação, mas evita susto.</p>
+      <p>Vale entender as três opções antes de clicar. <strong>Negar</strong> cancela a ação. <strong>Permitir uma vez</strong> autoriza só aquela substituição. <strong>Sempre permitir</strong> libera o Claude pra criar e atualizar arquivos no seu Drive sem perguntar de novo naquela conversa. Em planilha de trabalho eu prefiro sempre "uma vez". É uma confirmação a mais, mas evita susto.</p>
 
       <h2>O resultado</h2>
-      <p>A aba de proposta ficou com hierarquia visual clara, zebra striping nas linhas e a fórmula corrigida:</p>
+      <p>A aba de proposta ganhou hierarquia visual, listras alternadas nas linhas e a fórmula corrigida.</p>
       <picture>
         <source srcset="img/08-resultado-sheets-1.webp" type="image/webp">
         <img src="img/08-resultado-sheets-1.png" alt="Aba Proposta da planilha depois de reformatada pelo Claude, com cabeçalho e tabela organizados" loading="lazy" width="1600" height="761">
       </picture>
-      <p>As outras abas (catálogo de serviços, financeiro com gráfico gerado automaticamente, e carteira de clientes) saíram no mesmo padrão visual — sem eu ter pedido aba por aba:</p>
+      <p>As outras três abas saíram no mesmo padrão, sem eu ter pedido uma por uma: catálogo de serviços, financeiro com gráfico gerado automaticamente, e carteira de clientes.</p>
       <picture>
         <source srcset="img/09-resultado-sheets-2.webp" type="image/webp">
         <img src="img/09-resultado-sheets-2.png" alt="Aba Catálogo de Serviços já com o mesmo padrão visual da aba Proposta" loading="lazy" width="1600" height="757">
@@ -206,14 +211,17 @@ Antes de finalizar, verifique se:
         <img src="img/11-resultado-sheets-4.png" alt="Aba Clientes com formatação condicional por status e linha de total do pipeline" loading="lazy" width="1600" height="754">
       </picture>
 
-      <h2>Vale saber antes de fazer no seu arquivo</h2>
-      <p>Três pontos que eu não pularia: primeiro, o conector lê e pode escrever em qualquer arquivo que sua conta Google tenha acesso — não use isso numa conta compartilhada com dado de terceiro sem revisar a permissão antes. Segundo, "Sempre permitir" fica valendo pro resto daquela conversa; se você vai testar em várias planilhas, prefira confirmar uma por uma no início. Terceiro, o Claude preserva o que já existia por padrão, mas é você quem aprova a versão final antes de substituir — dá uma conferida nos números importantes (como fiz aqui, comparando os totais antes/depois) antes de aceitar.</p>
+      <h2>O que eu não pularia</h2>
+      <p>Três avisos, e eles pesam mais que o resto do post.</p>
+      <p>O conector lê e escreve em qualquer arquivo que sua conta Google alcança. Se a conta for compartilhada, ou tiver dado de terceiro, revise a permissão antes de ligar isso.</p>
+      <p>"Sempre permitir" continua valendo pelo resto daquela conversa. Se você vai testar em várias planilhas, confirme uma por uma no começo.</p>
+      <p>E o Claude preserva o que já existe por padrão, mas quem aprova a versão final é você. Confira os números que importam antes de aceitar. Eu comparei os totais de antes e de depois, e foi assim que confirmei que a correção da fórmula tinha ficado certa.</p>
 
       <h2>Próximo passo</h2>
-      <p>Se você tem uma planilha dessas parada, o teste mais rápido é: duplique ela (pra manter o original intacto), conecte o Drive no Claude e cole o prompt acima. Leva menos de dez minutos pra ver se o resultado serve pra você.</p>
+      <p>Se você tem uma planilha dessas parada, o teste é rápido. Duplique ela pra manter o original intacto, conecte o Drive no Claude e cole o prompt acima. Em menos de dez minutos você sabe se serve pra você.</p>
     </article>
     <article data-post-corpo-en hidden>
-      <p><em>[English version — add once this post is validated.]</em></p>
+      <p><em>[English version: add once this post is validated.]</em></p>
     </article>
 
     <div class="post__compartilhar" data-compartilhar aria-label="Compartilhar este post"></div>

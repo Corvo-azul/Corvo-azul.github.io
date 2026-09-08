@@ -30,19 +30,16 @@
   }
 
   function aplicarTema(pref) {
-    var resolvido = resolverTema(pref);
-    document.documentElement.setAttribute("data-theme-resolvido", resolvido);
-    document.querySelectorAll("[data-tema-botao]").forEach(function (b) {
-      b.classList.toggle("ativo", b.getAttribute("data-tema-botao") === pref);
-    });
+    document.documentElement.setAttribute("data-theme-resolvido", resolverTema(pref));
+    document.querySelectorAll("[data-tema-select]").forEach(function (s) { s.value = pref; });
   }
 
   function initTema() {
     var pref = ler(CHAVE_TEMA, "sistema");
     aplicarTema(pref);
-    document.querySelectorAll("[data-tema-botao]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        pref = b.getAttribute("data-tema-botao");
+    document.querySelectorAll("[data-tema-select]").forEach(function (s) {
+      s.addEventListener("change", function () {
+        pref = s.value;
         gravar(CHAVE_TEMA, pref);
         aplicarTema(pref);
       });

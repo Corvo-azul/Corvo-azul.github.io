@@ -5,6 +5,10 @@
 //   /sitemap.xml                 home + site + todas as páginas do blog
 //
 // Rodar: node blog/gerar.mjs   (a partir de site-deploy/)
+//
+// O TEXTO dos posts nao sai daqui: e escrito a mao, sob o prompt de redacao em
+// blog/PROMPT-REDACAO.md. A regra mecanica de la (nenhum travessao longo dentro
+// de <article>) e conferida no fim deste script.
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -172,4 +176,17 @@ const chips = [...modelo.matchAll(/data-tag-chip="([^"]+)"/g)].map((m) => m[1]);
 const orfaos = chips.filter((c) => !tags.includes(c));
 if (orfaos.length) {
   console.warn(`aviso: chip(s) de tag sem post em blog/index.html: ${orfaos.join(', ')}`);
+}
+
+// Regra mecanica do prompt de redacao (blog/PROMPT-REDACAO.md): nada de travessao
+// longo no corpo do post. No <head> ele e separador de titulo, e isso pode ficar.
+for (const p of posts) {
+  const arq = join(AQUI, p.slug, 'index.html');
+  if (!existsSync(arq)) continue;
+  const html = readFileSync(arq, 'utf8');
+  const corpo = html.slice(html.indexOf('<article'), html.lastIndexOf('</article>'));
+  const quantos = (corpo.match(/—/g) || []).length;
+  if (quantos) {
+    console.warn(`aviso: ${quantos} travessão(ões) longo(s) no corpo de ${p.slug} — ver blog/PROMPT-REDACAO.md`);
+  }
 }
