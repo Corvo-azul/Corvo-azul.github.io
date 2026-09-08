@@ -109,7 +109,7 @@ body.blog {
 }
 .post__ouvir:hover { border-color: var(--acento); color: var(--acento); }
 .post__toc { border: 1px solid var(--linha); border-radius: 12px; padding: 1.1rem 1.3rem; margin: 0 0 2.5rem; background: var(--superficie); }
-.post__toc summary { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; color: var(--texto-fraco); }
+.post__toc-titulo { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; margin: 0; color: var(--texto-fraco); }
 .post__toc ul { margin: 0.8rem 0 0; padding-left: 1.1rem; }
 .post__toc a { color: var(--texto); }
 .post__toc a:hover { color: var(--acento); }
@@ -217,7 +217,7 @@ body.blog {
 }
 [data-theme-resolvido="escuro"] .post__quiz a { color: #07090D; }
 
-/* 9. Sumário como coluna fixa em tela larga; continua <details> no resto */
+/* 9. Sumário como coluna fixa em tela larga; lista simples e sempre aberta no resto. */
 @media (min-width: 1180px) {
   .post__toc {
     position: fixed; top: 50%; transform: translateY(-50%);

@@ -36,7 +36,7 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta name="description" content="${esc(descricao)}">
   <link rel="canonical" href="${url}">
   <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="${SITE}/blog/feed.xml">
-  <link rel="icon" type="image/svg+xml" href="${base}/../assets/corvo-glifo.svg">
+  <link rel="icon" type="image/svg+xml" href="${base}/../assets/favicon.svg">
   <link rel="shortcut icon" href="${base}/../assets/favicon-32.png">
   <link rel="stylesheet" href="${base}/../assets/fonts/fonts.css">
   <link rel="stylesheet" href="${base}/estilo.css">
@@ -137,7 +137,7 @@ const urls = [
   { loc: `${SITE}/`, mod: hoje, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/blog/`, mod: posts[0]?.data || hoje, freq: 'weekly', pri: '0.9' },
   { loc: `${SITE}/blog/arquivo/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.5' },
-  ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.data, freq: 'monthly', pri: '0.8' })),
+  ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.atualizado || p.data, freq: 'monthly', pri: '0.8' })),
   ...tags.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
 ];
 writeFileSync(join(RAIZ, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
