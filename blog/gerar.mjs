@@ -31,6 +31,13 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
 <html lang="pt-BR" data-blog-base="${base}">
 <head>
   <meta charset="UTF-8">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PVCC35T5');</script>
+  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(titulo)}</title>
   <meta name="description" content="${esc(descricao)}">
@@ -53,6 +60,10 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta name="twitter:image" content="${SITE}/assets/og.jpg">
 </head>
 <body class="blog">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVCC35T5"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 ${topo.replace('href="/blog/"', `href="${base}/"`)}
 
   ${canal}

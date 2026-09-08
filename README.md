@@ -52,11 +52,13 @@ O bloco de prova consulta a interface pública do GitHub para mostrar repositór
 
 Se os servidores das bibliotecas caírem, forem bloqueados por extensão ou barrados por rede corporativa, a página continua legível: todo o conteúdo aparece imediatamente, porque o estado inicial invisível só existe quando há biblioteca para animá-lo. Verificado com os dois domínios de CDN bloqueados.
 
-Os cinco scripts externos carregam com verificação de integridade. O navegador recusa o arquivo se o conteúdo mudar, então um CDN comprometido não injeta código aqui. **Ao trocar a versão de qualquer biblioteca, recalcule o hash**, senão o script deixa de carregar:
+Os cinco scripts de biblioteca carregam com verificação de integridade. O navegador recusa o arquivo se o conteúdo mudar, então um CDN comprometido não injeta código aqui. **Ao trocar a versão de qualquer biblioteca, recalcule o hash**, senão o script deixa de carregar:
 
 ```bash
 curl -s <url> | openssl dgst -sha384 -binary | openssl base64 -A
 ```
+
+O Google Tag Manager é a exceção, e não dá para consertar: o `gtm.js` muda toda vez que o contêiner é publicado, e não tem versão fixa para gerar hash. Ele entra sem verificação de integridade, em todas as páginas. Quem controla o contêiner `GTM-PVCC35T5` controla o que roda no site.
 
 ## Acessibilidade e movimento
 
@@ -98,6 +100,8 @@ Código sob MIT. As fontes são da Open Font License. As fotos e o vídeo vieram
 node blog/gerar.mjs
 ```
 
-Isso reescreve as páginas de tag (`blog/tag/<tag>/`), o arquivo (`blog/arquivo/`), o `blog/feed.xml` e o `sitemap.xml`. O filtro de tag por JavaScript continua existindo para quem já está no site, mas quem indexa precisa das páginas em arquivo. O `<head>` e o topo dessas páginas saem do próprio `blog/index.html`, então não há um segundo modelo para manter em dia.
+Isso reescreve as páginas de tag (`blog/tag/<tag>/`), o arquivo (`blog/arquivo/`), o `blog/feed.xml` e o `sitemap.xml`. O filtro de tag por JavaScript continua existindo para quem já está no site, mas quem indexa precisa das páginas em arquivo.
+
+O topo dessas páginas é recortado do próprio `blog/index.html`, então mexer no cabeçalho do blog basta uma vez. O `<head>`, porém, é um modelo literal dentro do `gerar.mjs`: **tag nova no `<head>` precisa ser posta nos dois lugares**, senão as páginas de tag e o arquivo saem sem ela.
 
 O CTA do quiz no fim de cada post só aparece quando `blog/config.json` tiver `quiz.url` preenchido. Vazio, o bloco fica oculto.
