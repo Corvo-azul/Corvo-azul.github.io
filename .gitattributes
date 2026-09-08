@@ -1,0 +1,18 @@
+# Normaliza fim de linha para LF no repositorio. Sem isso, editar um arquivo no
+# Windows reescreve ele inteiro com CRLF e o diff mostra centenas de linhas
+# mudadas onde so uma mudou de verdade.
+* text=auto eol=lf
+
+# Binarios: git nao deve tentar converter nada aqui.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.mp4   binary
+*.webm  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary

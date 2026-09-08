@@ -104,4 +104,8 @@ Isso reescreve as páginas de tag (`blog/tag/<tag>/`), o arquivo (`blog/arquivo/
 
 O topo dessas páginas é recortado do próprio `blog/index.html`, então mexer no cabeçalho do blog basta uma vez. O `<head>`, porém, é um modelo literal dentro do `gerar.mjs`: **tag nova no `<head>` precisa ser posta nos dois lugares**, senão as páginas de tag e o arquivo saem sem ela.
 
+Os chips de tag do topo da lista são escritos à mão em `blog/index.html`, porque a lista também é. Um chip sem post correspondente leva o leitor direto para "nada encontrado", então o gerador avisa quando encontra um. O aviso não interrompe a geração.
+
 O CTA do quiz no fim de cada post só aparece quando `blog/config.json` tiver `quiz.url` preenchido. Vazio, o bloco fica oculto.
+
+Os prints do post são servidos em WebP, com o PNG como reserva via `<picture>`. Os dois formatos ficam no repositório; o PNG é a fonte sem perda e só é baixado por navegador que não entende WebP.

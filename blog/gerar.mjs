@@ -164,3 +164,12 @@ ${urls.map((u) => `  <url>
 `);
 
 console.log(`gerado: ${tags.length} página(s) de tag, arquivo, feed.xml e sitemap com ${urls.length} URLs`);
+
+// Os chips de tag em blog/index.html sao escritos a mao e nao passam por aqui.
+// Um chip sem post correspondente leva o leitor direto para "nada encontrado",
+// entao vale avisar em vez de deixar descobrir no ar.
+const chips = [...modelo.matchAll(/data-tag-chip="([^"]+)"/g)].map((m) => m[1]);
+const orfaos = chips.filter((c) => !tags.includes(c));
+if (orfaos.length) {
+  console.warn(`aviso: chip(s) de tag sem post em blog/index.html: ${orfaos.join(', ')}`);
+}

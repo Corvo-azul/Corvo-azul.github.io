@@ -118,11 +118,20 @@
 
       <h2>Passo 1 — conecte o Google Drive ao Claude</h2>
       <p>No Claude Desktop, vá em <strong>Conectores</strong> e adicione o <strong>Google Drive</strong>. Ele pede login na sua conta Google e permissão de leitura/escrita nos arquivos — é a mesma tela de autorização que qualquer app do Google Workspace usa.</p>
-      <img src="img/02-extensao-google-drive.webp" alt="Página do conector Google Drive no diretório do Claude, com o botão Connect to Claude" loading="lazy" width="1600" height="758">
+      <picture>
+        <source srcset="img/02-extensao-google-drive.webp" type="image/webp">
+        <img src="img/02-extensao-google-drive.png" alt="Página do conector Google Drive no diretório do Claude, com o botão Connect to Claude" loading="lazy" width="1600" height="758">
+      </picture>
       <p>Depois de autorizar, ele aparece como <strong>Connected</strong> e fica disponível em qualquer conversa nova.</p>
-      <img src="img/03-extensao-conectada.webp" alt="Conector Google Drive já conectado, mostrando as ferramentas disponíveis" loading="lazy" width="1600" height="760">
+      <picture>
+        <source srcset="img/03-extensao-conectada.webp" type="image/webp">
+        <img src="img/03-extensao-conectada.png" alt="Conector Google Drive já conectado, mostrando as ferramentas disponíveis" loading="lazy" width="1600" height="760">
+      </picture>
       <p>No menu de conectores do chat, ele fica ligado junto com os outros que você já usa — e dali também dá pra procurar um arquivo específico do seu Drive direto na conversa.</p>
-      <img src="img/04-extensao-claude-desktop.webp" alt="Menu de conectores do Claude Desktop com o Google Drive ativado e busca de arquivos" loading="lazy" width="1600" height="861">
+      <picture>
+        <source srcset="img/04-extensao-claude-desktop.webp" type="image/webp">
+        <img src="img/04-extensao-claude-desktop.png" alt="Menu de conectores do Claude Desktop com o Google Drive ativado e busca de arquivos" loading="lazy" width="1600" height="861">
+      </picture>
 
       <h2>Passo 2 — escreva o prompt (ou copie o meu)</h2>
       <p>Esse é o prompt que usei. Ele não manda "deixar bonito" de forma vaga — pede pra entender a planilha antes de alterar, preservar dado e fórmula, e só melhorar organização, formatação e usabilidade:</p>
@@ -152,26 +161,50 @@ Antes de finalizar, verifique se:
 &lt;/quality_criteria&gt;
 &lt;output&gt; Entregue diretamente o arquivo Excel aprimorado. Não apenas descreva as alterações. &lt;/output&gt;</code></pre>
       <p>Cole o link da sua planilha do Google Sheets junto com o prompt, numa conversa nova com o conector ligado.</p>
-      <img src="img/05-prompt-escrito.webp" alt="Prompt de reformatação colado no Claude Desktop, junto com o arquivo da planilha original" loading="lazy" width="1600" height="860">
+      <picture>
+        <source srcset="img/05-prompt-escrito.webp" type="image/webp">
+        <img src="img/05-prompt-escrito.png" alt="Prompt de reformatação colado no Claude Desktop, junto com o arquivo da planilha original" loading="lazy" width="1600" height="860">
+      </picture>
       <p>É assim que a planilha de exemplo estava antes: dado solto, sem hierarquia visual, sem padronização de formato.</p>
-      <img src="img/01-planilha-aberta.webp" alt="Planilha de exemplo antes da reformatação, com dados sem organização visual" loading="lazy" width="1600" height="759">
+      <picture>
+        <source srcset="img/01-planilha-aberta.webp" type="image/webp">
+        <img src="img/01-planilha-aberta.png" alt="Planilha de exemplo antes da reformatação, com dados sem organização visual" loading="lazy" width="1600" height="759">
+      </picture>
 
       <h2>Passo 3 — deixe o Claude analisar e trabalhar</h2>
       <p>O Claude lê a planilha inteira pelo conector antes de mexer em qualquer coisa — não só a aba ativa, as outras também, procurando referência cruzada entre elas. No meu teste, ele encontrou uma inconsistência real: uma fórmula de "valor final" que ignorava um desconto e dava um total errado, e corrigiu sozinho, avisando o que tinha mudado.</p>
-      <img src="img/06-resultado.webp" alt="Resposta do Claude detalhando as mudanças estruturais feitas na planilha, incluindo a correção de uma fórmula" loading="lazy" width="1600" height="861">
+      <picture>
+        <source srcset="img/06-resultado.webp" type="image/webp">
+        <img src="img/06-resultado.png" alt="Resposta do Claude detalhando as mudanças estruturais feitas na planilha, incluindo a correção de uma fórmula" loading="lazy" width="1600" height="861">
+      </picture>
 
       <h2>Passo 4 — substitua o arquivo original</h2>
       <p>Depois de aprovar o resultado, pedi pra ele substituir a planilha antiga pela nova, direto no Google Drive. Aqui é o único ponto do processo que pede confirmação sua: o Claude não sobrescreve nada sem perguntar.</p>
-      <img src="img/07-pedido-substituicao.webp" alt="Claude pedindo permissão para usar a ferramenta Create file do Google Drive antes de substituir o arquivo" loading="lazy" width="1600" height="860">
+      <picture>
+        <source srcset="img/07-pedido-substituicao.webp" type="image/webp">
+        <img src="img/07-pedido-substituicao.png" alt="Claude pedindo permissão para usar a ferramenta Create file do Google Drive antes de substituir o arquivo" loading="lazy" width="1600" height="860">
+      </picture>
       <p>Vale entender as três opções antes de clicar: <strong>Negar</strong> cancela a ação; <strong>Permitir uma vez</strong> autoriza só essa substituição; <strong>Sempre permitir</strong> deixa o Claude criar/atualizar arquivos no seu Drive sem perguntar de novo nesta conversa. Pra planilha de trabalho, prefiro sempre "uma vez" — é mais uma confirmação, mas evita susto.</p>
 
       <h2>O resultado</h2>
       <p>A aba de proposta ficou com hierarquia visual clara, zebra striping nas linhas e a fórmula corrigida:</p>
-      <img src="img/08-resultado-sheets-1.webp" alt="Aba Proposta da planilha depois de reformatada pelo Claude, com cabeçalho e tabela organizados" loading="lazy" width="1600" height="761">
+      <picture>
+        <source srcset="img/08-resultado-sheets-1.webp" type="image/webp">
+        <img src="img/08-resultado-sheets-1.png" alt="Aba Proposta da planilha depois de reformatada pelo Claude, com cabeçalho e tabela organizados" loading="lazy" width="1600" height="761">
+      </picture>
       <p>As outras abas (catálogo de serviços, financeiro com gráfico gerado automaticamente, e carteira de clientes) saíram no mesmo padrão visual — sem eu ter pedido aba por aba:</p>
-      <img src="img/09-resultado-sheets-2.webp" alt="Aba Catálogo de Serviços já com o mesmo padrão visual da aba Proposta" loading="lazy" width="1600" height="757">
-      <img src="img/10-resultado-sheets-3.webp" alt="Aba Financeiro com resumo e gráfico de receita por categoria gerado pelo Claude" loading="lazy" width="1600" height="761">
-      <img src="img/11-resultado-sheets-4.webp" alt="Aba Clientes com formatação condicional por status e linha de total do pipeline" loading="lazy" width="1600" height="754">
+      <picture>
+        <source srcset="img/09-resultado-sheets-2.webp" type="image/webp">
+        <img src="img/09-resultado-sheets-2.png" alt="Aba Catálogo de Serviços já com o mesmo padrão visual da aba Proposta" loading="lazy" width="1600" height="757">
+      </picture>
+      <picture>
+        <source srcset="img/10-resultado-sheets-3.webp" type="image/webp">
+        <img src="img/10-resultado-sheets-3.png" alt="Aba Financeiro com resumo e gráfico de receita por categoria gerado pelo Claude" loading="lazy" width="1600" height="761">
+      </picture>
+      <picture>
+        <source srcset="img/11-resultado-sheets-4.webp" type="image/webp">
+        <img src="img/11-resultado-sheets-4.png" alt="Aba Clientes com formatação condicional por status e linha de total do pipeline" loading="lazy" width="1600" height="754">
+      </picture>
 
       <h2>Vale saber antes de fazer no seu arquivo</h2>
       <p>Três pontos que eu não pularia: primeiro, o conector lê e pode escrever em qualquer arquivo que sua conta Google tenha acesso — não use isso numa conta compartilhada com dado de terceiro sem revisar a permissão antes. Segundo, "Sempre permitir" fica valendo pro resto daquela conversa; se você vai testar em várias planilhas, prefira confirmar uma por uma no início. Terceiro, o Claude preserva o que já existia por padrão, mas é você quem aprova a versão final antes de substituir — dá uma conferida nos números importantes (como fiz aqui, comparando os totais antes/depois) antes de aceitar.</p>
