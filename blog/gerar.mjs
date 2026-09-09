@@ -9,7 +9,7 @@
 // O TEXTO dos posts nao sai daqui: e escrito a mao, sob o prompt de redacao em
 // blog/PROMPT-REDACAO.md. A regra mecanica de la (nenhum travessao longo dentro
 // de <article>) e conferida no fim deste script.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -203,21 +203,35 @@ if (orfaos.length) {
 // sai com desenho diferente em cada aparelho, que foi o problema do ▶ e do ←.
 // A faixa e lida do proprio CSS para a checagem nao envelhecer com o subconjunto.
 //
-// LIMITE CONHECIDO: isto compara o texto com a faixa DECLARADA, nao com os glifos
-// que o arquivo .woff2 realmente contem. Um recorte que derrube um glifo sem
-// estreitar a faixa passa por aqui em silencio, e foi o que aconteceu em 09/09
-// com ©, › e ↑. Conferir o arquivo exigiria ler woff2 em Node; enquanto isso nao
-// existe, ao mexer nas fontes rode a checagem com fontTools antes de publicar.
+// [09/09] O LIMITE ANTIGO FOI FECHADO. Antes isto comparava o texto com a faixa
+// DECLARADA no CSS, e um recorte que derrubasse um glifo sem estreitar a faixa
+// passava em silencio — foi o que aconteceu com ©, › e ↑, que chegaram a ser
+// commitados. Agora a checagem usa assets/fonts/glifos.json, escrito pelo proprio
+// recorte (assets/fonts/gerar-manifesto.py, com fontTools) e contendo os code
+// points que cada .woff2 REALMENTE tem. O manifesto guarda o tamanho de cada
+// arquivo: se um .woff2 mudar sem o manifesto ser regerado, isto acusa em vez de
+// confiar no dado velho. Ao mexer em fonte: rode o gerar-manifesto.py.
 {
-  const css = readFileSync(join(RAIZ, 'assets', 'fonts', 'fonts.css'), 'utf8');
+  const DIR_FONTES = join(RAIZ, 'assets', 'fonts');
   const cobertos = new Set();
-  for (const m of css.matchAll(/unicode-range:([^;]+);/g)) {
-    for (const parte of m[1].split(',')) {
-      const f = parte.trim().match(/^U\+([0-9A-Fa-f]+)(?:-([0-9A-Fa-f]+))?$/);
-      if (!f) continue;
-      const ini = parseInt(f[1], 16);
-      const fim = f[2] ? parseInt(f[2], 16) : ini;
-      for (let c = ini; c <= fim; c++) cobertos.add(c);
+  const manifesto = join(DIR_FONTES, 'glifos.json');
+  if (!existsSync(manifesto)) {
+    console.warn('aviso: assets/fonts/glifos.json nao existe — a checagem de glifos NAO rodou. Gere com: python3 assets/fonts/gerar-manifesto.py');
+  } else {
+    const mf = JSON.parse(readFileSync(manifesto, 'utf8'));
+    const noDisco = readdirSync(DIR_FONTES).filter((f) => f.endsWith('.woff2')).sort();
+    const noManifesto = Object.keys(mf.fontes).sort();
+    if (noDisco.join('|') !== noManifesto.join('|')) {
+      console.warn(`aviso: glifos.json esta desatualizado — fontes no disco [${noDisco}] != no manifesto [${noManifesto}]. Rode: python3 assets/fonts/gerar-manifesto.py`);
+    }
+    for (const [nome, dados] of Object.entries(mf.fontes)) {
+      const arq = join(DIR_FONTES, nome);
+      if (!existsSync(arq)) { console.warn(`aviso: glifos.json cita ${nome}, que nao existe mais. Rode: python3 assets/fonts/gerar-manifesto.py`); continue; }
+      const bytes = statSync(arq).size;
+      if (bytes !== dados.bytes) {
+        console.warn(`aviso: ${nome} mudou (${bytes} B no disco, ${dados.bytes} B no manifesto) — a checagem de glifos esta usando dado velho. Rode: python3 assets/fonts/gerar-manifesto.py`);
+      }
+      for (const c of dados.codepoints) cobertos.add(c);
     }
   }
   // Emoji nunca vem da fonte do site: o sistema desenha, e isso e esperado.
