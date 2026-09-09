@@ -221,6 +221,7 @@
     2: ['M190 126 L226 140 L190 154 L154 140 Z', 'M154 156 L190 170 L226 156', 'M154 172 L190 186 L226 172'], // camadas: do zero ao ar
     3: ['circle:160,142,7', 'circle:220,124,7', 'circle:220,178,7', 'M167 140 L213 126', 'M167 144 L213 176'],  // nós: agentes
     4: ['M190 188 L190 154', 'M190 154 L162 122', 'M190 154 L218 122', 'M162 122 L162 134', 'M162 122 L174 122'], // bifurcação: decisão
+    5: ['M156 142 L224 142 L224 182 L156 182 Z', 'M156 142 L190 166 L224 142'], // envelope: contato
   };
   function semente(n) { let s = n * 9301 + 49297; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
   function mk(tag, attrs, cls) { const el = document.createElementNS(NS, tag); Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v)); el.setAttribute('class', cls); return el; }
