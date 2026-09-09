@@ -2,7 +2,7 @@
 //   /blog/tag/<tag>/index.html   páginas de tag (o filtro por JS não é indexável)
 //   /blog/arquivo/index.html     lista cronológica completa
 //   /blog/feed.xml               RSS
-//   /sitemap.xml                 home + site + todas as páginas do blog
+//   /sitemap.xml                 home + /privacidade/ + todas as páginas do blog
 //
 // Rodar: node blog/gerar.mjs   (a partir de site-deploy/)
 //
@@ -98,6 +98,7 @@ ${topo.replace('href="/blog/"', `href="${base}/"`)}
 ${itens}
     </div>
     <p style="margin-top:2.5rem"><a href="${base}/" style="font-family:var(--mono);font-size:.82rem;color:var(--acento)"><svg class="icone" viewBox="0 0 12 10" aria-hidden="true" focusable="false"><path d="M11 5H1m0 0l4-4M1 5l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>todos os posts</a></p>
+    <p class="blog__rodape-links" style="margin-top:2rem"><a href="/privacidade/">Privacidade</a></p>
   </main>
 
   <script src="${base}/script.js"></script>
@@ -171,6 +172,9 @@ const urls = [
   { loc: `${SITE}/`, mod: hoje, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/blog/`, mod: posts[0]?.data || hoje, freq: 'weekly', pri: '0.9' },
   { loc: `${SITE}/blog/arquivo/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.5' },
+  // lastmod vem da mtime do arquivo, nao de `hoje`: senao o sitemap diria ao
+  // buscador que a politica mudou toda vez que este script roda, o que e mentira.
+  { loc: `${SITE}/privacidade/`, mod: statSync(join(RAIZ, 'privacidade', 'index.html')).mtime.toISOString().slice(0, 10), freq: 'yearly', pri: '0.3' },
   ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.atualizado || p.data, freq: 'monthly', pri: '0.8' })),
   ...tags.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
 ];
@@ -240,6 +244,7 @@ if (orfaos.length) {
   // rodape passou despercebido quando um recorte de fonte o derrubou.
   const arquivos = [
     join(RAIZ, 'index.html'), join(RAIZ, '404.html'),
+    join(RAIZ, 'privacidade', 'index.html'),
     join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html')),
   ];
   const fora = new Map();

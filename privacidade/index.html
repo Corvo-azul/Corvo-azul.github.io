@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacidade — Corvo Azul</title>
+  <meta name="description" content="O que o site do Corvo Azul coleta, por que, com quem compartilha e como pedir para apagar. Sem anúncio, sem venda de dado, sem pixel de rede social.">
+  <link rel="canonical" href="https://corvoazul.com/privacidade/">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Corvo Azul">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://corvoazul.com/privacidade/">
+  <meta property="og:title" content="Privacidade — Corvo Azul">
+  <meta property="og:description" content="O que o site coleta, por que, com quem compartilha e como pedir para apagar.">
+  <meta property="og:image" content="https://corvoazul.com/assets/og.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <link rel="shortcut icon" href="../assets/favicon-32.png">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="../blog/estilo.css">
+
+  <!-- Esta pagina NAO carrega o Google Analytics. Uma politica de privacidade que
+       rastreia quem foi ler a politica de privacidade e uma contradicao, e nao ha
+       nada a medir aqui. Tambem nao carrega blog/script.js: e uma pagina estatica,
+       e depender de um script de listagem de post so criaria uma forma de quebrar. -->
+
+  <!-- Le so a preferencia de tema que o blog ja gravou, para quem veio de la no
+       escuro nao levar um flash branco. Sem isso, sem cookie, sem leitura de nada. -->
+  <script>
+    try {
+      var p = localStorage.getItem('ca-blog-tema') || 'sistema';
+      var r = (p === 'claro' || p === 'escuro') ? p
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'escuro' : 'claro');
+      document.documentElement.setAttribute('data-theme-resolvido', r);
+    } catch (e) { /* sem storage: fica no claro, que e o padrao do CSS */ }
+  </script>
+
+  <style>
+    .legal { max-width: var(--largura-post); margin: 0 auto; padding: clamp(2.5rem, 6vh, 4.5rem) var(--lateral) 6rem; }
+    .legal h1 { font-family: var(--display); font-weight: 700; letter-spacing: -0.03em; line-height: 1.06; font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 0.6rem; }
+    .legal .legal__data { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--texto-fraco); margin: 0 0 2.5rem; }
+    .legal h2 { font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; font-size: 1.35rem; line-height: 1.2; margin: 3rem 0 0.9rem; padding-top: 1.6rem; border-top: 1px solid var(--linha); }
+    .legal h2:first-of-type { border-top: 0; padding-top: 0; }
+    .legal h3 { font-family: var(--display); font-weight: 600; font-size: 1.02rem; margin: 1.8rem 0 0.5rem; }
+    .legal p, .legal li { line-height: 1.7; }
+    .legal ul { padding-left: 1.15rem; }
+    .legal li { margin-bottom: 0.5rem; }
+    .legal code { font-family: var(--mono); font-size: 0.86em; background: var(--superficie-azul); border: 1px solid var(--linha-azul); border-radius: 4px; padding: 0.08em 0.35em; }
+    .legal table { width: 100%; border-collapse: collapse; margin: 1rem 0 0.5rem; font-size: 0.92rem; }
+    .legal th, .legal td { text-align: left; vertical-align: top; padding: 0.7rem 0.9rem 0.7rem 0; border-bottom: 1px solid var(--linha); }
+    .legal th { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-fraco); font-weight: 400; }
+    .legal__tabela { overflow-x: auto; }
+    /* Abaixo de 40rem a tabela de tres/quatro colunas espremia cada celula em uma
+       palavra por linha: a linha do GitHub Pages ocupava meia tela. Aqui cada linha
+       vira um bloco e o cabecalho volta como rotulo em cada celula (data-rotulo),
+       que le melhor que rolagem horizontal -- numa politica de privacidade, esconder
+       a terceira coluna atras de um arrasto e esconder justamente o "o que ele ve". */
+    @media (max-width: 40rem) {
+      .legal table, .legal tbody, .legal tr, .legal td { display: block; width: 100%; }
+      .legal thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .legal tr { border-bottom: 1px solid var(--linha); padding: 0.9rem 0; }
+      .legal tr:last-child { border-bottom: 0; }
+      .legal td { border: 0; padding: 0.15rem 0; }
+      .legal td::before {
+        content: attr(data-rotulo);
+        display: block;
+        font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--texto-fraco); margin-bottom: 0.1rem;
+      }
+      .legal td:first-child { font-weight: 600; }
+    }
+    .legal__nao { border: 1px solid var(--linha-forte); border-radius: 10px; padding: 1.3rem 1.5rem; margin: 1.2rem 0; background: var(--superficie); }
+    .legal__nao ul { margin: 0; }
+    .legal__nao li:last-child { margin-bottom: 0; }
+    /* blog/estilo.css zera todo link com `.blog a { color: inherit }` e so devolve
+       cor dentro de <article>. Esta pagina nao e um post, entao repete aqui a MESMA
+       regra da linha 336 do estilo.css, para o link de politica nao ficar preto e
+       indistinguivel do texto -- que foi o que apareceu na primeira captura. */
+    .legal a { color: var(--acento); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--linha-azul); transition: text-decoration-color .2s; }
+    .legal a:hover { color: var(--acento-hover); text-decoration-color: currentColor; }
+    .legal__volta { display: inline-block; margin-top: 3.5rem; font-family: var(--mono); font-size: 0.82rem; color: var(--acento); text-decoration: none; }
+    .legal__volta:hover { text-decoration: underline; text-underline-offset: 0.15em; }
+  </style>
+</head>
+<body class="blog">
+  <header class="blog__topo">
+    <span class="blog__marca">
+      <a class="blog__marca-casa" href="/"><svg viewBox="0 0 800 685.8" style="color:var(--texto)" width="20" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M222.0 1.9 C203.4 3.9 194.6 6.2 181.1 12.7 C148.4 28.3 126.3 55.6 107.6 103.6 C94.6 137.1 75.1 216.3 56.5 311.3 C47.3 359.1 34.2 398.5 14.9 437.4 C9.6 448.0 5.6 456.8 6.0 457.2 C6.9 458.2 19.6 453.6 30.8 448.2 C36.7 445.4 41.8 443.5 42.3 443.9 C44.6 446.3 34.4 471.7 21.8 494.0 C17.4 501.7 10.8 514.1 6.9 521.5 L0.0 535.0 L3.3 535.4 C5.1 535.6 11.5 534.2 17.7 532.4 C23.7 530.6 29.1 529.4 29.5 529.7 C30.6 531.0 25.6 540.8 12.7 562.4 C2.3 579.6 0.4 583.7 1.8 585.0 C2.7 585.9 11.3 588.5 20.8 590.6 C66.7 601.5 93.2 607.7 112.4 611.9 C120.9 613.7 130.1 615.8 132.9 616.4 C143.3 618.8 175.4 625.8 181.0 626.8 C184.2 627.3 190.9 628.7 195.7 629.9 C200.7 630.9 207.7 632.4 211.1 633.1 C214.7 633.7 224.5 635.6 232.9 637.4 C257.7 642.4 268.2 644.5 279.7 646.7 C285.7 647.7 292.9 649.1 295.7 649.7 C298.6 650.4 316.1 653.8 334.8 657.4 C353.6 661.0 371.4 664.5 374.6 665.1 C377.8 665.8 389.6 667.8 400.9 669.6 C412.1 671.4 428.0 674.0 436.1 675.4 C444.2 676.8 455.2 678.5 460.5 679.2 C465.7 679.9 473.8 681.1 478.4 681.8 C503.4 685.8 516.2 686.8 518.3 684.7 C521.2 681.8 523.4 666.0 524.0 640.8 C524.8 615.5 524.0 602.4 520.7 582.7 C519.8 577.8 519.6 573.6 519.9 573.2 C521.1 572.1 527.3 576.7 537.0 586.0 C542.8 591.5 546.7 594.5 547.8 594.0 C549.6 592.8 548.5 574.6 546.2 565.8 C540.7 544.9 533.4 526.8 525.3 514.1 C523.4 511.0 522.1 508.1 522.6 507.7 C523.0 507.3 527.3 508.2 532.0 509.7 C536.9 511.3 541.1 512.6 541.6 512.6 C544.9 512.6 537.5 496.4 524.3 474.6 C513.2 456.4 511.1 452.4 505.1 438.2 C495.1 414.6 493.2 405.3 493.2 378.6 C493.2 352.6 494.2 347.6 502.8 330.2 C513.9 307.8 529.3 294.5 553.1 286.4 C563.3 283.1 587.1 278.7 607.2 276.6 C612.9 276.1 623.3 274.9 630.3 274.3 C652.4 271.8 692.0 269.0 721.3 267.7 C736.8 267.1 752.0 266.2 754.9 265.7 C761.6 264.6 775.7 267.9 788.4 273.1 C793.5 275.3 798.1 276.6 798.6 276.1 C799.2 275.7 799.8 270.7 799.9 265.2 C800.9 243.5 792.2 223.2 771.5 199.5 C757.7 183.8 730.2 164.3 704.7 152.4 C671.2 136.7 645.4 129.1 572.6 113.8 C537.9 106.5 537.3 106.2 531.0 99.3 C515.3 82.0 494.4 62.4 483.5 54.7 C468.0 43.6 437.4 28.4 417.1 21.6 C382.7 10.2 345.7 3.5 301.3 1.1 C271.6 -0.6 240.5 -0.3 222.0 1.9 Z M405.9 112.7 C419.2 116.7 427.4 122.4 442.6 137.9 C457.5 153.0 464.3 161.3 464.3 164.3 C464.3 166.1 447.6 171.3 428.4 175.6 C416.9 178.1 391.9 177.7 383.6 174.9 C370.1 170.3 359.1 163.6 347.9 153.1 C334.1 139.9 319.2 123.1 319.8 121.2 C320.4 119.5 337.3 114.7 351.5 112.1 C356.8 111.2 369.2 110.3 378.9 110.2 C393.7 110.0 398.3 110.6 405.9 112.7 Z"/></svg><span>Corvo Azul</span></a>
+      <span class="blog__marca-sep" aria-hidden="true">·</span><a href="/privacidade/">Privacidade</a>
+    </span>
+  </header>
+
+  <main class="legal">
+    <h1>Privacidade</h1>
+    <p class="legal__data">Última atualização: 9 de setembro de 2026</p>
+
+    <p>Este site é a página de um canal do YouTube em construção. Não vende nada, não tem login, não tem carrinho e não tem anúncio. O que ele mede é quantas pessoas chegaram e por onde — o mínimo para decidir se o experimento de seis meses está funcionando. Esta página diz exatamente o que é coletado, por quem, por quanto tempo e como pedir para apagar.</p>
+
+    <h2>Quem é responsável</h2>
+    <p>O responsável pelo tratamento dos dados deste site é o <strong>Corvo Azul</strong>, projeto operado por pessoa física no Brasil.</p>
+    <p>Contato para qualquer assunto de privacidade, inclusive os pedidos do artigo 18 da LGPD: <a href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>. É o mesmo endereço do rodapé; não existe outro canal e não há formulário intermediário.</p>
+
+    <h2>O que este site coleta</h2>
+
+    <h3>1. Medição de audiência (Google Analytics 4)</h3>
+    <p>O site carrega o Google Analytics 4, propriedade <code>G-GHV4D0XHY8</code>. Ele grava cookies próprios no seu navegador (<code>_ga</code> e <code>_ga_&lt;id&gt;</code>) e envia ao Google: as páginas que você abriu e em que ordem, quanto tempo ficou, de onde veio (link, busca, rede social ou digitação direta), tipo de aparelho, sistema, navegador, idioma, resolução, e uma <strong>região aproximada</strong> derivada do seu IP.</p>
+    <p>O endereço IP é usado pelo Google para derivar essa localização aproximada e depois descartado: o GA4 não registra IP nos relatórios nem permite consultá-lo. Nada aqui identifica você pelo nome, e não há como cruzar esses números com o seu e-mail, porque este site não junta as duas coisas.</p>
+    <p><strong>Base legal:</strong> legítimo interesse (LGPD, art. 7º, IX) — medir audiência agregada para decidir o que produzir. Se você preferir não ser contado, veja <a href="#recusar">como recusar</a>; o site funciona igual sem isso.</p>
+    <p><strong>Prazo:</strong> os dados ficam na propriedade do Google Analytics pelo período de retenção configurado nela e são apagados automaticamente depois. A política do Google sobre esses dados está em <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</p>
+    <p>Esta página que você está lendo agora <strong>não</strong> carrega o Analytics.</p>
+
+    <h3>2. Quiz (Tally)</h3>
+    <p>O quiz é um formulário hospedado pelo <a href="https://tally.so/" target="_blank" rel="noopener">Tally</a>, empresa belga, e abre em outra aba. Ele não roda dentro deste site, e este site não recebe cópia do que você digita lá.</p>
+    <p>Se você responder, o Tally guarda <strong>as suas respostas e o e-mail que você informar</strong>, e eu tenho acesso a esse conjunto. O e-mail serve para devolver o resultado e, se você marcar que aceita, para avisar quando sair vídeo novo. Não é vendido, não é trocado e não entra em lista de terceiro.</p>
+    <p><strong>Base legal:</strong> consentimento (LGPD, art. 7º, I) — você escolhe abrir o quiz e escolhe digitar o e-mail. Nada é obrigatório para usar o site.</p>
+    <p><strong>Prazo:</strong> as respostas ficam enquanto o experimento durar; para apagar antes disso, basta pedir pelo e-mail acima. A privacidade do Tally está em <a href="https://tally.so/help/privacy-policy" target="_blank" rel="noopener">tally.so/help/privacy-policy</a>.</p>
+
+    <h3>3. E-mail de contato</h3>
+    <p>Os links de contato são <code>mailto:</code>: abrem o seu próprio programa de e-mail. Este site não intermedeia, não copia e não armazena nada nesse caminho. Se você escrever, eu recebo o seu endereço e o que você escreveu, e uso só para responder.</p>
+
+    <h3>4. Serviços que o navegador aciona sozinho</h3>
+    <p>Para a página funcionar, o seu navegador busca arquivos em outros servidores. Cada um deles enxerga o seu endereço IP e o seu navegador no momento do pedido — é como a web funciona, mas está listado aqui porque é dado seu saindo daqui:</p>
+    <div class="legal__tabela">
+      <table>
+        <thead><tr><th>Serviço</th><th>Para quê</th><th>O que ele vê</th></tr></thead>
+        <tbody>
+          <tr><td data-rotulo="Serviço">GitHub Pages</td><td data-rotulo="Para quê">hospeda o site</td><td data-rotulo="O que ele vê">IP e páginas pedidas, nos registros do servidor</td></tr>
+          <tr><td data-rotulo="Serviço">cdnjs (Cloudflare)</td><td data-rotulo="Para quê">bibliotecas de animação</td><td data-rotulo="O que ele vê">IP e navegador</td></tr>
+          <tr><td data-rotulo="Serviço">jsDelivr</td><td data-rotulo="Para quê">biblioteca de animação de texto</td><td data-rotulo="O que ele vê">IP e navegador</td></tr>
+          <tr><td data-rotulo="Serviço">api.github.com</td><td data-rotulo="Para quê">lista os repositórios públicos do projeto, na seção "em construção"</td><td data-rotulo="O que ele vê">IP e navegador</td></tr>
+          <tr><td data-rotulo="Serviço">googletagmanager.com</td><td data-rotulo="Para quê">entrega o arquivo do Analytics</td><td data-rotulo="O que ele vê">IP e navegador</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>As fontes do site são servidas por este próprio domínio: nenhuma requisição vai ao Google Fonts. Não há vídeo do YouTube incorporado nem pixel de rede social em página nenhuma — os links para o YouTube e o GitHub são links comuns, e só levam o seu navegador para lá quando você clica.</p>
+
+    <h2>Cookies e armazenamento local</h2>
+    <div class="legal__tabela">
+      <table>
+        <thead><tr><th>Nome</th><th>Tipo</th><th>Para quê</th><th>Dura</th></tr></thead>
+        <tbody>
+          <tr><td data-rotulo="Nome"><code>_ga</code>, <code>_ga_&lt;id&gt;</code></td><td data-rotulo="Tipo">cookie (Google)</td><td data-rotulo="Para quê">medição de audiência</td><td data-rotulo="Dura">até 2 anos</td></tr>
+          <tr><td data-rotulo="Nome"><code>ca-blog-tema</code></td><td data-rotulo="Tipo">localStorage</td><td data-rotulo="Para quê">lembra se você escolheu tema claro ou escuro no blog</td><td data-rotulo="Dura">até você limpar o navegador</td></tr>
+          <tr><td data-rotulo="Nome"><code>ca-blog-idioma</code></td><td data-rotulo="Tipo">localStorage</td><td data-rotulo="Para quê">lembra se você escolheu a interface em PT ou EN</td><td data-rotulo="Dura">até você limpar o navegador</td></tr>
+          <tr><td data-rotulo="Nome"><code>abertura</code></td><td data-rotulo="Tipo">sessionStorage</td><td data-rotulo="Para quê">faz a animação de abertura tocar uma vez só</td><td data-rotulo="Dura">até fechar a aba</td></tr>
+          <tr><td data-rotulo="Nome"><code>corvoazul.github.Corvo-azul</code></td><td data-rotulo="Tipo">sessionStorage</td><td data-rotulo="Para quê">guarda por 30 min a lista de repositórios já buscada, para não repetir o pedido ao GitHub</td><td data-rotulo="Dura">até fechar a aba</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Os quatro últimos ficam só no seu aparelho: nunca são enviados a servidor nenhum, nem a mim. Os dois primeiros são do Google e podem ser recusados.</p>
+
+    <h2>O que este site não faz</h2>
+    <div class="legal__nao">
+      <ul>
+        <li>Não vende, aluga nem troca dado seu com ninguém.</li>
+        <li>Não exibe anúncio e não usa rede de publicidade.</li>
+        <li>Não tem pixel de Meta, TikTok, LinkedIn ou qualquer rede social.</li>
+        <li>Não monta perfil de comportamento nem toma decisão automatizada sobre você.</li>
+        <li>Não pede cadastro, senha, CPF, telefone ou dado de pagamento — não existe campo para isso em lugar nenhum do site.</li>
+        <li>Não coleta dado de criança ou adolescente de forma dirigida; o conteúdo é técnico e endereçado a adultos.</li>
+      </ul>
+    </div>
+
+    <h2>Transferência internacional</h2>
+    <p>Google (Estados Unidos), Tally (Bélgica), Cloudflare e jsDelivr (rede global) e GitHub (Estados Unidos) processam esses dados fora do Brasil, o que a LGPD trata no artigo 33. Todos são fornecedores comerciais com cláusulas contratuais padrão e políticas públicas de proteção de dados, ligadas acima.</p>
+
+    <h2 id="recusar">Como recusar a medição</h2>
+    <p>Não há banner de cookie aqui: em vez de pedir um clique em toda visita, o site declara o que faz nesta página e deixa a recusa nas suas mãos. Qualquer um destes caminhos funciona, e nenhum quebra o site:</p>
+    <ul>
+      <li>Instalar o <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">complemento oficial de desativação do Google Analytics</a>.</li>
+      <li>Usar um bloqueador de conteúdo (uBlock Origin e similares bloqueiam o Analytics por padrão).</li>
+      <li>Bloquear cookies de terceiros ou navegar em janela anônima.</li>
+      <li>Pedir por e-mail a exclusão dos dados de navegação associados a você.</li>
+    </ul>
+
+    <h2>Seus direitos</h2>
+    <p>A LGPD (art. 18) garante a você, a qualquer momento e sem custo: confirmar se há tratamento, acessar os dados, corrigir dado incompleto ou errado, pedir anonimização ou eliminação, pedir portabilidade, saber com quem os dados foram compartilhados, e revogar consentimento.</p>
+    <p>Para exercer qualquer um deles, escreva para <a href="mailto:contato@corvoazul.com">contato@corvoazul.com</a> dizendo o que quer. A resposta sai em até 15 dias. Se você respondeu o quiz, informe o e-mail usado lá — é a única chave que liga um registro a você; os dados de navegação são agregados e não têm como ser separados por pessoa.</p>
+
+    <h2>Mudanças nesta política</h2>
+    <p>Se o site passar a coletar algo diferente, esta página muda antes, e a data no topo muda junto. O histórico de alterações é público no repositório do site, em <a href="https://github.com/Corvo-azul" target="_blank" rel="noopener">github.com/Corvo-azul</a>: dá para ver o que mudou e quando, linha por linha.</p>
+
+    <a class="legal__volta" href="/"><svg class="icone" viewBox="0 0 12 10" aria-hidden="true" focusable="false" width="12" height="10" style="vertical-align:-1px;margin-right:.45rem"><path d="M11 5H1m0 0l4-4M1 5l4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>voltar para o início</a>
+  </main>
+</body>
+</html>
