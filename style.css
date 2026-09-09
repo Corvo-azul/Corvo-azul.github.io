@@ -357,11 +357,11 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .contato > * { position: relative; max-width: var(--largura); margin-left: auto; margin-right: auto; }
 .link-gigante--mail { margin-top: 0.5rem; margin-bottom: 2.5rem; }
 .link-gigante--mail .link-gigante__texto { font-size: clamp(1.6rem, 6vw, 5.6rem); white-space: nowrap; }
-.contato__links { display: flex; gap: 2.5rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.85rem; color: var(--cinza); }
+.contato__links { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: space-between; font-family: var(--mono); font-size: 0.85rem; color: var(--cinza); }
 .contato__links a { transition: color 0.3s; }
 .contato__links a:hover { color: var(--papel); }
 @media (max-width: 52rem) {
-  .contato__links { flex-direction: column; gap: 0; }
+  .contato__links { flex-direction: column; justify-content: flex-start; gap: 0; }
   .contato__links a { min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid var(--linha); }
 }
 
