@@ -350,6 +350,13 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .faq__mais::after { transform: translate(-50%, -50%) rotate(90deg); }
 .faq details[open] .faq__mais::after { transform: translate(-50%, -50%) rotate(0); }
 .faq details p { color: var(--cinza); padding: 0 0 1.5rem; max-width: 52ch; }
+/* Estados final e inicial da abertura animada. A transicao em si mora no JS,
+   que precisa segurar o atributo open: declarada aqui ela nao roda, porque um
+   <details> fechado nao tem o conteudo no fluxo para servir de ponto de partida.
+   O overflow:hidden no filho e obrigatorio, sem ele a linha de 0fr nao corta. */
+.faq__corpo { display: grid; grid-template-rows: 0fr; }
+.faq details[open] .faq__corpo { grid-template-rows: 1fr; }
+.faq__corpo > * { overflow: hidden; }
 
 /* ---------- 04 — Contato (da B) ---------- */
 .contato { position: relative; padding: clamp(6rem, 14vh, 11rem) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }

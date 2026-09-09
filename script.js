@@ -361,5 +361,42 @@
     });
   }
 
+  /* ---------- FAQ: abrir e fechar com transicao ----------
+     So com CSS nao da. Fechado, o <details> deixa o conteudo fora do fluxo, e
+     transicao nao tem valor inicial de onde partir: medido, a altura pula para
+     o valor final ja no primeiro quadro. Interceptando o toggle a gente segura
+     o atributo ate a animacao acabar — e de quebra o fechamento tambem anima,
+     nao so a abertura. Sem JS, o <details> continua funcionando nativo.
+     A duracao e a mesma da rotacao do "+" no CSS, senao os dois se descolam. */
+  if (!reduz) {
+    document.querySelectorAll('.faq details').forEach((det) => {
+      const corpo = det.querySelector('.faq__corpo');
+      const gatilho = det.querySelector('summary');
+      if (!corpo || !gatilho) return;
+      let ocupado = false;
+      gatilho.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (ocupado) return;
+        ocupado = true;
+        const fechando = det.open;
+        det.open = true;
+        corpo.style.gridTemplateRows = fechando ? '1fr' : '0fr';
+        void corpo.offsetHeight;
+        corpo.style.transition = 'grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        corpo.style.gridTemplateRows = fechando ? '0fr' : '1fr';
+        const encerrar = () => {
+          clearTimeout(rede);
+          corpo.style.transition = '';
+          corpo.style.gridTemplateRows = '';
+          det.open = !fechando;
+          ocupado = false;
+        };
+        // rede: se o transitionend nao vier, o item nao pode ficar travado
+        const rede = setTimeout(encerrar, 600);
+        corpo.addEventListener('transitionend', encerrar, { once: true });
+      });
+    });
+  }
+
   document.querySelectorAll('main img:not([fetchpriority])').forEach((img) => img.setAttribute('loading', 'lazy'));
 })();
