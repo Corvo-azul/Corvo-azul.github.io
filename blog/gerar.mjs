@@ -33,8 +33,12 @@ if (semPasta.length) {
 const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const dataBr = (iso) => new Date(iso + 'T12:00:00Z').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
-// O <head> e o topo saem do index.html real, para não existir um segundo template
-// que precise ser atualizado junto sempre que o blog mudar.
+// So o <header> sai do index.html real. O <head> daqui e um SEGUNDO template: ele
+// tem que ser, porque title, canonical, description e o JSON-LD mudam por pagina.
+// O comentario antigo dizia que o head vinha de la, o que era falso -- e a mentira
+// custou: apple-touch-icon, og:image:width/height e o preconnect foram adicionados
+// no blog/index.html a mao e nunca chegaram nas paginas geradas. Em vez de fingir
+// uma fonte unica, o fim deste script agora COMPARA as duas cabecas e acusa.
 const modelo = readFileSync(join(AQUI, 'index.html'), 'utf8');
 const topo = modelo.slice(modelo.indexOf('<header'), modelo.indexOf('</header>') + 9);
 const canal = '<div class="blog__canal" data-canal-slot></div>';
@@ -59,7 +63,9 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <link rel="canonical" href="${url}">
   <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="${SITE}/blog/feed.xml">
   <link rel="icon" type="image/svg+xml" href="${base}/../assets/favicon.svg">
+  <link rel="apple-touch-icon" href="${base}/../assets/favicon-180.png">
   <link rel="shortcut icon" href="${base}/../assets/favicon-32.png">
+  <link rel="preconnect" href="${SITE}">
   <link rel="stylesheet" href="${base}/../assets/fonts/fonts.css">
   <link rel="stylesheet" href="${base}/estilo.css">
   <meta property="og:type" content="website">
@@ -69,6 +75,8 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta property="og:title" content="${esc(titulo)}">
   <meta property="og:description" content="${esc(descricao)}">
   <meta property="og:image" content="${SITE}/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(titulo)}">
   <meta name="twitter:description" content="${esc(descricao)}">
@@ -188,6 +196,38 @@ ${urls.map((u) => `  <url>
   </url>`).join('\n')}
 </urlset>
 `);
+
+// ---- deriva do <head> ----
+// blog/index.html e escrito a mao; as paginas de tag e o arquivo saem de pagina()
+// aqui em cima. Sao duas cabecas, e ja divergiram em silencio uma vez. Esta
+// checagem compara as CHAVES (name/property/rel) das duas e acusa o que existe la
+// e nao existe aqui. Nao compara valores: title, canonical e description mudam por
+// pagina de proposito. /privacidade/ fica de fora porque nao carrega Analytics por
+// decisao, e nao por esquecimento.
+{
+  const chaves = (html) => {
+    const cabeca = html.slice(0, html.indexOf('</head>'));
+    const set = new Set();
+    for (const m of cabeca.matchAll(/<(?:meta|link)\b[^>]*>/g)) {
+      const k = m[0].match(/(?:name|property|rel)="([^"]+)"/);
+      if (k) set.add(k[1]);
+    }
+    return set;
+  };
+  const referencia = chaves(readFileSync(join(AQUI, 'index.html'), 'utf8'));
+  // Estas so fazem sentido na home do blog e nao sao esquecimento.
+  for (const so_da_home of ['search']) referencia.delete(so_da_home);
+  const geradas = [join(AQUI, 'arquivo', 'index.html'), ...tags.map((t) => join(AQUI, 'tag', t, 'index.html'))];
+  const faltando = new Set();
+  for (const arq of geradas) {
+    if (!existsSync(arq)) continue;
+    const dela = chaves(readFileSync(arq, 'utf8'));
+    for (const k of referencia) if (!dela.has(k)) faltando.add(k);
+  }
+  if (faltando.size) {
+    console.warn(`aviso: blog/index.html tem no <head> tag(s) que as paginas geradas nao tem: ${[...faltando].join(', ')}. Some no template pagina() deste arquivo, ou remova de la.`);
+  }
+}
 
 console.log(`gerado: ${tags.length} página(s) de tag, arquivo, feed.xml e sitemap com ${urls.length} URLs`);
 
