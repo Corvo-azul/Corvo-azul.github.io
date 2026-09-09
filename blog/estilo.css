@@ -146,7 +146,14 @@ body.blog {
 }
 .blog__busca .tag.ativo, .blog__busca .tag:hover { border-color: var(--acento); color: var(--acento); }
 .blog__lista { display: flex; flex-direction: column; gap: 0; }
-.blog__item { padding: 1.6rem 0; border-bottom: 1px solid var(--linha); display: block; }
+.blog__item { padding: 1.6rem 0; border-bottom: 1px solid var(--linha); display: block; position: relative; isolation: isolate; transition: transform .2s var(--ease); }
+/* O card inteiro e o link, entao responde como botao: superficie no hover e no
+   foco, azul ao pressionar. A superficie e um pseudo-elemento atras do conteudo
+   (isolation cria o contexto) para o fio divisor continuar na largura do texto. */
+.blog__item::before { content: ""; position: absolute; inset: 0.35rem -1rem; z-index: -1; border-radius: 12px; background: transparent; transition: background-color .2s; }
+.blog__item:hover::before, .blog__item:focus-visible::before { background: var(--superficie); }
+.blog__item:active { transform: scale(0.992); }
+.blog__item:active::before { background: var(--superficie-azul); }
 .blog__item time { font-family: var(--mono); font-size: 0.78rem; color: var(--texto-fraco); }
 .blog__item h2 { margin: 0.3rem 0 0.4rem; font-size: 1.3rem; }
 .blog__item p { color: var(--texto-fraco); margin: 0; }
@@ -304,12 +311,13 @@ pre.prompt code { font-size: 0.9rem; line-height: 1.65; }
   font-size: clamp(2rem, 4.7vw, 3.3rem); line-height: 1.05; letter-spacing: -0.03em;
   margin: 0.9rem 0 1.1rem; text-wrap: balance;
 }
-/* Tags e "ouvir" na mesma fileira, como ferramentas do artigo e nao como
-   dois blocos empilhados. Ambos sao inline-flex, entao correm na mesma linha. */
-.post__tags { display: inline-flex; margin: 0.2rem 0.8rem 0 0; vertical-align: middle; }
+/* Tags numa fileira e "ouvir" na linha de baixo: sao ferramentas diferentes
+   (navegar por tema x consumir o artigo) e, juntas numa linha, o botao lia
+   como mais uma tag. */
+.post__tags { display: flex; margin: 0.2rem 0 0.9rem; }
 .post__tags a { color: var(--texto-fraco); border-color: var(--linha); transition: color .2s, border-color .2s; }
 .post__tags a:hover { color: var(--acento); border-color: var(--acento); }
-.post__ouvir { vertical-align: middle; margin: 0.2rem 0 0; transition: color .2s, border-color .2s; }
+.post__ouvir { margin: 0 0 1.6rem; transition: color .2s, border-color .2s; }
 
 /* Sumario: lista numerada em mono, sem bolinha e sem card. Em duas colunas
    quando esta no fluxo, para nao empurrar a primeira linha do artigo 330px. */
@@ -430,7 +438,7 @@ article > picture:hover::after { opacity: 1; }
   .progresso-leitura { transition: none; }
   body.blog { transition: none; }
   .post__toc::after, article img, article > picture::after, .copiar, .post__toc a, .post__toc a::before,
-  .post__tags a, .post__ouvir, .post__compartilhar button, .post__compartilhar a { transition: none; }
+  .post__tags a, .post__ouvir, .post__compartilhar button, .post__compartilhar a, .blog__item, .blog__item::before { transition: none; }
 }
 
 .blog__rodape-links { margin-top: 2.5rem; font-family: var(--mono); font-size: 0.82rem; color: var(--texto-fraco); display: flex; gap: 0.7rem; }

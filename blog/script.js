@@ -105,12 +105,29 @@
     if (!botao) return;
     if (!("speechSynthesis" in window)) { botao.hidden = true; return; }
     var falando = false;
+    // A voz padrao do sistema costuma ser a pior pt-BR disponivel (SAPI legado
+    // no Windows). Preferencia: neural/online > nomes conhecidos > qualquer
+    // pt-BR que nao seja "Desktop". O Chrome carrega a lista de forma assincrona,
+    // por isso a escolha acontece na hora do clique, nao no init.
+    function melhorVoz() {
+      var vozes = window.speechSynthesis.getVoices().filter(function (v) { return /^pt[-_]BR/i.test(v.lang); });
+      if (!vozes.length) return null;
+      var ordem = [/natural/i, /google/i, /luciana|francisca|thalita|antonio|camila|vitoria/i, /online/i];
+      for (var i = 0; i < ordem.length; i++) {
+        for (var k = 0; k < vozes.length; k++) if (ordem[i].test(vozes[k].name)) return vozes[k];
+      }
+      for (var m = 0; m < vozes.length; m++) if (!/desktop/i.test(vozes[m].name)) return vozes[m];
+      return vozes[0];
+    }
+    window.speechSynthesis.getVoices();
     botao.addEventListener("click", function () {
       if (falando) { window.speechSynthesis.cancel(); falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; return; }
       var corpo = document.querySelector("[data-post-corpo-pt]:not([hidden])") || document.querySelector("[data-post-corpo-pt]");
       if (!corpo) return;
       var utter = new SpeechSynthesisUtterance(corpo.innerText);
       utter.lang = "pt-BR";
+      var voz = melhorVoz();
+      if (voz) utter.voice = voz;
       utter.onend = function () { falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; };
       window.speechSynthesis.speak(utter);
       falando = true;
