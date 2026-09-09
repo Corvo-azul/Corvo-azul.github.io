@@ -338,18 +338,23 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 @media (max-width: 52rem) { .commits li { grid-template-columns: 6.5rem 1fr; gap: 1rem; } }
 
 /* ---------- FAQ ---------- */
-.faq { max-width: var(--largura); margin: 0 auto; padding: clamp(6rem, 12vh, 10rem) var(--lateral); display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; }
-@media (max-width: 60rem) { .faq { grid-template-columns: 1fr; gap: 2rem; } }
+/* Densidade: era a secao com menos informacao por area da pagina (39 palavras
+   por megapixel). Menos respiro vertical, lista mais larga que o titulo, e cada
+   pergunta numerada em mono, na mesma linguagem da placa do CTA e da trilha do blog. */
+.faq { max-width: var(--largura); margin: 0 auto; padding: clamp(4.5rem, 9vh, 7.5rem) var(--lateral); display: grid; grid-template-columns: 0.85fr 1.55fr; gap: 3rem; }
+@media (max-width: 60rem) { .faq { grid-template-columns: 1fr; gap: 1.5rem; } }
 .faq details { border-top: 1px solid var(--linha); }
 .faq details:last-child { border-bottom: 1px solid var(--linha); }
-.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.5rem 0; font-family: var(--display); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; transition: color 0.3s; }
+.faq__lista { counter-reset: faq; }
+.faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 1rem; padding: 1.2rem 0; font-family: var(--display); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; transition: color 0.3s; }
+.faq summary::before { counter-increment: faq; content: counter(faq, decimal-leading-zero); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--brilho); min-width: 2ch; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary:hover { color: var(--gelo); }
-.faq__mais { position: relative; width: 20px; height: 20px; flex: none; }
+.faq__mais { position: relative; width: 20px; height: 20px; flex: none; margin-left: auto; }
 .faq__mais::before, .faq__mais::after { content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 1.5px; background: var(--brilho); transform: translate(-50%, -50%); transition: transform 0.4s var(--ease); }
 .faq__mais::after { transform: translate(-50%, -50%) rotate(90deg); }
 .faq details[open] .faq__mais::after { transform: translate(-50%, -50%) rotate(0); }
-.faq details p { color: var(--cinza); padding: 0 0 1.5rem; max-width: 52ch; }
+.faq details p { color: var(--cinza); padding: 0 0 1.4rem calc(2ch + 1rem); max-width: 56ch; }
 /* Estados final e inicial da abertura animada. A transicao em si mora no JS,
    que precisa segurar o atributo open: declarada aqui ela nao roda, porque um
    <details> fechado nao tem o conteudo no fluxo para servir de ponto de partida.
@@ -359,17 +364,26 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .faq__corpo > * { overflow: hidden; }
 
 /* ---------- 04 — Contato (da B) ---------- */
-.contato { position: relative; padding: clamp(6rem, 14vh, 11rem) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
+.contato { position: relative; padding: clamp(4.5rem, 10vh, 8rem) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
 .contato::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 70% at 0% 100%, rgba(126,162,228,.22), transparent 70%); mix-blend-mode: screen; }
 .contato > * { position: relative; max-width: var(--largura); margin-left: auto; margin-right: auto; }
-.link-gigante--mail { margin-top: 0.5rem; margin-bottom: 2.5rem; }
-.link-gigante--mail .link-gigante__texto { font-size: clamp(1.6rem, 6vw, 5.6rem); white-space: nowrap; }
-.contato__links { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: space-between; font-family: var(--mono); font-size: 0.85rem; color: var(--cinza); }
-.contato__links a { transition: color 0.3s; }
+/* Duas colunas sobre a mesma regua: o e-mail a esquerda, os links a direita,
+   alinhados pela base. Antes os dois links ficavam sozinhos numa linha de 1280px.
+   O e-mail perde tamanho e aperto de letras (era 800/5.6rem/-0.05em): em 5.6rem o
+   "@" e o "corvoazul" viravam uma massa; 3.4rem/700/-0.02em le como endereco. */
+.contato__corpo { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 0 4rem; align-items: end; }
+.contato__corpo .rotulo { grid-column: 1 / -1; }
+.link-gigante--mail { margin-top: 0.5rem; margin-bottom: 0; }
+.link-gigante--mail .link-gigante__texto { font-size: clamp(1.4rem, 3.6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+.contato__links { display: flex; flex-direction: column; font-family: var(--mono); font-size: 0.85rem; color: var(--cinza); }
+.contato__links a { min-height: 52px; display: flex; align-items: center; border-bottom: 1px solid var(--linha-forte); transition: color 0.3s, border-color 0.3s; }
+.contato__links a:first-child { border-top: 1px solid var(--linha); }
+.contato__links a:hover { border-color: var(--brilho); }
 .contato__links a:hover { color: var(--papel); }
 @media (max-width: 52rem) {
-  .contato__links { flex-direction: column; justify-content: flex-start; gap: 0; }
-  .contato__links a { min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid var(--linha); }
+  .contato__corpo { grid-template-columns: 1fr; }
+  .link-gigante--mail { margin-bottom: 1.25rem; }
+  .contato__links a { min-height: 44px; }
 }
 
 /* ---------- CTA final: a mais decorada ---------- */
