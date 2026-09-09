@@ -409,6 +409,20 @@
     }).catch(function () { alvo.hidden = true; });
   }
 
+  /* ---------- Altura do cabecalho sticky, para o desvio das ancoras ---------- */
+  function initAlturaTopo() {
+    var topo = document.querySelector(".blog__topo");
+    if (!topo) return;
+    function medir() {
+      document.documentElement.style.setProperty("--altura-topo", Math.round(topo.getBoundingClientRect().height) + "px");
+    }
+    medir();
+    // Observa so a barra: a altura muda com a largura da tela e com a troca de
+    // idioma, e nao ha evento de scroll envolvido.
+    if ("ResizeObserver" in window) new ResizeObserver(medir).observe(topo);
+    else window.addEventListener("resize", medir, { passive: true });
+  }
+
   /* ---------- Sumario: destaca a seção atual (a coluna fixa em tela larga) ---------- */
   function initSumarioAtivo() {
     var links = document.querySelectorAll("[data-sumario-lista] a");
@@ -432,7 +446,7 @@
     // passa a ser perder so a peca que quebrou.
     [initTema, initIdioma, initOuvir, initSumario, initCanal, initFiltroTags,
       initBusca, initProgresso, initLupa, initCopiar,
-      initCompartilhar, initRelacionados, initQuiz, initSumarioAtivo
+      initCompartilhar, initRelacionados, initQuiz, initAlturaTopo, initSumarioAtivo
     ].forEach(function (init) {
       try { init(); } catch (e) { if (window.console) console.error("blog: " + init.name + " falhou", e); }
     });

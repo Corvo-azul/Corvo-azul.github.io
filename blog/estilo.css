@@ -52,7 +52,16 @@
 * , *::before, *::after { box-sizing: border-box; }
 /* Acompanha o tema sozinha: os dois tokens ja trocam de valor no escuro. */
 ::selection { background: var(--acento); color: var(--bg); }
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  /* O cabecalho e sticky, entao uma ancora sem desvio joga o titulo para y=0 e
+     ele fica inteiro debaixo da barra: medido, as secoes 1 a 7 do post caiam
+     todas em y=0 com a barra ocupando 69px. A altura da barra nao e constante
+     (97px ate 380, 53px entre 420 e 600, 69px acima de 660, porque os controles
+     encolhem e depois quebram de linha), entao ela vem medida do JS. O valor de
+     reserva cobre a faixa mais comum se o JS nao rodar. */
+  scroll-padding-top: calc(var(--altura-topo, 69px) + 1.25rem);
+}
 body.blog {
   margin: 0; background: var(--bg); color: var(--texto);
   font-family: var(--corpo); font-size: 1.0625rem; line-height: 1.65;
