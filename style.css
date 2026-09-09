@@ -345,6 +345,12 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
    pergunta numerada em mono, na mesma linguagem da placa do CTA e da trilha do blog. */
 .faq { max-width: var(--largura); margin: 0 auto; padding: clamp(4.5rem, 9vh, 7.5rem) var(--lateral); display: grid; grid-template-columns: 0.85fr 1.55fr; gap: 3rem; }
 @media (max-width: 60rem) { .faq { grid-template-columns: 1fr; gap: 1.5rem; } }
+/* O quiz fica na coluna do titulo, que terminava bem antes da lista: alonga a
+   coluna curta e pega quem leu as quatro objecoes e continua indeciso. */
+.faq__quiz { margin-top: 2.5rem; max-width: 34ch; }
+.faq__quiz .rotulo { margin-bottom: 0.6rem; }
+.faq__quiz p:not(.rotulo) { color: var(--cinza); font-size: 0.95rem; line-height: 1.55; }
+.faq__quiz .btn { margin-top: 1rem; }
 .faq details { border-top: 1px solid var(--linha); }
 .faq details:last-child { border-bottom: 1px solid var(--linha); }
 .faq__lista { counter-reset: faq; }
