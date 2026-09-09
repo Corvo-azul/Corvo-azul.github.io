@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="no-js">
 <head>
   <meta charset="UTF-8">
+  <!-- Troca no-js por js antes do primeiro paint: sem isto, [data-reveal]/[data-fade]
+       ficam invisiveis para quem navega sem JavaScript (a cortina de abertura, mais
+       abaixo, resolve o proprio caso com <noscript> porque e removida via JS, nao via CSS). -->
+  <script>document.documentElement.classList.replace('no-js','js');</script>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GHV4D0XHY8"></script>
@@ -87,6 +91,9 @@
     @keyframes abrirTraco{to{stroke-dashoffset:0}}
     @media (prefers-reduced-motion:reduce){.abertura{display:none}}
   </style>
+  <!-- Sem JS o script que tira a cortina (mais abaixo, no <body>) nunca roda,
+       e position:fixed + z-index:9999 cobririam a pagina inteira para sempre. -->
+  <noscript><style>.abertura{display:none}</style></noscript>
 </head>
 <body>
   <!-- Servida no HTML, não injetada: injetar deixaria o hero aparecer antes de ser coberto. -->

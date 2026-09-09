@@ -478,7 +478,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .final__titulo .linha { display: block; }
 .final__titulo .word { overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .final__titulo .char { display: inline-block; will-change: transform; }
-[data-final] { opacity: 0; }
+.js [data-final] { opacity: 0; }
 
 /* ---------- CTA final: lente + placa em 3D ----------
    Troca os lacos ambientes (aneis, botao respirando) por movimento causado:
@@ -618,14 +618,18 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   .rodape small { padding-top: 0.5rem; }
 }
 
-/* ---------- Estados de animação ---------- */
-[data-reveal] { opacity: 0; transform: translateY(32px); will-change: transform, opacity; }
-[data-reveal="right"] { transform: translateX(40px); }
-[data-fade] { opacity: 0; }
+/* ---------- Estados de animação ----------
+   Escopadas a .js: sem JavaScript o GSAP nunca roda para tirar o opacity:0,
+   e o visitante ficava com a pagina em branco (so 19 dos ~80 elementos de
+   texto ficavam visiveis). A classe .js entra por script inline no <head>
+   (ver index.html), no mesmo espirito do bloco reduced-motion abaixo. */
+.js [data-reveal] { opacity: 0; transform: translateY(32px); will-change: transform, opacity; }
+.js [data-reveal="right"] { transform: translateX(40px); }
+.js [data-fade] { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
-  [data-reveal], [data-fade], [data-final] { opacity: 1; transform: none; }
+  [data-reveal], [data-fade], [data-final] { opacity: 1 !important; transform: none !important; }
   .hero-corvo::after, .final-corvo::after { transform: none; opacity: 0.85; }
   .final__glow { opacity: 0.9; }
   .final__lente, .final__mira, .placa__luz { display: none; }
