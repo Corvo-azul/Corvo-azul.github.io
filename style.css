@@ -17,7 +17,19 @@
   --azul-corvo: #2E5AAC;
   --cinza: #8E98A8;
   --papel: #EDE9E1;
-  --cobre: #9C6A3F;
+  /* [09/09] Era #9C6A3F, que nao e o cobre da marca. A identidade e as instrucoes
+     do projeto dizem #B06A3B; o site publicava uma cor propria ha semanas. */
+  --cobre: #B06A3B;
+
+  /* [09/09] Ritmo vertical entre secoes. Antes havia oito valores sem razao comum
+     (0, 72, 81, 90, 96, 108, 128, 198): 81 e 90 eram saida de clamp(), nao numero
+     escolhido, e o crescendo que dava peso ao CTA final estava invertido no meio
+     (108 -> 81 -> 90 -> 198). Agora sao quatro passos de UM multiplicador, 6vh:
+     0,5x / 1x / 1,25x / 2x. Em 900px de altura da 54 / 108 / 135 / 216. */
+  --ritmo-meio: clamp(3rem, 6vh, 5rem);
+  --ritmo: clamp(6rem, 12vh, 10rem);
+  --ritmo-alto: clamp(7.5rem, 15vh, 12.5rem);
+  --ritmo-final: clamp(12rem, 24vh, 20rem);
   --linha: rgba(185, 204, 240, 0.10);
   --linha-forte: rgba(185, 204, 240, 0.22);
 
@@ -72,7 +84,17 @@ p { margin: 0; }
 .nav__links a::after { content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%; background: var(--gelo); transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease); }
 .nav__links a:hover, .nav__links a.ativo { color: var(--papel); }
 .nav__links a:hover::after, .nav__links a.ativo::after { transform: scaleX(1); transform-origin: left; }
-.nav__cta { font-size: 0.9rem; font-weight: 500; padding: 0.55rem 1rem; border: 1px solid var(--linha); border-radius: 999px; transition: border-color 0.3s, background 0.3s; }
+.nav__cta { font-size: 0.9rem; font-weight: 500; padding: 0.55rem 1rem; border: 1px solid var(--linha); border-radius: 999px; transition: border-color 0.3s, background 0.3s, color 0.3s, text-shadow 0.3s; }
+
+/* Antes de rolar a barra e transparente e os itens ficam direto sobre o video do
+   hero, que e claro e se mexe: --cinza sobre imagem em movimento nao le. Ate a
+   barra ganhar fundo (.rolou), os itens sobem para --papel com uma sombra curta que
+   os separa de qualquer quadro, e a borda das pilulas ganha corpo. Depois de rolar,
+   volta exatamente ao que era hoje -- a transicao de cor ja existia. */
+.nav:not(.rolou) .nav__links a,
+.nav:not(.rolou) .nav__cta { color: var(--papel); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55); }
+.nav:not(.rolou) .nav__cta { border-color: rgba(237, 233, 225, 0.45); }
+.nav:not(.rolou) .nav__marca { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55); }
 .nav__cta:hover { border-color: var(--brilho); background: rgba(108, 155, 234, 0.08); }
 .nav__menu { display: none; margin-left: auto; width: 44px; height: 44px; background: none; border: 0; padding: 0; position: relative; cursor: pointer; }
 .nav__menu span { position: absolute; left: 10px; right: 10px; top: 21px; height: 1.5px; background: var(--papel); transition: transform 0.4s var(--ease); }
@@ -147,7 +169,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .hero.sem-foto .sheen { display: block; }
 .sheen--1 { width: 60vw; height: 60vw; max-width: 900px; max-height: 900px; right: -12vw; top: -18vw; background: radial-gradient(closest-side, rgba(43,76,140,.55), rgba(20,31,56,.25) 55%, transparent 72%); animation: derivar1 18s ease-in-out infinite alternate; }
 .sheen--2 { width: 34vw; height: 34vw; max-width: 520px; max-height: 520px; right: 8vw; top: 12vh; background: radial-gradient(closest-side, rgba(108,155,234,.42), rgba(108,155,234,.08) 55%, transparent 72%); animation: derivar2 14s ease-in-out infinite alternate; }
-.sheen--cobre { width: 28vw; height: 28vw; max-width: 380px; max-height: 380px; left: -8vw; bottom: -10vw; background: radial-gradient(closest-side, rgba(156,106,63,.28), transparent 70%); animation: derivar1 22s ease-in-out infinite alternate-reverse; }
+.sheen--cobre { width: 28vw; height: 28vw; max-width: 380px; max-height: 380px; left: -8vw; bottom: -10vw; background: radial-gradient(closest-side, rgba(176,106,59,.28), transparent 70%); animation: derivar1 22s ease-in-out infinite alternate-reverse; }
 @keyframes derivar1 { from { transform: translate(0,0) scale(1); } to { transform: translate(-6%, 8%) scale(1.08); } }
 @keyframes derivar2 { from { transform: translate(0,0) scale(1); } to { transform: translate(10%, -6%) scale(0.94); } }
 .penas {
@@ -210,7 +232,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .stats { position: relative; border-top: 1px solid var(--linha); border-bottom: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
 .stats::before {
   content: ""; position: absolute; inset: -40% -10%; pointer-events: none;
-  background: radial-gradient(35% 60% at 12% 50%, rgba(126,162,228,.35), transparent 70%), radial-gradient(30% 60% at 88% 50%, rgba(156,106,63,.18), transparent 70%);
+  background: radial-gradient(35% 60% at 12% 50%, rgba(126,162,228,.35), transparent 70%), radial-gradient(30% 60% at 88% 50%, rgba(176,106,59,.18), transparent 70%);
   mix-blend-mode: screen; filter: blur(30px);
 }
 .stats ul { position: relative; list-style: none; margin: 0 auto; padding: 0 var(--lateral); max-width: var(--largura); display: grid; grid-template-columns: repeat(4, 1fr); }
@@ -222,7 +244,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 
 /* ---------- Split (O que é + terminal 1.4x) ---------- */
 .split {
-  max-width: var(--largura); margin: 0 auto; padding: clamp(6rem, 12vh, 10rem) var(--lateral);
+  max-width: var(--largura); margin: 0 auto; padding: var(--ritmo) var(--lateral);
   display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 4rem; align-items: center;
 }
 @media (max-width: 60rem) { .split { grid-template-columns: 1fr; gap: 3rem; } }
@@ -231,7 +253,10 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
      Quem anima e o CSS: sem biblioteca, sem nome global. */
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.5s var(--ease);
-  position: relative; background: #0A0D13; border: 1px solid var(--linha-forte); border-radius: 14px; overflow: hidden; transform-style: preserve-3d;
+  position: relative; background: #0A0D13; /* 16px, nao 14: o raio segue o tamanho da superficie, e este cartao e grande como
+   o .eixo__visual e a .final__placa. Havia 12, 14 e 16 no mesmo site, indistinguiveis
+   a olho -- agora sao dois passos: 12 para faixa pequena, 16 para cartao. */
+  border: 1px solid var(--linha-forte); border-radius: 16px; overflow: hidden; transform-style: preserve-3d;
   box-shadow: 0 60px 120px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(0,0,0,.4), 0 0 160px -40px rgba(43,76,140,.55);
 }
 .terminal::after { content: ""; position: absolute; inset: -30%; pointer-events: none; background: radial-gradient(40% 40% at 85% 0%, rgba(126,162,228,.16), transparent 70%); mix-blend-mode: screen; }
@@ -253,7 +278,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 }
 
 /* ---------- Eixos ---------- */
-.eixos { max-width: var(--largura); margin: 0 auto; padding: clamp(4rem, 8vh, 6rem) var(--lateral) clamp(6rem, 12vh, 10rem); }
+.eixos { max-width: var(--largura); margin: 0 auto; padding: var(--ritmo-meio) var(--lateral) var(--ritmo); }
 .eixos__cabeca { max-width: 40rem; margin-bottom: clamp(3rem, 8vh, 6rem); }
 .eixo { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding: clamp(2.5rem, 6vh, 4rem) 0; border-top: 1px solid var(--linha); }
 .eixo--inv .eixo__visual { order: 2; }
@@ -283,7 +308,9 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .eixo__glifo .olho { stroke: var(--gelo); stroke-width: 1.4; }
 .eixo__glifo .barba { stroke: var(--brilho); stroke-width: 1; opacity: 0.7; }
 .eixo__glifo .motivo { stroke: var(--gelo); stroke-width: 1.8; }
-.eixo__texto p { color: var(--cinza); margin-top: 1rem; max-width: 42ch; font-size: 1.05rem; }
+/* Sem font-size proprio: 1.05rem (16,8px) contra 1.0625rem (17px) do corpo e uma
+   diferenca que ninguem enxerga e que duplica a declaracao. Herda. */
+.eixo__texto p { color: var(--cinza); margin-top: 1rem; max-width: 42ch; }
 .tags { list-style: none; margin: 1.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tags li { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; padding: 0.35rem 0.7rem; border: 1px solid var(--linha); border-radius: 999px; color: var(--cinza); }
 @media (max-width: 60rem) { .eixo { grid-template-columns: 1fr; } .eixo--inv .eixo__visual { order: 0; } }
@@ -327,15 +354,27 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .vivo__repos a { color: var(--papel); font-weight: 500; border-bottom: 1px solid var(--linha-forte); transition: border-color 0.3s, color 0.3s; }
 .vivo__repos a:hover { color: var(--gelo); border-color: var(--brilho); }
 .vivo__repos .desc { display: block; font-size: 0.9rem; }
-.vivo__repos time { font-family: var(--mono); font-size: 0.75rem; color: var(--brilho); white-space: nowrap; }
+/* 0.8rem para bater com .commits time: sao dois carimbos de data na MESMA secao,
+   e estavam em tamanhos diferentes (12 e 12,8px). */
+.vivo__repos time { font-family: var(--mono); font-size: 0.8rem; color: var(--brilho); white-space: nowrap; }
 
 .commits { list-style: none; margin: 0; padding: 0; }
-.commits li { display: grid; grid-template-columns: 8rem 1fr; gap: 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--linha); align-items: baseline; transition: background 0.3s, padding-left 0.4s var(--ease); }
+/* A segunda coluna era 1fr: 984px em 1440, ~148 caracteres por linha se a mensagem
+   crescer -- o dobro da faixa confortavel, e a mesma metrica que o blog ja resolveu
+   em 75. Capada em 46rem (~68 caracteres). A regua da linha continua inteira porque
+   ela e a estrutura da lista, nao a caixa do texto. */
+.commits li { display: grid; grid-template-columns: 8rem minmax(0, 46rem); gap: 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--linha); align-items: baseline; transition: background 0.3s, padding-left 0.4s var(--ease); }
 .commits li:hover { background: rgba(108,155,234,.04); padding-left: 0.75rem; }
 .commits time { font-family: var(--mono); font-size: 0.8rem; color: var(--brilho); }
 .commits .msg { color: var(--cinza); }
 .commits .msg b { color: var(--papel); font-weight: 600; }
-.commits .pendente time { color: var(--cobre); }
+/* [09/09] Era var(--cobre). Cobre como TEXTO a 12,8px dava 4,06:1 sobre este fundo,
+   abaixo dos 4,5 que a WCAG AA exige -- e a propria tabela de paleta do projeto ja
+   registrava que cobre reprova como texto (3,92 sobre grafite). A distincao entre
+   feito e pendente continua sendo carregada pelo texto ("em producao", "em breve")
+   e pelo opacity da linha de baixo, que nao dependem de cor. O cobre segue vivo nos
+   dois gradientes decorativos, onde contraste de texto nao se aplica. */
+.commits .pendente time { color: var(--cinza); }
 .commits .pendente .msg { opacity: 0.75; }
 @media (max-width: 52rem) { .commits li { grid-template-columns: 6.5rem 1fr; gap: 1rem; } }
 
@@ -343,7 +382,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 /* Densidade: era a secao com menos informacao por area da pagina (39 palavras
    por megapixel). Menos respiro vertical, lista mais larga que o titulo, e cada
    pergunta numerada em mono, na mesma linguagem da placa do CTA e da trilha do blog. */
-.faq { max-width: var(--largura); margin: 0 auto; padding: clamp(4.5rem, 9vh, 7.5rem) var(--lateral); display: grid; grid-template-columns: 0.85fr 1.55fr; gap: 3rem; }
+.faq { max-width: var(--largura); margin: 0 auto; padding: var(--ritmo) var(--lateral); display: grid; grid-template-columns: 0.85fr 1.55fr; gap: 3rem; }
 @media (max-width: 60rem) { .faq { grid-template-columns: 1fr; gap: 1.5rem; } }
 /* O quiz fica na coluna do titulo, que terminava bem antes da lista: alonga a
    coluna curta e pega quem leu as quatro objecoes e continua indeciso. */
@@ -381,7 +420,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .faq__corpo > * { overflow: hidden; }
 
 /* ---------- 04 — Contato (da B) ---------- */
-.contato { position: relative; padding: clamp(4.5rem, 10vh, 8rem) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
+.contato { position: relative; padding: var(--ritmo-alto) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
 .contato::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 70% at 0% 100%, rgba(126,162,228,.22), transparent 70%); mix-blend-mode: screen; }
 .contato > * { position: relative; max-width: var(--largura); margin-left: auto; margin-right: auto; }
 /* Duas colunas sobre a mesma regua: o e-mail a esquerda, os links a direita,
@@ -402,13 +441,17 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .contato__links a:hover { color: var(--papel); }
 @media (max-width: 52rem) {
   .contato__corpo { grid-template-columns: 1fr; }
-  .link-gigante--mail { margin-bottom: 1.25rem; }
+  /* Abaixo de 860px o e-mail encolhe para ~255px e a base dele virava um toco ao
+     lado da primeira regua da lista de destinos, que tem 350px -- duas linhas
+     paralelas a 20px uma da outra, com larguras e opacidades diferentes, fazendo o
+     mesmo trabalho. Fica so a da lista. */
+  .link-gigante--mail { margin-bottom: 1.25rem; border-bottom: 0; }
   .contato__links a { min-height: 44px; }
 }
 
 /* ---------- CTA final: a mais decorada ---------- */
 .final {
-  position: relative; text-align: center; padding: clamp(9rem, 22vh, 16rem) var(--lateral);
+  position: relative; text-align: center; padding: var(--ritmo-final) var(--lateral);
   overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: center; gap: 2.25rem;
   border-top: 1px solid var(--linha);
 }
@@ -424,7 +467,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .final-corvo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, var(--grafite) 0%, rgba(7,9,13,.55) 45%, var(--grafite) 100%); }
 .final__glow { position: absolute; left: 50%; top: 50%; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; transform: translate(-50%, -50%); will-change: transform, opacity; }
 .final__glow--azul { width: 70vw; height: 70vw; max-width: 900px; max-height: 900px; background: radial-gradient(closest-side, rgba(126,162,228,.55), rgba(46,90,172,.25) 45%, transparent 70%); animation: pulsoAzul 6s ease-in-out infinite; }
-.final__glow--cobre { width: 40vw; height: 40vw; max-width: 520px; max-height: 520px; margin-left: 14vw; margin-top: 10vh; background: radial-gradient(closest-side, rgba(156,106,63,.45), transparent 70%); animation: pulsoCobre 8s ease-in-out infinite; }
+.final__glow--cobre { width: 40vw; height: 40vw; max-width: 520px; max-height: 520px; margin-left: 14vw; margin-top: 10vh; background: radial-gradient(closest-side, rgba(176,106,59,.45), transparent 70%); animation: pulsoCobre 8s ease-in-out infinite; }
 @keyframes pulsoAzul { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; } 50% { transform: translate(-48%, -52%) scale(1.12); opacity: 1; } }
 @keyframes pulsoCobre { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; } 50% { transform: translate(-56%, -44%) scale(1.15); opacity: 1; } }
 .final__penas { position: absolute; inset: 0; opacity: 0.5; background-image: repeating-linear-gradient(112deg, rgba(185,204,240,.14) 0 1px, transparent 1px 9px); -webkit-mask-image: radial-gradient(50% 60% at 50% 50%, #000 10%, transparent 70%); mask-image: radial-gradient(50% 60% at 50% 50%, #000 10%, transparent 70%); }
