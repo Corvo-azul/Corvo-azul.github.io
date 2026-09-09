@@ -455,7 +455,8 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   transform-style: preserve-3d; transform: rotateX(var(--incl-x, 0deg)) rotateY(var(--incl-y, 0deg));
   will-change: transform;
 }
-.final__grupo > .rotulo { transform: translateZ(12px); }
+/* --gelo em vez de --brilho so aqui: sobre a foto do corvo o azul media 3,99:1. */
+.final__grupo > .rotulo { transform: translateZ(12px); color: var(--gelo); }
 .final__placa .placa__marca { transform: translateZ(16px); }
 /* O Z do botao vai no wrapper, nao nele: o GSAP escreve transform inline no
    proprio <a> durante a entrada e apagaria o translateZ. */
