@@ -223,7 +223,7 @@ body.blog {
 .blog__campo::placeholder { color: var(--texto-fraco); }
 
 /* 6. Prints ampliáveis: tutorial vive de detalhe de tela. */
-.post__corpo img, article img { cursor: zoom-in; border: 1px solid var(--linha); }
+.post__corpo img, article img { cursor: zoom-in; border: 1px solid var(--linha-forte); }
 .lupa {
   position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
   background: rgba(7, 9, 13, 0.92); padding: 2rem; cursor: zoom-out;
@@ -250,16 +250,16 @@ pre.prompt {
   border: 1px solid var(--linha-azul);
   border-left: 3px solid var(--acento);
   border-radius: 10px;
-  /* Folga no topo para o botão copiar, que fica sobreposto no canto e antes
-     cobria a primeira linha do prompt. */
-  padding: 2.6rem 1.2rem 1.2rem;
+  padding: 1.15rem 1.25rem 1.3rem;
   margin: 1.5rem 0;
+  /* Prosa, nao codigo alinhado: com white-space: pre as linhas longas sumiam
+     pela direita numa coluna de 560px e o prompt so se lia rolando dentro do
+     bloco. pre-wrap quebra na tela e preserva as quebras do original; o
+     innerText que o botao copia continua com as quebras originais apenas. */
+  white-space: pre-wrap; overflow-wrap: anywhere;
 }
-pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
-/* O botão copiar fica sobre o bloco, então acompanha o fundo dele. */
-.bloco-codigo:has(pre.prompt) .copiar { background: var(--superficie-azul); border-color: var(--linha-azul); }
+pre.prompt code { font-size: 0.9rem; line-height: 1.65; }
 .copiar {
-  position: absolute; top: 0.5rem; right: 0.5rem;
   font-family: var(--mono); font-size: 0.72rem; padding: 0.3rem 0.6rem;
   background: var(--superficie); color: var(--texto-fraco);
   border: 1px solid var(--linha-forte); border-radius: 6px; cursor: pointer;
@@ -293,6 +293,99 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
 }
 [data-theme-resolvido="escuro"] .post__quiz a { color: #07090D; }
 
+/* ---------- Artigo: conceito "Trilha" ----------
+   Tudo aqui e escopado ao post (.post__*, article, .post__meta + h1): a home do
+   blog, o arquivo e as paginas de tag nao tem esses elementos, e o diff de pixel
+   delas antes/depois e o que prova isso. Nada de conteudo muda; so a forma. */
+
+/* Topo: a meta vira uma linha de metadado em mono, e o h1 passa a dominar. */
+.post__meta { gap: 0.45rem 0.6rem; font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; margin: 0.25rem 0 0; }
+.post__meta + h1 {
+  font-size: clamp(2rem, 4.7vw, 3.3rem); line-height: 1.05; letter-spacing: -0.03em;
+  margin: 0.9rem 0 1.1rem; text-wrap: balance;
+}
+/* Tags e "ouvir" na mesma fileira, como ferramentas do artigo e nao como
+   dois blocos empilhados. Ambos sao inline-flex, entao correm na mesma linha. */
+.post__tags { display: inline-flex; margin: 0.2rem 0.8rem 0 0; vertical-align: middle; }
+.post__tags a { color: var(--texto-fraco); border-color: var(--linha); transition: color .2s, border-color .2s; }
+.post__tags a:hover { color: var(--acento); border-color: var(--acento); }
+.post__ouvir { vertical-align: middle; margin: 0.2rem 0 0; transition: color .2s, border-color .2s; }
+
+/* Sumario: lista numerada em mono, sem bolinha e sem card. Em duas colunas
+   quando esta no fluxo, para nao empurrar a primeira linha do artigo 330px. */
+.post__toc {
+  border: 0; border-top: 1px solid var(--linha); border-bottom: 1px solid var(--linha);
+  border-radius: 0; padding: 1rem 0 1.1rem; margin: 2rem 0 2.5rem; background: transparent;
+}
+.post__toc ul { list-style: none; padding: 0; margin: 0.7rem 0 0; counter-reset: sec; columns: 2; column-gap: 2rem; }
+.post__toc li { counter-increment: sec; break-inside: avoid; }
+.post__toc a { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.28rem 0; color: var(--texto); transition: color .2s; }
+.post__toc a::before { content: counter(sec, decimal-leading-zero); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--texto-fraco); flex: none; transition: color .2s; }
+.post__toc a:hover, .post__toc a:hover::before { color: var(--acento); }
+
+/* Ritmo do corpo: mais ar antes de cada secao; links visiveis se um dia houver. */
+article h2 { margin: 2.6rem 0 0.9rem; }
+article a { color: var(--acento); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--linha-azul); }
+
+/* Avisos. A "Nota" de abertura e um aparte: barra a esquerda, tom mais baixo.
+   Os tres de "O que eu nao pularia" pesam mais que o resto do post, e o texto
+   diz isso — cada um ganha um marcador quadrado, nao uma moldura. */
+.post__aviso { border-left: 2px solid var(--acento); padding: 0.15rem 0 0.15rem 1.1rem; margin: 0 0 1.75rem; }
+.post__aviso p { margin: 0; color: var(--texto-fraco); font-size: 0.97rem; }
+.post__avisos { margin: 1.25rem 0 1.9rem; }
+.post__avisos p { position: relative; padding-left: 1.15rem; margin: 0 0 0.9rem; }
+.post__avisos p:last-child { margin-bottom: 0; }
+.post__avisos p::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; background: var(--acento); }
+
+/* Prints: tratados como evidencia, nao como ilustracao. Bloco, respiro,
+   moldura e um sinal de ampliar que so aparece ao passar o mouse. O icone e
+   SVG embutido, e nao um glifo de texto, porque nenhuma fonte do site tem
+   esse desenho e ele cairia na fonte do sistema. */
+article > picture { display: block; position: relative; margin: 1.75rem 0 2rem; border-radius: 12px; }
+article img {
+  border-radius: 12px;
+  box-shadow: 0 24px 48px -32px rgba(0, 0, 0, 0.7);
+  transition: border-color .25s, box-shadow .25s;
+}
+[data-theme-resolvido="claro"] article img { box-shadow: 0 18px 40px -28px rgba(26, 31, 38, 0.35); }
+article > picture:hover img { border-color: var(--acento); }
+article > picture::after {
+  content: ""; position: absolute; right: 0.7rem; top: 0.7rem; width: 28px; height: 28px; border-radius: 8px;
+  background: rgba(7, 9, 13, 0.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23EDE9E1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E") center / 14px no-repeat;
+  opacity: 0; transition: opacity .25s; pointer-events: none;
+}
+article > picture:hover::after { opacity: 1; }
+
+/* Prompt: cabecalho proprio em vez de botao sobreposto. O rotulo diz o que e o
+   bloco, o botao copiar mora ali, e o <pre> perde a folga artificial no topo. */
+.bloco-codigo { position: relative; margin: 1.75rem 0 2rem; }
+.bloco-codigo__barra {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.55rem 0.75rem 0.55rem 1.25rem;
+  border: 1px solid var(--linha-forte); border-bottom: 0; border-radius: 10px 10px 0 0;
+  background: var(--superficie);
+}
+.bloco-codigo--prompt .bloco-codigo__barra { background: var(--superficie-azul); border-color: var(--linha-azul); border-left: 3px solid var(--acento); }
+.bloco-codigo__rotulo { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--texto-fraco); }
+.bloco-codigo pre { margin: 0; border-radius: 0 0 10px 10px; }
+
+/* Encerramento: regua com a marca de fim (o quadrado, convencao editorial), a
+   fileira de compartilhar, e o voltar ao topo encostado a direita. */
+.post__compartilhar { position: relative; margin: 3.5rem 0 0; padding-top: 1.6rem; border-top: 1px solid var(--linha); }
+.post__compartilhar::before { content: ""; position: absolute; left: 0; top: -4px; width: 7px; height: 7px; background: var(--acento); }
+.post__compartilhar button, .post__compartilhar a { transition: color .2s, border-color .2s; }
+.voltar-topo { display: block; width: fit-content; margin: 1.4rem 0 0 auto; }
+
+/* Foco de teclado visivel em tudo que e clicavel no artigo. */
+.post__toc a:focus-visible, .post__tags a:focus-visible, .copiar:focus-visible,
+.post__compartilhar :is(button, a):focus-visible, .voltar-topo:focus-visible, .post__ouvir:focus-visible {
+  outline: 2px solid var(--acento); outline-offset: 2px; border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .post__toc ul { columns: 1; }
+}
+
 /* 9. Sumário como coluna fixa em tela larga; lista simples e sempre aberta no resto. */
 /* O sumario so vira coluna fixa quando a margem realmente comporta os 15rem dele.
    Em 1180 ele passava por cima do texto (10px de sobreposicao medidos); agora o
@@ -307,8 +400,16 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
     left: max(1.5rem, min(calc(50vw - var(--largura-post) / 2 - 17rem), 3rem));
     width: 15rem; max-height: 70vh; overflow-y: auto;
     margin: 0; z-index: 10;
+    border: 0; padding: 0.2rem 0 0.2rem 1.25rem;
   }
-  .post__toc a.ativo { color: var(--acento); font-weight: 600; }
+  .post__toc ul { columns: 1; }
+  /* A trilha: uma linha de 1px e, por cima, a mesma linha em acento escalada
+     pelo progresso de leitura que initProgresso ja calcula (--lido). */
+  .post__toc::before, .post__toc::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; }
+  .post__toc::before { background: var(--linha-forte); }
+  .post__toc::after { background: var(--acento); transform-origin: top; transform: scaleY(var(--lido, 0)); transition: transform .25s linear; }
+  .post__toc a.ativo, .post__toc a.ativo::before { color: var(--acento); }
+  .post__toc a.ativo { font-weight: 600; }
 
 }
 
@@ -328,6 +429,8 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) {
   .progresso-leitura { transition: none; }
   body.blog { transition: none; }
+  .post__toc::after, article img, article > picture::after, .copiar, .post__toc a, .post__toc a::before,
+  .post__tags a, .post__ouvir, .post__compartilhar button, .post__compartilhar a { transition: none; }
 }
 
 .blog__rodape-links { margin-top: 2.5rem; font-family: var(--mono); font-size: 0.82rem; color: var(--texto-fraco); display: flex; gap: 0.7rem; }
@@ -352,5 +455,6 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
   .post__toc a {
     display: flex; align-items: center; min-height: 32px;
   }
-  .voltar-topo { min-height: 44px; display: inline-flex; align-items: center; }
+  /* flex, nao inline-flex: o margin-left:auto que o encosta a direita so age em caixa de bloco */
+  .voltar-topo { min-height: 44px; display: flex; align-items: center; }
 }

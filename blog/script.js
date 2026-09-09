@@ -277,6 +277,8 @@
         lido = rolavel > 0 ? Math.min(1, Math.max(0, window.scrollY / rolavel)) : 0;
       }
       barra.style.width = (lido * 100).toFixed(1) + "%";
+      // A trilha ao lado do sumario (tela larga) le o mesmo numero; nenhum listener a mais.
+      document.documentElement.style.setProperty("--lido", lido.toFixed(4));
     }
     window.addEventListener("scroll", atualizar, { passive: true });
     window.addEventListener("resize", atualizar);
@@ -312,8 +314,20 @@
     document.querySelectorAll("article pre").forEach(function (pre) {
       if (pre.parentElement.classList.contains("bloco-codigo")) return;
       var caixa = document.createElement("div");
-      caixa.className = "bloco-codigo";
+      caixa.className = "bloco-codigo" + (pre.classList.contains("prompt") ? " bloco-codigo--prompt" : "");
       pre.parentNode.insertBefore(caixa, pre);
+      // Cabecalho: rotulo do que e o bloco + botao copiar. Antes o botao ficava
+      // sobreposto ao <pre>, que precisava de folga artificial no topo.
+      var barra = document.createElement("div");
+      barra.className = "bloco-codigo__barra";
+      var rotulo = document.createElement("span");
+      rotulo.className = "bloco-codigo__rotulo";
+      var ehPrompt = pre.classList.contains("prompt");
+      rotulo.setAttribute("data-i18n-pt", ehPrompt ? "Prompt" : "Código");
+      rotulo.setAttribute("data-i18n-en", ehPrompt ? "Prompt" : "Code");
+      rotulo.textContent = ehPrompt ? "Prompt" : (ehEn() ? "Code" : "Código");
+      barra.appendChild(rotulo);
+      caixa.appendChild(barra);
       caixa.appendChild(pre);
       var b = document.createElement("button");
       b.className = "copiar"; b.type = "button";
@@ -328,7 +342,7 @@
           setTimeout(function () { b.textContent = ehEn() ? "copy" : "copiar"; }, 1600);
         }).catch(function () { b.textContent = ehEn() ? "error" : "erro"; });
       });
-      caixa.appendChild(b);
+      barra.appendChild(b);
     });
   }
 
@@ -423,21 +437,37 @@
     else window.addEventListener("resize", medir, { passive: true });
   }
 
-  /* ---------- Sumario: destaca a seção atual (a coluna fixa em tela larga) ---------- */
+  /* ---------- Sumario: destaca a secao atual ----------
+     Antes era um IntersectionObserver com uma faixa entre 20% e 30% da tela.
+     Falhava nas ultimas secoes: perto do fim a pagina nao rola o bastante para
+     um titulo entrar na faixa, e o ativo ficava travado na secao anterior
+     (medido: clicar em "O que eu nao pularia" deixava "Passo 2" aceso).
+     Agora o ativo e o ultimo titulo acima da linha de leitura e, no fim da
+     pagina, o ultimo titulo. Roda no scroll com rAF; sao nove elementos. */
   function initSumarioAtivo() {
-    var links = document.querySelectorAll("[data-sumario-lista] a");
-    if (!links.length || !("IntersectionObserver" in window)) return;
-    var mapa = {};
-    links.forEach(function (a) { var id = a.getAttribute("href").slice(1); if (id) mapa[id] = a; });
-    var obs = new IntersectionObserver(function (ents) {
-      ents.forEach(function (e) {
-        if (e.isIntersecting) {
-          links.forEach(function (a) { a.classList.remove("ativo"); });
-          if (mapa[e.target.id]) mapa[e.target.id].classList.add("ativo");
-        }
-      });
-    }, { rootMargin: "-20% 0px -70% 0px" });
-    Object.keys(mapa).forEach(function (id) { var el = document.getElementById(id); if (el) obs.observe(el); });
+    var links = [].slice.call(document.querySelectorAll("[data-sumario-lista] a"));
+    if (!links.length) return;
+    var pares = links.map(function (a) { return { a: a, h: document.getElementById(a.getAttribute("href").slice(1)) }; })
+      .filter(function (par) { return par.h; });
+    if (!pares.length) return;
+    var topo = document.querySelector(".blog__topo");
+    var atual = null, pendente = false;
+    function calcular() {
+      pendente = false;
+      var linha = (topo ? topo.getBoundingClientRect().bottom : 0) + 24;
+      var noFim = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      var alvo = null;
+      for (var i = 0; i < pares.length; i++) { if (pares[i].h.getBoundingClientRect().top <= linha) alvo = pares[i]; }
+      if (noFim) alvo = pares[pares.length - 1];
+      if (alvo === atual) return;
+      if (atual) atual.a.classList.remove("ativo");
+      if (alvo) alvo.a.classList.add("ativo");
+      atual = alvo;
+    }
+    function pedir() { if (!pendente) { pendente = true; requestAnimationFrame(calcular); } }
+    window.addEventListener("scroll", pedir, { passive: true });
+    window.addEventListener("resize", pedir, { passive: true });
+    calcular();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
