@@ -9,8 +9,8 @@
     "url": "",
     "titulo": "Qual ferramenta de IA serve pro seu caso?",
     "titulo_en": "Which AI tool fits your case?",
-    "texto": "Quatro perguntas, uma aberta e o seu e-mail antes do resultado. A resposta vem com o porquê, não só o nome da ferramenta.",
-    "texto_en": "Four questions, one open-ended, and your email before the result. You get the reasoning, not just a tool name.",
+    "texto": "Quatro de marcar e uma aberta, e o seu e-mail antes do resultado. A resposta vem com o porquê, não só o nome da ferramenta.",
+    "texto_en": "Four multiple-choice and one open-ended, plus your email before the result. You get the reasoning, not just a tool name.",
     "botao": "Fazer o quiz",
     "botao_en": "Take the quiz"
   }

@@ -291,6 +291,12 @@ if (orfaos.length) {
   for (const arq of arquivos) {
     if (!existsSync(arq)) continue;
     const texto = readFileSync(arq, 'utf8')
+      // Comentario HTML sai ANTES das tags: `<[^>]+>` quebraria um comentario em
+      // pedacos no primeiro `>` que houvesse dentro dele e deixaria o miolo passar
+      // como texto. Sem isto o guarda acusava o `~` de dois comentarios do
+      // index.html, que nao renderizam em lugar nenhum -- falso positivo provado
+      // pelo agente local: tirando o unico `~` visivel, o aviso continuava.
+      .replace(/<!--[\s\S]*?-->/g, ' ')
       .replace(/<script[\s\S]*?<\/script>/g, '')
       .replace(/<style[\s\S]*?<\/style>/g, '')
       .replace(/<[^>]+>/g, ' ');
