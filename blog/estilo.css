@@ -1,4 +1,4 @@
-/* Corvo Azul — Blog. Reaproveita tokens do site (grafite/papel/azul-corvo/azul-claro/cobre).
+/* Corvo Azul — Blog. Reaproveita tokens do site (grafite/papel/azul-corvo/azul-claro).
    Tema claro é NOVO (o site principal só tem escuro) — papel como fundo, grafite como texto,
    azul-corvo só em acento (link, tag ativa), nunca em texto corrido (contraste baixo sobre papel). */
 
@@ -13,7 +13,6 @@
   --texto-fraco: #5B6270;
   --acento: #2E5AAC;
   --acento-hover: #234785;
-  --cobre: #9C6A3F;
   --linha: rgba(26, 31, 38, 0.12);
   --linha-forte: rgba(26, 31, 38, 0.22);
   /* Superfície azulada para o bloco de prompt. No escuro é o --ca-navy do manual;
@@ -42,7 +41,6 @@
   --texto-fraco: #8E98A8;
   --acento: #7EA2E4;
   --acento-hover: #B9CCF0;
-  --cobre: #B58256;
   --linha: rgba(185, 204, 240, 0.10);
   --linha-forte: rgba(185, 204, 240, 0.22);
   --superficie-azul: #141F38;
@@ -230,7 +228,7 @@ body.blog {
 .blog__campo::placeholder { color: var(--texto-fraco); }
 
 /* 6. Prints ampliáveis: tutorial vive de detalhe de tela. */
-.post__corpo img, article img { cursor: zoom-in; border: 1px solid var(--linha-forte); }
+article img { cursor: zoom-in; border: 1px solid var(--linha-forte); }
 .lupa {
   position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
   background: rgba(7, 9, 13, 0.92); padding: 2rem; cursor: zoom-out;

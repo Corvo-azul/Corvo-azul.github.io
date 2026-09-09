@@ -13,7 +13,7 @@
   --aco: #2B4C8C;
   --brilho: #6C9BEA;
   --gelo: #B9CCF0;
-  --azul-claro: #7EA2E4;   /* azul claro do manual, usado no glow */
+  --azul-claro: #7EA2E4;   /* azul claro do manual; a placa do CTA le via color-mix, os glows usam o rgba literal */
   --azul-corvo: #2E5AAC;
   --cinza: #8E98A8;
   --papel: #EDE9E1;
@@ -411,7 +411,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 
 .final .rotulo { margin-bottom: 0; }
 /* Recua de 800/6rem para 700/2.9rem: introduz o video em vez de concorrer com ele. */
-.final__titulo { font-size: clamp(1.9rem, 3.4vw, 2.9rem); font-weight: 700; max-width: 20ch; line-height: 1.04; color: var(--gelo); text-shadow: 0 0 60px rgba(126,162,228,.18); }
+.final__titulo { font-size: clamp(1.9rem, 3.4vw, 2.9rem); font-weight: 700; max-width: 20ch; line-height: 1.04; color: var(--gelo); text-shadow: 0 0 60px rgba(126,162,228,.18); transform: translateZ(38px); }
 .final__titulo .linha { display: block; }
 .final__titulo .word { overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .final__titulo .char { display: inline-block; will-change: transform; }
@@ -456,8 +456,6 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   will-change: transform;
 }
 .final__grupo > .rotulo { transform: translateZ(12px); }
-.final__titulo { transform: translateZ(38px); }
-.final__placa { transform: translateZ(84px); }
 .final__placa .placa__marca { transform: translateZ(16px); }
 /* O Z do botao vai no wrapper, nao nele: o GSAP escreve transform inline no
    proprio <a> durante a entrada e apagaria o translateZ. */
@@ -466,7 +464,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 /* A placa: a nota "Primeiro video" vira o objeto de maior contraste do bloco,
    e o botao deixa de flutuar — e a tampa direita dela. */
 .final__placa {
-  position: relative; text-align: left;
+  position: relative; text-align: left; transform: translateZ(84px);
   display: grid; grid-template-columns: auto 1fr auto; align-items: center;
   gap: 1.5rem; padding: 1.1rem 1.1rem 1.1rem 1.5rem;
   width: min(58rem, 100%);
@@ -491,7 +489,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .placa__titulo { font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.02rem, 1.35vw, 1.3rem); line-height: 1.28; color: var(--papel); margin-top: 0.3rem; text-wrap: balance; }
 .final__placa .btn--grande { padding: 0.95rem 1.5rem; font-size: 1rem; margin-top: 0; white-space: nowrap; }
 /* Estado focado: a lente cruzou a placa. */
-.final__placa--focada { border-color: rgba(126,162,228,.55); background: rgba(20, 31, 56, 0.55); }
+.final__placa--focada { border-color: color-mix(in srgb, var(--azul-claro) 55%, transparent); background: color-mix(in srgb, var(--navy) 55%, transparent); }
 .final__placa--focada::before, .final__placa--focada::after { opacity: 1; transform: translate(0, 0); }
 .final__placa--focada .placa__anel { stroke-dashoffset: 0; stroke: var(--brilho); }
 .final__placa--focada .placa__play { fill: var(--brilho); opacity: 1; transform: scale(1.12); }
@@ -568,7 +566,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   .final__glow { opacity: 0.9; }
   .final__lente, .final__mira, .placa__luz { display: none; }
   .final__grupo, .final__grupo > *, .final__placa, .placa__acao, .final__placa .placa__marca, .final__penas { transform: none !important; }
-  .final__placa { border-color: rgba(126,162,228,.55); background: rgba(20, 31, 56, 0.55); }
+  .final__placa { border-color: color-mix(in srgb, var(--azul-claro) 55%, transparent); background: color-mix(in srgb, var(--navy) 55%, transparent); }
   .final__placa::before, .final__placa::after { opacity: 1; transform: none; }
   .placa__anel { stroke-dashoffset: 0; stroke: var(--brilho); }
   .placa__play { fill: var(--brilho); opacity: 1; }
