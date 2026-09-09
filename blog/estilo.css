@@ -26,9 +26,6 @@
      512px em 1600), porque so o respiro lateral acompanhava o viewport. */
   --largura-post: clamp(40rem, 35rem + 10vw, 45rem);
   --largura-larga: clamp(62rem, 54rem + 14vw, 72rem);
-  /* Print de tela nao se le em 560px. A imagem estoura a coluna do texto, que e
-     o jeito de usar a tela larga sem alongar a linha de leitura. */
-  --largura-imagem: clamp(40rem, 20rem + 40vw, 62rem);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -74,7 +71,11 @@ body.blog {
   padding: 1.1rem var(--lateral); border-bottom: 1px solid var(--linha);
   position: sticky; top: 0; background: var(--bg); z-index: 20;
 }
-.blog__marca { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+.blog__marca { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+/* Dois destinos, nao um: o blog nao tinha caminho de volta para o site. */
+.blog__marca a { display: inline-flex; align-items: center; gap: 0.55rem; transition: color .2s; }
+.blog__marca a:hover { color: var(--acento); }
+.blog__marca-sep { color: var(--texto-fraco); font-weight: 400; }
 .blog__marca svg { width: 22px; height: auto; }
 .blog__controles { display: flex; align-items: center; gap: 0.6rem; }
 .blog__controles button {
@@ -292,17 +293,6 @@ pre.prompt code { font-size: 0.86rem; line-height: 1.6; }
   }
   .post__toc a.ativo { color: var(--acento); font-weight: 600; }
 
-  /* Imagem mais larga que o texto, centrada na pagina e limitada pelo espaco que
-     sobra ao lado do sumario, para nunca passar por cima dele. */
-  article picture, article > img {
-    display: block;
-    /* 40rem = duas vezes (3rem de margem + 15rem do sumario + 2rem de folga).
-       Medido: com 20rem a imagem passava 40px por cima do sumario em 1360. */
-    width: min(var(--largura-imagem), calc(100vw - 40rem));
-    max-width: none;
-    position: relative; left: 50%; transform: translateX(-50%);
-  }
-  article picture > img { width: 100%; }
 }
 
 /* 10. Celular: topo + faixa comiam 25% da tela antes do conteúdo. */
