@@ -350,7 +350,16 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .faq__quiz { margin-top: 2.5rem; max-width: 34ch; }
 .faq__quiz .rotulo { margin-bottom: 0.6rem; }
 .faq__quiz p:not(.rotulo) { color: var(--cinza); font-size: 0.95rem; line-height: 1.55; }
-.faq__quiz .btn { margin-top: 1rem; }
+/* .btn--fantasma sozinho (borda a 22% de opacidade, texto --cinza) e feito para
+   sentar ao lado de um botao mais forte, como no hero. Aqui ele e o unico elemento
+   clicavel da coluna e ficava apagado contra o fundo quase preto. Texto e borda
+   passam a --brilho -- a mesma cor do rotulo "QUIZ · 60 SEGUNDOS" acima dele -- sem
+   preencher o fundo, que continuaria competindo com o "Ver o canal". */
+.faq__quiz .btn { margin-top: 1rem; color: var(--brilho); border-color: var(--brilho); }
+/* Glow no hover, na mesma proporcao rgba(--brilho) do .btn--primario (linha 190),
+   so mais fraco -- este e o secundario. data-magnetic reaproveita o mesmo
+   handler JS do link do GitHub no hero (script.js:97), sem JS novo. */
+.faq__quiz .btn:hover { color: var(--gelo); border-color: var(--gelo); box-shadow: 0 0 0 6px rgba(108,155,234,.10), 0 16px 40px -20px rgba(108,155,234,.45); }
 .faq details { border-top: 1px solid var(--linha); }
 .faq details:last-child { border-bottom: 1px solid var(--linha); }
 .faq__lista { counter-reset: faq; }
