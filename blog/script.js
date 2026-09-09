@@ -293,7 +293,6 @@
         var rolavel = document.documentElement.scrollHeight - window.innerHeight;
         lido = rolavel > 0 ? Math.min(1, Math.max(0, window.scrollY / rolavel)) : 0;
       }
-      barra.style.width = (lido * 100).toFixed(1) + "%";
       // A trilha ao lado do sumario (tela larga) le o mesmo numero; nenhum listener a mais.
       document.documentElement.style.setProperty("--lido", lido.toFixed(4));
     }

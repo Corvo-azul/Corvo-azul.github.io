@@ -202,9 +202,11 @@ body.blog {
 [data-theme-resolvido="escuro"] .blog__controles button.ativo { color: #07090D; }
 
 /* 3. Barra de progresso de leitura (só no post) */
+/* scaleX e nao width: width e propriedade de layout e a barra atualiza a cada
+   quadro de rolagem. --lido (0 a 1) ja vem do JS. */
 .progresso-leitura {
   position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-  background: var(--acento); z-index: 50; transition: width .1s linear;
+  background: var(--acento); z-index: 50; width: 100%; transform-origin: left; transform: scaleX(var(--lido, 0)); transition: transform .1s linear;
 }
 
 /* 4. Estado vazio do filtro. Antes a lista colapsava para altura zero e a página
