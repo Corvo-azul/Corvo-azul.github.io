@@ -44,13 +44,15 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
 <html lang="pt-BR" data-blog-base="${base}">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PVCC35T5');</script>
-  <!-- End Google Tag Manager -->
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GHV4D0XHY8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GHV4D0XHY8');
+  </script>
+  <!-- End Google Analytics 4 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(titulo)}</title>
   <meta name="description" content="${esc(descricao)}">
@@ -85,10 +87,6 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   </script>
 </head>
 <body class="blog">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVCC35T5"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 ${topo.replace('href="/blog/"', `href="${base}/"`)}
 
   ${canal}
@@ -204,6 +202,12 @@ if (orfaos.length) {
 // largura da reserva, nao como caixa vazia). Nao quebra a pagina, mas o simbolo
 // sai com desenho diferente em cada aparelho, que foi o problema do ▶ e do ←.
 // A faixa e lida do proprio CSS para a checagem nao envelhecer com o subconjunto.
+//
+// LIMITE CONHECIDO: isto compara o texto com a faixa DECLARADA, nao com os glifos
+// que o arquivo .woff2 realmente contem. Um recorte que derrube um glifo sem
+// estreitar a faixa passa por aqui em silencio, e foi o que aconteceu em 09/09
+// com ©, › e ↑. Conferir o arquivo exigiria ler woff2 em Node; enquanto isso nao
+// existe, ao mexer nas fontes rode a checagem com fontTools antes de publicar.
 {
   const css = readFileSync(join(RAIZ, 'assets', 'fonts', 'fonts.css'), 'utf8');
   const cobertos = new Set();
@@ -218,7 +222,12 @@ if (orfaos.length) {
   }
   // Emoji nunca vem da fonte do site: o sistema desenha, e isso e esperado.
   const ehEmoji = (c) => /\p{Extended_Pictographic}/u.test(String.fromCodePoint(c));
-  const arquivos = [join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html'))];
+  // A home e o 404 entram na checagem: foi por eles ficarem de fora que o © do
+  // rodape passou despercebido quando um recorte de fonte o derrubou.
+  const arquivos = [
+    join(RAIZ, 'index.html'), join(RAIZ, '404.html'),
+    join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html')),
+  ];
   const fora = new Map();
   for (const arq of arquivos) {
     if (!existsSync(arq)) continue;

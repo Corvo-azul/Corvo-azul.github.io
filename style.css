@@ -370,6 +370,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 }
 .final__fundo { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .final-corvo { position: absolute; inset: 0; opacity: 0.55; }
+.final-corvo picture { display: contents; }
 .final-corvo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(25%) contrast(1.1) brightness(0.55); }
 .final-corvo::after {
   content: ""; position: absolute; inset: 0;

@@ -2,13 +2,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-PVCC35T5');</script>
-  <!-- End Google Tag Manager -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GHV4D0XHY8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GHV4D0XHY8');
+  </script>
+  <!-- End Google Analytics 4 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Corvo Azul — Software de verdade construído com IA</title>
   <meta name="description" content="Corvo Azul é um canal e um experimento: seis meses documentando como construir software de verdade com IA, com Claude Code como ferramenta principal. Um vídeo por semana, código aberto.">
@@ -86,11 +89,6 @@
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVCC35T5"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-
   <!-- Servida no HTML, não injetada: injetar deixaria o hero aparecer antes de ser coberto. -->
   <div class="abertura" id="abertura" aria-hidden="true">
     <svg class="abertura__glifo" viewBox="0 0 800 685.8">
@@ -147,7 +145,7 @@
 
   <header class="nav" id="nav">
     <a class="nav__marca" href="#topo" aria-label="Corvo Azul — início">
-      <img src="assets/corvo-glifo.svg" alt="" width="28" height="28">
+      <img src="assets/corvo-glifo.svg" alt="" width="28" height="28" decoding="async">
       <span>Corvo Azul</span>
     </a>
     <nav class="nav__links" id="nav-links" aria-label="Seções">
@@ -169,7 +167,7 @@
       <!-- Vídeo real (corvo no muro, 27–33 s do original, mudo, 1280 px, ~260 KB). Sem filtro de cor no
            arquivo: o azul é o glow em CSS. Poster = quadro do próprio vídeo. -->
       <div class="hero-corvo" id="hero-corvo" aria-hidden="true">
-        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/corvo-poster.jpg">
+        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/corvo-poster.webp">
           <source src="assets/corvo.mp4" type="video/mp4">
         </video>
       </div>
@@ -349,7 +347,11 @@
     <section class="final" id="final">
       <div class="final__fundo" aria-hidden="true">
         <div class="final-corvo">
-          <img src="assets/corvo-2.webp" alt="" loading="lazy" onerror="this.parentElement.remove()">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/corvo-2-960.webp" type="image/webp">
+            <img src="assets/corvo-2.webp" alt="" loading="lazy" decoding="async"
+                 onerror="this.closest('.final-corvo').remove()">
+          </picture>
         </div>
         <div class="final__glow final__glow--azul"></div>
         <div class="final__glow final__glow--cobre"></div>
@@ -377,7 +379,7 @@
   <!-- Footer da variante C -->
   <footer class="rodape">
     <div class="rodape__marca">
-      <img src="assets/corvo-glifo.svg" alt="" width="36" height="36">
+      <img src="assets/corvo-glifo.svg" alt="" width="36" height="36" decoding="async">
       <span class="wordmark">Corvo Azul</span>
     </div>
     <div class="rodape__links">
