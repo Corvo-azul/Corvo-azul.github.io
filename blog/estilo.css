@@ -3,6 +3,10 @@
    azul-corvo só em acento (link, tag ativa), nunca em texto corrido (contraste baixo sobre papel). */
 
 :root {
+  /* Sem isto o navegador nao sabe qual e o tema da pagina e desenha a UI
+     nativa — barra de rolagem, <select>, campos — sempre no claro. */
+  color-scheme: light;
+
   --bg: #F2EFE9;
   --superficie: #FFFFFF;
   --texto: #1A1F26;
@@ -30,6 +34,8 @@
 }
 
 [data-theme-resolvido="escuro"] {
+  color-scheme: dark;
+
   --bg: #07090D;
   --superficie: #0E1219;
   --texto: #EDE9E1;
@@ -44,6 +50,8 @@
 }
 
 * , *::before, *::after { box-sizing: border-box; }
+/* Acompanha o tema sozinha: os dois tokens ja trocam de valor no escuro. */
+::selection { background: var(--acento); color: var(--bg); }
 html { -webkit-text-size-adjust: 100%; }
 body.blog {
   margin: 0; background: var(--bg); color: var(--texto);
