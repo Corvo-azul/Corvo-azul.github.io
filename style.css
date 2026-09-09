@@ -4,6 +4,8 @@
    Foto real do corvo sem edição; o azul entra por CSS (glow em mix-blend-mode). */
 
 :root {
+  color-scheme: dark;
+
   --preto: #07090D;
   --grafite: #07090D;      /* mesmo fundo da página: é o "grafite" do gradiente de legibilidade */
   --carvao: #0E1219;
@@ -29,6 +31,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+::selection { background: var(--azul-corvo); color: var(--papel); }
 html { -webkit-text-size-adjust: 100%; }
 
 body {
