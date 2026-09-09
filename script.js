@@ -284,6 +284,71 @@
     document.querySelectorAll('[data-final]').forEach((el) => (el.style.opacity = 1));
   }
 
+  /* ---------- CTA final: lente + placa em 3D ----------
+     Um listener de pointermove e um rAF alimentam as duas metades: a lente
+     (2D, atras) e a inclinacao do grupo (3D, na frente). O laco para sozinho
+     quando alcanca o alvo — nada roda com o cursor parado ou fora do bloco.
+     Dentro de cada quadro, as leituras de layout vem antes das escritas. */
+  const placa = final && final.querySelector('.final__placa');
+  if (placa && !reduz && !fino) {
+    // Sem cursor: a lente percorre uma vez e estaciona no centro da placa.
+    // Medida depois das fontes, senao a placa ainda nao tem a altura final.
+    const io = new IntersectionObserver((ents) => {
+      if (!ents[0].isIntersecting) return;
+      io.disconnect();
+      document.fonts.ready.then(() => {
+        const r = final.getBoundingClientRect(), p = placa.getBoundingClientRect();
+        final.style.setProperty('--alvo-x', Math.round(p.left - r.left + p.width / 2) + 'px');
+        final.style.setProperty('--alvo-y', Math.round(p.top - r.top + p.height / 2) + 'px');
+        final.classList.add('final--tocar');
+        placa.classList.add('final__placa--focada');
+      });
+    }, { threshold: 0.35 });
+    io.observe(final);
+  } else if (placa && !reduz) {
+    let ax = 0, ay = 0, x = 0, y = 0, esc = 0.55, aesc = 0.55;
+    let aix = 0, aiy = 0, ix = 0, iy = 0, aluz = 0, luz = 0;
+    let ligado = false, primeiro = true;
+    const passo = () => {
+      // leituras
+      const r = final.getBoundingClientRect(), p = placa.getBoundingClientRect();
+      x += (ax - x) * 0.16; y += (ay - y) * 0.16; esc += (aesc - esc) * 0.12;
+      ix += (aix - ix) * 0.11; iy += (aiy - iy) * 0.11; luz += (aluz - luz) * 0.11;
+      const dentro = x > p.left - r.left - 40 && x < p.right - r.left + 40 && y > p.top - r.top - 40 && y < p.bottom - r.top + 40;
+      // escritas
+      const e = final.style;
+      e.setProperty('--lente-x', x.toFixed(1) + 'px');
+      e.setProperty('--lente-y', y.toFixed(1) + 'px');
+      e.setProperty('--lente-escala', esc.toFixed(3));
+      e.setProperty('--par-x', ((x / r.width - 0.5) * 2).toFixed(3));
+      e.setProperty('--par-y', ((y / r.height - 0.5) * 2).toFixed(3));
+      e.setProperty('--incl-x', ix.toFixed(3) + 'deg');
+      e.setProperty('--incl-y', iy.toFixed(3) + 'deg');
+      e.setProperty('--luz', luz.toFixed(3));
+      placa.classList.toggle('final__placa--focada', dentro);
+      if (Math.abs(ax - x) < 0.3 && Math.abs(ay - y) < 0.3 && Math.abs(aix - ix) < 0.01
+          && Math.abs(aiy - iy) < 0.01 && Math.abs(aesc - esc) < 0.003) { ligado = false; return; }
+      requestAnimationFrame(passo);
+    };
+    const acorda = () => { if (!ligado) { ligado = true; requestAnimationFrame(passo); } };
+    final.addEventListener('pointermove', (ev) => {
+      const r = final.getBoundingClientRect();
+      ax = ev.clientX - r.left; ay = ev.clientY - r.top;
+      if (primeiro) { x = ax; y = ay; primeiro = false; }
+      const nx = ax / r.width - 0.5, ny = ay / r.height - 0.5;
+      // inclinacao curta de proposito: a lente e a assinatura, o 3D e o suporte
+      aiy = nx * 5.5; aix = ny * -3.6; aluz = nx;
+      acorda();
+    }, { passive: true });
+    final.addEventListener('pointerenter', () => { final.classList.add('final--apontando'); aesc = 1; acorda(); });
+    final.addEventListener('pointerleave', () => {
+      final.classList.remove('final--apontando');
+      placa.classList.remove('final__placa--focada');
+      aesc = 0.55; aix = aiy = aluz = 0; acorda();
+    });
+  }
+
+
   /* ---------- Prova viva: API pública do GitHub ----------
      Sem chave: 60 requisições por hora POR ENDEREÇO IP. Quem acessa atrás de CGNAT (comum nas
      operadoras brasileiras) divide essa cota com desconhecidos, então a falha é esperada, não rara.

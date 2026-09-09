@@ -394,21 +394,126 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 @keyframes pulsoAzul { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; } 50% { transform: translate(-48%, -52%) scale(1.12); opacity: 1; } }
 @keyframes pulsoCobre { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; } 50% { transform: translate(-56%, -44%) scale(1.15); opacity: 1; } }
 .final__penas { position: absolute; inset: 0; opacity: 0.5; background-image: repeating-linear-gradient(112deg, rgba(185,204,240,.14) 0 1px, transparent 1px 9px); -webkit-mask-image: radial-gradient(50% 60% at 50% 50%, #000 10%, transparent 70%); mask-image: radial-gradient(50% 60% at 50% 50%, #000 10%, transparent 70%); }
-.final__anel { position: absolute; left: 50%; top: 50%; width: 30vw; height: 30vw; max-width: 420px; max-height: 420px; border-radius: 50%; border: 1px solid rgba(185,204,240,.35); transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
-.final.ativo .final__anel { animation: anel 4s var(--ease) infinite; }
-.final.ativo .final__anel--2 { animation-delay: 2s; }
-@keyframes anel { 0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; } }
 
 .final .rotulo { margin-bottom: 0; }
-.final__titulo { font-size: clamp(2.6rem, 7vw, 6rem); font-weight: 800; max-width: 16ch; line-height: 0.96; text-shadow: 0 0 60px rgba(126,162,228,.25); }
+/* Recua de 800/6rem para 700/2.9rem: introduz o video em vez de concorrer com ele. */
+.final__titulo { font-size: clamp(1.9rem, 3.4vw, 2.9rem); font-weight: 700; max-width: 20ch; line-height: 1.04; color: var(--gelo); text-shadow: 0 0 60px rgba(126,162,228,.18); }
 .final__titulo .linha { display: block; }
 .final__titulo .word { overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
 .final__titulo .char { display: inline-block; will-change: transform; }
-.final .btn--grande { margin-top: 0.5rem; box-shadow: 0 0 0 0 rgba(126,162,228,0), 0 30px 80px -20px rgba(126,162,228,.55); }
-.final.ativo .btn--grande { animation: respirar 3.2s ease-in-out infinite; }
-@keyframes respirar { 0%, 100% { box-shadow: 0 0 0 0 rgba(126,162,228,.0), 0 30px 80px -20px rgba(126,162,228,.55); } 50% { box-shadow: 0 0 0 12px rgba(126,162,228,.12), 0 30px 100px -10px rgba(126,162,228,.8); } }
-.final__nota { font-family: var(--mono); font-size: 0.8rem; color: var(--cinza); letter-spacing: 0.02em; }
 [data-final] { opacity: 0; }
+
+/* ---------- CTA final: lente + placa em 3D ----------
+   Troca os lacos ambientes (aneis, botao respirando) por movimento causado:
+   uma lente com backdrop-filter revela a foto por baixo do tratamento escuro,
+   e o grupo de texto inclina em perspectiva — os dois alimentados por UM
+   listener e UM rAF que para sozinho. A lente fica FORA do contexto 3D
+   (z-index -1): filtra so a foto, nunca o texto. As propriedades tem nomes
+   proprios (--lente-*, --incl-*, --par-*) porque --rx/--ry neste arquivo ja
+   pertencem ao tilt do terminal. */
+.final__lente, .final__mira {
+  --d: 360px;
+  position: absolute; left: 0; top: 0; width: var(--d); height: var(--d);
+  margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  border-radius: 50%; pointer-events: none; z-index: -1;
+  transform: translate3d(var(--lente-x, 50%), var(--lente-y, 50%), 0) scale(var(--lente-escala, 0.55));
+  opacity: 0; transition: opacity .55s var(--ease);
+  will-change: transform, opacity;
+}
+.final__lente {
+  -webkit-backdrop-filter: brightness(2.2) saturate(1.55) contrast(1.04);
+  backdrop-filter: brightness(2.2) saturate(1.55) contrast(1.04);
+  -webkit-mask-image: radial-gradient(closest-side, #000 40%, rgba(0,0,0,.5) 74%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 40%, rgba(0,0,0,.5) 74%, transparent 100%);
+}
+/* O aro e um elemento a parte porque a mascara suave da lente o apagaria. */
+.final__mira { border: 1px solid rgba(185,204,240,.16); }
+.final__mira::before, .final__mira::after { content: ""; position: absolute; left: 50%; top: 50%; background: rgba(185,204,240,.28); }
+.final__mira::before { width: 1px; height: 12px; transform: translate(-50%, -50%) translateY(calc(var(--d) / -2)); }
+.final__mira::after { width: 12px; height: 1px; transform: translate(-50%, -50%) translateX(calc(var(--d) / -2)); }
+.final--apontando .final__lente, .final--apontando .final__mira { opacity: 1; }
+/* As penas vao contra o cursor: sao o fundo do parallax. A frente e a inclinacao. */
+.final__penas { transform: translate3d(calc(var(--par-x, 0) * -14px), calc(var(--par-y, 0) * -10px), 0); }
+
+.final__palco { perspective: 1500px; width: 100%; display: flex; justify-content: center; }
+.final__grupo {
+  position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2.25rem;
+  transform-style: preserve-3d; transform: rotateX(var(--incl-x, 0deg)) rotateY(var(--incl-y, 0deg));
+  will-change: transform;
+}
+.final__grupo > .rotulo { transform: translateZ(12px); }
+.final__titulo { transform: translateZ(38px); }
+.final__placa { transform: translateZ(84px); }
+.final__placa .placa__marca { transform: translateZ(16px); }
+/* O Z do botao vai no wrapper, nao nele: o GSAP escreve transform inline no
+   proprio <a> durante a entrada e apagaria o translateZ. */
+.placa__acao { display: inline-flex; transform: translateZ(26px); }
+
+/* A placa: a nota "Primeiro video" vira o objeto de maior contraste do bloco,
+   e o botao deixa de flutuar — e a tampa direita dela. */
+.final__placa {
+  position: relative; text-align: left;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: 1.5rem; padding: 1.1rem 1.1rem 1.1rem 1.5rem;
+  width: min(58rem, 100%);
+  border: 1px solid var(--linha-forte); border-radius: 16px;
+  background: rgba(14, 18, 25, 0.42);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: border-color .45s var(--ease), background .45s var(--ease);
+}
+/* Cantos de registro: duas marcas de esquadro, nao uma moldura inteira. */
+.final__placa::before, .final__placa::after {
+  content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none;
+  border: 1px solid var(--brilho); opacity: 0; transition: opacity .45s var(--ease), transform .45s var(--ease);
+}
+.final__placa::before { left: -1px; top: -1px; border-right: 0; border-bottom: 0; border-radius: 16px 0 0 0; transform: translate(6px, 6px); }
+.final__placa::after { right: -1px; bottom: -1px; border-left: 0; border-top: 0; border-radius: 0 0 16px 0; transform: translate(-6px, -6px); }
+.placa__marca { display: grid; place-items: center; width: 42px; height: 42px; }
+.placa__marca svg { width: 42px; height: 42px; overflow: visible; }
+.placa__anel { stroke: var(--linha-forte); stroke-width: 1; fill: none; stroke-dasharray: 126; stroke-dashoffset: 126; transition: stroke-dashoffset .7s var(--ease), stroke .45s; }
+.placa__play { fill: var(--cinza); opacity: .55; transform-origin: 50% 50%; transition: fill .45s, opacity .45s, transform .5s var(--ease); }
+.placa__corpo { min-width: 0; }
+.placa__rotulo { display: block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cinza); transition: color .45s; }
+.placa__titulo { font-family: var(--display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.02rem, 1.35vw, 1.3rem); line-height: 1.28; color: var(--papel); margin-top: 0.3rem; text-wrap: balance; }
+.final__placa .btn--grande { padding: 0.95rem 1.5rem; font-size: 1rem; margin-top: 0; white-space: nowrap; }
+/* Estado focado: a lente cruzou a placa. */
+.final__placa--focada { border-color: rgba(126,162,228,.55); background: rgba(20, 31, 56, 0.55); }
+.final__placa--focada::before, .final__placa--focada::after { opacity: 1; transform: translate(0, 0); }
+.final__placa--focada .placa__anel { stroke-dashoffset: 0; stroke: var(--brilho); }
+.final__placa--focada .placa__play { fill: var(--brilho); opacity: 1; transform: scale(1.12); }
+.final__placa--focada .placa__rotulo { color: var(--gelo); }
+
+/* Brilho especular: so enquanto o ponteiro esta dentro do bloco. Nao e laco. */
+.placa__luz {
+  position: absolute; left: 50%; bottom: 0; width: min(58rem, 100%); height: 84px;
+  transform: translate(-50%, 0) translateZ(85px); pointer-events: none; border-radius: 16px; overflow: hidden;
+  opacity: 0; transition: opacity .4s var(--ease);
+}
+.placa__luz::before {
+  content: ""; position: absolute; inset: -20%;
+  background: linear-gradient(105deg, transparent 42%, rgba(185,204,240,.18) 50%, transparent 58%);
+  transform: translateX(calc(var(--luz, 0) * 130%));
+}
+.final--apontando .placa__luz { opacity: 1; }
+
+@media (max-width: 52rem) {
+  .final__placa { grid-template-columns: auto 1fr; gap: 0.9rem 1rem; padding: 1.1rem; }
+  .placa__acao { grid-column: 1 / -1; }
+  .final__placa .btn--grande { justify-content: center; width: 100%; }
+  .final__titulo { font-size: clamp(1.75rem, 6.4vw, 2.4rem); max-width: 16ch; }
+}
+/* Toque: sem cursor nao ha inclinacao nem brilho; a lente entra uma vez e
+   estaciona no centro da placa (alvo medido pelo JS depois das fontes). */
+@media (hover: none), (pointer: coarse) {
+  .final__lente, .final__mira { --d: 260px; }
+  .final__grupo { transform: none; }
+  .placa__luz { display: none; }
+  .final--tocar .final__lente, .final--tocar .final__mira { opacity: 1; animation: lentePousa 2.6s var(--ease) forwards; }
+}
+@keyframes lentePousa {
+  0%   { transform: translate3d(18%, 22%, 0) scale(.5); }
+  100% { transform: translate3d(var(--alvo-x), var(--alvo-y), 0) scale(1); }
+}
 
 /* ---------- CTA fixo (mobile) ---------- */
 .cta-mobile {
@@ -447,7 +552,13 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   [data-reveal], [data-fade], [data-final] { opacity: 1; transform: none; }
   .hero-corvo::after, .final-corvo::after { transform: none; opacity: 0.85; }
   .final__glow { opacity: 0.9; }
-  .final__anel { display: none; }
+  .final__lente, .final__mira, .placa__luz { display: none; }
+  .final__grupo, .final__grupo > *, .final__placa, .placa__acao, .final__placa .placa__marca, .final__penas { transform: none !important; }
+  .final__placa { border-color: rgba(126,162,228,.55); background: rgba(20, 31, 56, 0.55); }
+  .final__placa::before, .final__placa::after { opacity: 1; transform: none; }
+  .placa__anel { stroke-dashoffset: 0; stroke: var(--brilho); }
+  .placa__play { fill: var(--brilho); opacity: 1; }
+  .placa__rotulo { color: var(--gelo); }
   .vivo__ponto { animation: none; }
   .grao { display: none; }
 }
