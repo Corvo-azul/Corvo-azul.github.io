@@ -165,9 +165,15 @@
       <a class="so-mobile nav__links-cta" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
       <a class="so-mobile nav__links-mail" href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>
     </nav>
-    <a class="nav__cta" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
-    <a class="nav__cta" href="/blog/">Blog</a>
-    <a class="nav__cta" href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
+    <!-- Blog e Quiz sao links para fora desta pagina: ficam fora da lista de secoes
+         e fora da pilula. So o Canal e pilula, e cheia -- e a conversao do site, e
+         o menu do celular ja o desenha assim (.nav__links-cta). Tres pilulas iguais
+         nao tinham lider e o Blog acabava no fim do trajeto de leitura. -->
+    <nav class="nav__extras" aria-label="Blog e quiz">
+      <a href="/blog/">Blog</a>
+      <a href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
+    </nav>
+    <a class="nav__cta nav__cta--cheio" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
     <button class="nav__menu" id="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
   </header>
 
