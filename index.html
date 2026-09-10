@@ -85,7 +85,7 @@
     .abertura__glifo path{stroke:#7EA2E4;stroke-width:9;
       stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
       filter:drop-shadow(0 0 12px rgba(126,162,228,.6));
-      animation:abrirTraco 1.5s cubic-bezier(.16,1,.3,1) forwards}
+      animation:abrirTraco 0.9s cubic-bezier(.16,1,.3,1) forwards}
     .abertura__cont{position:absolute;bottom:6vh;right:7vw;
       font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:26px;color:#B9CCF0}
     @keyframes abrirTraco{to{stroke-dashoffset:0}}
@@ -125,11 +125,15 @@
       window.dispatchEvent(new Event('abertura:fim'));
       setTimeout(function(){ cap.remove(); }, 1150);
     }
+    // [10/09] Teto de 1600 -> 1000 ms, e o traco do glifo de 1,5 s -> 0,9 s junto:
+    // o 1600 existia para o traco terminar antes da saida, entao encurtar so um dos
+    // dois cortaria o desenho no meio. A amarracao continua completa, 600 ms mais
+    // cedo. Quem chega do YouTube em conexao boa e quem pagava esse tempo.
     // Teto contado do INICIO DA NAVEGACAO, nao de quando este script roda: ele so
     // executa depois do CSS bloqueante, e medindo daqui a saida ia para 8,4s em
     // rede lenta. Se o tempo ja passou, a cortina nem aparece: em conexao ruim ela
     // nao pode custar nem a animacao de saida.
-    var resta = 1600 - performance.now();
+    var resta = 1000 - performance.now();
     if (resta <= 0) return fora();
     setTimeout(sair, resta);
 

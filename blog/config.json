@@ -7,7 +7,7 @@
   },
   "quiz": {
     "_comentario": "Preencha url para o CTA do quiz aparecer no fim de cada post. Vazio = bloco oculto.",
-    "url": "",
+    "url": "https://tally.so/r/J94xJz?v=blog",
     "titulo": "Qual ferramenta de IA serve pro seu caso?",
     "titulo_en": "Which AI tool fits your case?",
     "texto": "Quatro de marcar e uma aberta, e o seu e-mail antes do resultado. A resposta vem com o porquê, não só o nome da ferramenta.",

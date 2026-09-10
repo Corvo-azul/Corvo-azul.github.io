@@ -91,7 +91,11 @@ p { margin: 0; }
 /* A pilula cheia e a mesma do hero ("Ver o canal") e do menu do celular: papel
    sobre grafite, o unico botao solido da moldura. */
 .nav__cta--cheio { background: var(--papel); color: var(--preto); border-color: var(--papel); font-weight: 600; }
-.nav__cta--cheio:hover { background: var(--gelo); border-color: var(--gelo); color: var(--preto); }
+/* Dois nomes de classe de proposito. `.nav__cta:hover` (0,2,0) mora mais abaixo
+   neste arquivo, entao com um nome so ele vencia por ordem e a pilula cheia
+   PERDIA o fundo papel justamente no hover -- sobrava preto sobre o video, que e
+   o defeito que a nav levou o dia 09/09 inteiro para consertar. Achado no ar. */
+.nav__cta.nav__cta--cheio:hover { background: var(--azul-corvo); border-color: var(--azul-corvo); color: var(--papel); text-shadow: none; }
 
 /* Antes de rolar a barra e transparente e os itens ficam direto sobre o video do
    hero, que e claro e se mexe: --cinza sobre imagem em movimento nao le. Ate a
@@ -105,6 +109,10 @@ p { margin: 0; }
 .nav:not(.rolou) .nav__extras { border-left-color: rgba(237, 233, 225, 0.35); }
 /* A cheia nao precisa de sombra: e papel solido em cima do video. */
 .nav:not(.rolou) .nav__cta--cheio { color: var(--preto); text-shadow: none; border-color: var(--papel); }
+/* Mesma armadilha do hover global (0,3,0 empatado, ordem decide): sem isto o
+   preto acima voltava a vencer no hover, so que agora em cima do azul-corvo
+   -- preto sobre azul escuro e quase tao ilegivel quanto preto sobre o video. */
+.nav:not(.rolou) .nav__cta--cheio:hover { color: var(--papel); border-color: var(--azul-corvo); text-shadow: none; }
 .nav:not(.rolou) .nav__marca { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55); }
 .nav__cta:hover { border-color: var(--brilho); background: rgba(108, 155, 234, 0.08); }
 .nav__menu { display: none; margin-left: auto; width: 44px; height: 44px; background: none; border: 0; padding: 0; position: relative; cursor: pointer; }
