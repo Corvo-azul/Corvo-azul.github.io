@@ -326,3 +326,25 @@ for (const p of posts) {
     console.warn(`aviso: ${quantos} travessão(ões) longo(s) no corpo de ${p.slug} — ver blog/PROMPT-REDACAO.md`);
   }
 }
+
+// Todo post publicado precisa ter par em ingles -- metadado em posts.json e
+// corpo real em blog/<slug>/index.html. Sem isto o botao EN troca so o chrome
+// e o corpo do post fica preso em PT, que foi o estado do site ate 10/09 (o
+// <article data-post-corpo-en> existia como placeholder "[add once validated]",
+// nunca preenchido). Este guard torna o esquecimento mecanico em vez de
+// depender de alguem lembrar na hora de publicar.
+for (const p of posts) {
+  const semTitulo = !p.titulo_en;
+  const semResumo = !p.resumo_en;
+  if (semTitulo || semResumo) {
+    const faltando = [semTitulo && 'titulo_en', semResumo && 'resumo_en'].filter(Boolean).join(' e ');
+    console.warn(`aviso: posts.json não tem ${faltando} para "${p.slug}" — o card do post não troca para inglês.`);
+  }
+  const arq = join(AQUI, p.slug, 'index.html');
+  if (!existsSync(arq)) continue;
+  const html = readFileSync(arq, 'utf8');
+  const temArticleEn = /<article\s+data-post-corpo-en\s+data-disponivel/.test(html) || /<article\s+data-post-corpo-en\s+[^>]*data-disponivel/.test(html);
+  if (!temArticleEn) {
+    console.warn(`aviso: "${p.slug}" não tem <article data-post-corpo-en data-disponivel> preenchido — o botão EN na página do post troca só o chrome, o texto do artigo continua em português.`);
+  }
+}

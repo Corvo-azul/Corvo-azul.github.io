@@ -1,4 +1,5 @@
-// Corvo Azul — Blog: tema (claro/escuro/sistema), idioma (pt/en, só chrome da UI por ora),
+// Corvo Azul — Blog: tema (claro/escuro/sistema), idioma (pt/en -- chrome da UI e,
+// quando o post declarar data-post-corpo-en com data-disponivel, o corpo tambem),
 // leitor de voz (Web Speech API), sumário automático, faixa de canal/vídeo mais recente.
 (function () {
   "use strict";
@@ -23,6 +24,22 @@
     return document.documentElement.getAttribute("data-idioma") === "en" ? "en" : "pt";
   }
   function ehEn() { return idioma() === "en"; }
+
+  // Artigo VISIVEL agora, pt ou en -- usado por tudo que le o corpo do post
+  // (sumario, progresso, lupa, leitor de voz). Sem isto, cada um travava no
+  // artigo pt mesmo com o en visivel: sumario com titulo errado, barra de
+  // progresso medindo o texto escondido, lupa surda a clique em imagem do en.
+  function corpoAtivo() {
+    return document.querySelector("[data-post-corpo-pt]:not([hidden])") ||
+      document.querySelector("[data-post-corpo-en]:not([hidden])") ||
+      document.querySelector("[data-post-corpo-pt]");
+  }
+
+  // Funcoes que precisam refazer alguma coisa quando o idioma troca DEPOIS do
+  // carregamento (sumario, relacionados, quiz -- todos leem o corpo ou fazem
+  // fetch uma vez e ficavam presos no idioma da carga).
+  var aoTrocarIdioma = [];
+  function registrarTrocaIdioma(fn) { aoTrocarIdioma.push(fn); }
 
   function resolverTema(pref) {
     if (pref === "claro" || pref === "escuro") return pref;
@@ -49,8 +66,11 @@
     });
   }
 
-  // Idioma: troca só os textos de interface (nav, botões, rótulos) via data-i18n-pt/en.
-  // O corpo do post continua só em PT até termos tradução real — ver data-i18n-post-en opcional.
+  // Idioma: troca os textos de interface (nav, botões, rótulos) via data-i18n-pt/en,
+  // e troca o corpo do post inteiro quando o <article data-post-corpo-en> tiver
+  // data-disponivel (post sem tradução ainda: o botão EN só muda o chrome em volta,
+  // o corpo segue em PT -- ver corpoAtivo() logo acima, usado por sumário, barra de
+  // progresso, lupa e leitor de voz para nunca ficar presos ao artigo errado).
   function initIdioma() {
     var atual = ler(CHAVE_IDIOMA, "pt");
     function aplicar(id) {
@@ -90,6 +110,7 @@
         if (!ouvir.dataset.falando) ouvir.textContent = d.rotuloAtivoOuvir;
       }
       gravar(CHAVE_IDIOMA, id);
+      aoTrocarIdioma.forEach(function (fn) { try { fn(id); } catch (e) { if (window.console) console.error("blog: reacao a troca de idioma falhou", e); } });
     }
     window.__blogAplicarIdioma = function () { aplicar(atual); };
     document.querySelectorAll("[data-idioma-botao]").forEach(function (b) {
@@ -122,11 +143,14 @@
     window.speechSynthesis.getVoices();
     botao.addEventListener("click", function () {
       if (falando) { window.speechSynthesis.cancel(); falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; return; }
-      var corpo = document.querySelector("[data-post-corpo-pt]:not([hidden])") || document.querySelector("[data-post-corpo-pt]");
+      var corpo = corpoAtivo();
       if (!corpo) return;
+      var falandoEn = corpo.hasAttribute("data-post-corpo-en");
       var utter = new SpeechSynthesisUtterance(corpo.innerText);
-      utter.lang = "pt-BR";
-      var voz = melhorVoz();
+      utter.lang = falandoEn ? "en-US" : "pt-BR";
+      // melhorVoz() so cobre pt-BR; em ingles a voz padrao do sistema serve --
+      // trocar de idioma no meio da fala e caso raro o bastante pra nao pesar aqui.
+      var voz = falandoEn ? null : melhorVoz();
       if (voz) utter.voice = voz;
       utter.onend = function () { falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; };
       window.speechSynthesis.speak(utter);
@@ -136,21 +160,35 @@
     });
   }
 
-  // Sumário automático a partir dos H2 do corpo do post.
+  // Sumário automático a partir dos H2 do artigo VISIVEL (pt ou en). Refeito
+  // inteiro a cada troca de idioma -- pt e en tem o mesmo numero de secoes na
+  // mesma ordem, mas o texto e outro. IDs levam o idioma no prefixo para os
+  // dois <article> nunca colidirem no DOM (o oculto guarda os ids da ultima
+  // vez que esteve visivel).
   function initSumario() {
     var lista = document.querySelector("[data-sumario-lista]");
-    var corpo = document.querySelector("[data-post-corpo-pt]");
-    if (!lista || !corpo) return;
-    var h2s = corpo.querySelectorAll("h2");
-    if (!h2s.length) { var bloco = document.querySelector("[data-sumario]"); if (bloco) bloco.hidden = true; return; }
-    h2s.forEach(function (h, i) {
-      var id = "sec-" + (i + 1);
-      h.id = id;
-      var li = document.createElement("li");
-      var a = document.createElement("a");
-      a.href = "#" + id; a.textContent = h.textContent;
-      li.appendChild(a); lista.appendChild(li);
-    });
+    var bloco = document.querySelector("[data-sumario]");
+    if (!lista) return;
+    function construir() {
+      var corpo = corpoAtivo();
+      lista.innerHTML = "";
+      if (!corpo) { if (bloco) bloco.hidden = true; return; }
+      var prefixo = corpo.hasAttribute("data-post-corpo-en") ? "sec-en-" : "sec-pt-";
+      var h2s = corpo.querySelectorAll("h2");
+      if (!h2s.length) { if (bloco) bloco.hidden = true; return; }
+      if (bloco) bloco.hidden = false;
+      h2s.forEach(function (h, i) {
+        var id = prefixo + (i + 1);
+        h.id = id;
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = "#" + id; a.textContent = h.textContent;
+        li.appendChild(a); lista.appendChild(li);
+      });
+      if (typeof window.__blogReconstruirSumarioAtivo === "function") window.__blogReconstruirSumarioAtivo();
+    }
+    construir();
+    registrarTrocaIdioma(construir);
   }
 
   // Faixa de canal + vídeo mais recente, lida de blog/config.json (relativo à raiz do blog).
@@ -276,12 +314,13 @@
 
   /* ---------- Barra de progresso de leitura (so no post) ---------- */
   function initProgresso() {
-    var artigo = document.querySelector("[data-post-corpo-pt]");
-    if (!artigo) return;
+    if (!corpoAtivo()) return;
     var barra = document.createElement("div");
     barra.className = "progresso-leitura";
     document.body.appendChild(barra);
     function atualizar() {
+      var artigo = corpoAtivo();
+      if (!artigo) return;
       // Artigo mais curto que a tela: o progresso passa a ser o da PAGINA,
       // senao a barra ficaria travada em 0% do inicio ao fim.
       var r = artigo.getBoundingClientRect();
@@ -299,14 +338,18 @@
     window.addEventListener("scroll", atualizar, { passive: true });
     window.addEventListener("resize", atualizar);
     atualizar();
+    registrarTrocaIdioma(atualizar);
   }
 
   /* ---------- Prints ampliaveis ----------
      Tutorial vive de detalhe de tela; a imagem so na largura do texto nao serve. */
   function initLupa() {
-    var artigo = document.querySelector("[data-post-corpo-pt]");
-    if (!artigo) return;
-    artigo.addEventListener("click", function (e) {
+    // Delegado no <main>, nao no <article> pt: com o en visivel, um listener
+    // preso ao artigo pt nunca via os cliques (ele fica hidden, que e display:none).
+    var main = document.querySelector("main.blog__container");
+    if (!main || !corpoAtivo()) return;
+    main.addEventListener("click", function (e) {
+      if (!e.target.closest("article")) return;
       var img = e.target.closest("img");
       if (!img) return;
       var cx = document.createElement("div");
@@ -404,6 +447,17 @@
     var base = document.documentElement.getAttribute("data-blog-base") || ".";
     var slugAtual = alvo.getAttribute("data-slug-atual") || "";
     var minhas = (alvo.getAttribute("data-tags") || "").split(",").filter(Boolean);
+    function render(pontuados) {
+      if (!pontuados.length) { alvo.hidden = true; return; }  // 1 post só: some, não fica vazio
+      var en = ehEn();
+      alvo.innerHTML = "<h2>" + (en ? "Related posts" : "Posts relacionados") + "</h2>" +
+        pontuados.map(function (x) {
+          var titulo = en ? (x.p.titulo_en || x.p.titulo) : x.p.titulo;
+          var resumo = en ? (x.p.resumo_en || x.p.resumo || "") : (x.p.resumo || "");
+          return '<a href="' + base + "/" + x.p.slug + '/"><h3>' + titulo + "</h3><p>" + resumo + "</p></a>";
+        }).join("");
+      alvo.hidden = false;
+    }
     fetch(base + "/posts.json").then(function (r) { return r.json(); }).then(function (posts) {
       var pontuados = posts
         .filter(function (p) { return p.slug !== slugAtual; })
@@ -411,13 +465,8 @@
         .filter(function (x) { return x.n > 0; })
         .sort(function (a, b) { return b.n - a.n || (a.p.data < b.p.data ? 1 : -1); })
         .slice(0, 3);
-      if (!pontuados.length) { alvo.hidden = true; return; }  // 1 post só: some, não fica vazio
-      var en = ehEn();
-      alvo.innerHTML = "<h2>" + (en ? "Related posts" : "Posts relacionados") + "</h2>" +
-        pontuados.map(function (x) {
-          return '<a href="' + base + "/" + x.p.slug + '/"><h3>' + x.p.titulo + "</h3><p>" + (x.p.resumo || "") + "</p></a>";
-        }).join("");
-      alvo.hidden = false;
+      render(pontuados);
+      registrarTrocaIdioma(function () { render(pontuados); });
     }).catch(function () { alvo.hidden = true; });
   }
 
@@ -429,13 +478,17 @@
     var base = document.documentElement.getAttribute("data-blog-base") || ".";
     fetch(base + "/config.json").then(function (r) { return r.json(); }).then(function (cfg) {
       if (!cfg.quiz || !cfg.quiz.url) { alvo.hidden = true; return; }
-      var en = ehEn();
-      alvo.innerHTML =
-        "<h2>" + (en ? (cfg.quiz.titulo_en || cfg.quiz.titulo) : cfg.quiz.titulo) + "</h2>" +
-        "<p>" + (en ? (cfg.quiz.texto_en || cfg.quiz.texto) : cfg.quiz.texto) + "</p>" +
-        '<a href="' + cfg.quiz.url + '" target="_blank" rel="noopener">' +
-        (en ? (cfg.quiz.botao_en || cfg.quiz.botao) : cfg.quiz.botao) + "</a>";
-      alvo.hidden = false;
+      function render() {
+        var en = ehEn();
+        alvo.innerHTML =
+          "<h2>" + (en ? (cfg.quiz.titulo_en || cfg.quiz.titulo) : cfg.quiz.titulo) + "</h2>" +
+          "<p>" + (en ? (cfg.quiz.texto_en || cfg.quiz.texto) : cfg.quiz.texto) + "</p>" +
+          '<a href="' + cfg.quiz.url + '" target="_blank" rel="noopener">' +
+          (en ? (cfg.quiz.botao_en || cfg.quiz.botao) : cfg.quiz.botao) + "</a>";
+        alvo.hidden = false;
+      }
+      render();
+      registrarTrocaIdioma(render);
     }).catch(function () { alvo.hidden = true; });
   }
 
@@ -461,15 +514,17 @@
      Agora o ativo e o ultimo titulo acima da linha de leitura e, no fim da
      pagina, o ultimo titulo. Roda no scroll com rAF; sao nove elementos. */
   function initSumarioAtivo() {
-    var links = [].slice.call(document.querySelectorAll("[data-sumario-lista] a"));
-    if (!links.length) return;
-    var pares = links.map(function (a) { return { a: a, h: document.getElementById(a.getAttribute("href").slice(1)) }; })
-      .filter(function (par) { return par.h; });
-    if (!pares.length) return;
     var topo = document.querySelector(".blog__topo");
-    var atual = null, pendente = false;
+    var pares = [], atual = null, pendente = false;
+    function recolher() {
+      var links = [].slice.call(document.querySelectorAll("[data-sumario-lista] a"));
+      atual = null;
+      pares = links.map(function (a) { return { a: a, h: document.getElementById(a.getAttribute("href").slice(1)) }; })
+        .filter(function (par) { return par.h; });
+    }
     function calcular() {
       pendente = false;
+      if (!pares.length) return;
       var linha = (topo ? topo.getBoundingClientRect().bottom : 0) + 24;
       var noFim = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
       var alvo = null;
@@ -481,9 +536,14 @@
       atual = alvo;
     }
     function pedir() { if (!pendente) { pendente = true; requestAnimationFrame(calcular); } }
+    recolher();
+    if (!pares.length) return;
     window.addEventListener("scroll", pedir, { passive: true });
     window.addEventListener("resize", pedir, { passive: true });
     calcular();
+    // O sumario e refeito a cada troca de idioma (ids/textos mudam de artigo);
+    // este religa aos novos <a> sem duplicar os listeners de scroll/resize.
+    window.__blogReconstruirSumarioAtivo = function () { recolher(); calcular(); };
   }
 
   document.addEventListener("DOMContentLoaded", function () {

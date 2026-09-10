@@ -12,7 +12,10 @@
   </script>
   <!-- End Google Analytics 4 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul</title>
+  <!-- description, OG, twitter e JSON-LD ficam fixos em PT: so crawler le, que nao
+       executa o JS do botao PT/EN -- e a versao canonica. O <title> muda porque a
+       aba do navegador e vista por gente, nao por crawler. -->
+  <title data-i18n-pt="Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul" data-i18n-en="How to Make Your Google Sheets Spreadsheet Professional with AI — Corvo Azul">Como Deixar Sua Planilha do Google Sheets Profissional com IA — Corvo Azul</title>
   <meta name="description" content="Sem fórmula, sem curso: como usar o Claude conectado ao Google Drive para reorganizar uma planilha bagunçada e devolver ela pronta, com prints reais do processo.">
   <link rel="canonical" href="https://corvoazul.com/blog/planilha-profissional-com-claude/">
   <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="https://corvoazul.com/blog/feed.xml">
@@ -111,7 +114,7 @@
       <span>·</span>
       <span data-i18n-pt="7 min de leitura" data-i18n-en="7 min read">7 min de leitura</span>
     </p>
-    <h1>Como Deixar Sua Planilha do Google Sheets Profissional com IA</h1>
+    <h1 data-i18n-pt="Como Deixar Sua Planilha do Google Sheets Profissional com IA" data-i18n-en="How to Make Your Google Sheets Spreadsheet Professional with AI">Como Deixar Sua Planilha do Google Sheets Profissional com IA</h1>
     <p class="post__tags">
       <a href="../?tag=claude">#claude</a>
       <a href="../?tag=google-sheets">#google-sheets</a>
@@ -239,8 +242,116 @@ Antes de finalizar, verifique se:
       <h2>Próximo passo</h2>
       <p>Se você tem uma planilha dessas parada, o teste é rápido. Duplique ela pra manter o original intacto, conecte o Drive no Claude e cole o prompt acima. Em menos de dez minutos você sabe se serve pra você.</p>
     </article>
-    <article data-post-corpo-en hidden>
-      <p><em>[English version: add once this post is validated.]</em></p>
+    <article data-post-corpo-en data-disponivel hidden>
+      <aside class="post__aviso"><p>Note: the screenshots use a fictional sample spreadsheet, a test business proposal. None of that data belongs to a real client.</p></aside>
+
+      <h2>The problem</h2>
+      <p>Every small business has that one spreadsheet nobody wants to open. Too much color, columns too wide, a formula nobody remembers the reason for, and a "final total" that doesn't match the sum. You already know which one is yours.</p>
+      <p>Hiring someone to redo it costs time or money. And it's hard to justify that expense for a file that only runs in-house.</p>
+      <p>Here's another way: solve it directly in Claude Desktop. No writing formulas, no installing add-ons, no course. You connect Google Drive, send the spreadsheet along with a prompt, and get back a reorganized version. In my test it even found and fixed a calculation error, so this isn't just about making it look nice.</p>
+
+      <h2>What you need first</h2>
+      <p>Three things: a Google account with the spreadsheet you want to fix, Claude Desktop installed, and a Claude account with access to connectors. Free, Pro or above works.</p>
+
+      <h2>Step 1: connect Google Drive</h2>
+      <p>In Claude Desktop, open <strong>Connectors</strong> and add <strong>Google Drive</strong>. It asks you to sign in to your Google account and grant read and write permission on your files. It's the same authorization screen any Google Workspace app uses.</p>
+      <picture>
+        <source srcset="img/02-extensao-google-drive.webp" type="image/webp">
+        <img src="img/02-extensao-google-drive.png" alt="Google Drive connector page in the Claude directory, with the Connect to Claude button" loading="lazy" width="1600" height="758">
+      </picture>
+      <p>Once authorized, it shows <strong>Connected</strong> and becomes available in any new conversation.</p>
+      <picture>
+        <source srcset="img/03-extensao-conectada.webp" type="image/webp">
+        <img src="img/03-extensao-conectada.png" alt="Google Drive connector already connected, showing the available tools" loading="lazy" width="1600" height="760">
+      </picture>
+      <p>In the chat's connector menu it shows up switched on alongside whatever else you already use. From there you can also search for a specific file in your Drive without leaving the conversation.</p>
+      <picture>
+        <source srcset="img/04-extensao-claude-desktop.webp" type="image/webp">
+        <img src="img/04-extensao-claude-desktop.png" alt="Claude Desktop connector menu with Google Drive enabled and file search" loading="lazy" width="1600" height="861">
+      </picture>
+
+      <h2>Step 2: write the prompt, or copy mine</h2>
+      <p>This is the prompt I used. Notice it doesn't ask to "make it look nice", which is too vague and gives a random result. It asks Claude to understand the spreadsheet before touching it, preserve data and formulas, and improve only organization, formatting and usability.</p>
+      <pre class="prompt"><code>&lt;role&gt; Act as a specialist in Excel, spreadsheet design and business data organization. &lt;/role&gt;
+&lt;objective&gt; Analyze the provided spreadsheet and deliver a version that is significantly more professional, organized, clear and functional, while keeping the file's original purpose. &lt;/objective&gt;
+&lt;instructions&gt;
+1. First analyze the structure, data, formulas and purpose of each tab before making changes.
+2. Preserve all existing data, information and functionality, except where there's a clear error or inconsistency.
+3. Improve visual hierarchy, organization, spacing, typography, colors, headers, borders, alignment and number formats.
+4. Standardize dates, currency, percentages, numbers and other formats according to context.
+5. Improve filters, tables, formulas, validations and other features when that improves usability.
+6. Fix formatting inconsistencies and obvious errors without changing the meaning of the data.
+7. Remove unnecessary visual elements and avoid excessive colors, borders or effects.
+8. Prioritize clarity, readability, ease of maintenance and a corporate appearance.
+9. Make structural improvements only when there's a clear benefit to understanding or using the spreadsheet.
+&lt;/instructions&gt;
+
+The final version should look like a professionally built business spreadsheet: clean, consistent, intuitive, visually balanced and functional.
+
+Before finishing, check that:
+- the original data was preserved;
+- the formulas still work;
+- there are no relevant visual inconsistencies;
+- every tab has consistent formatting;
+- the hierarchy of information is clear;
+- the spreadsheet stays practical for daily use.</code></pre>
+      <p>Paste the link to your Google Sheets file along with the prompt, in a new conversation, with the connector turned on.</p>
+      <picture>
+        <source srcset="img/05-prompt-escrito.webp" type="image/webp">
+        <img src="img/05-prompt-escrito.png" alt="Reformatting prompt pasted into Claude Desktop, along with the original spreadsheet file" loading="lazy" width="1600" height="860">
+      </picture>
+      <p>And this is what the spreadsheet looked like before. Loose data, no visual hierarchy, no consistent formatting.</p>
+      <picture>
+        <source srcset="img/01-planilha-aberta.webp" type="image/webp">
+        <img src="img/01-planilha-aberta.png" alt="Sample spreadsheet before reformatting, with data lacking visual organization" loading="lazy" width="1600" height="759">
+      </picture>
+
+      <h2>Step 3: let it work</h2>
+      <p>Claude reads the entire spreadsheet before touching anything. Not just the open tab: it goes through the others too, looking for cross-references between them.</p>
+      <p>That's when the most interesting part of the test showed up. It found a real inconsistency: a "final total" formula that ignored a discount and returned the wrong total. It fixed it on its own and reported exactly what had changed.</p>
+      <picture>
+        <source srcset="img/06-resultado.webp" type="image/webp">
+        <img src="img/06-resultado.png" alt="Claude's response detailing the structural changes made to the spreadsheet, including a formula fix" loading="lazy" width="1600" height="861">
+      </picture>
+
+      <h2>Step 4: replace the file</h2>
+      <p>After approving the result, I asked it to swap the old spreadsheet for the new one, directly in Drive. That's the only point in the process that asks for your confirmation. Claude doesn't overwrite anything without asking.</p>
+      <picture>
+        <source srcset="img/07-pedido-substituicao.webp" type="image/webp">
+        <img src="img/07-pedido-substituicao.png" alt="Claude asking permission to use Google Drive's Create file tool before replacing the file" loading="lazy" width="1600" height="860">
+      </picture>
+      <p>It's worth understanding the three options before clicking. <strong>Deny</strong> cancels the action. <strong>Allow once</strong> authorizes just that one replacement. <strong>Always allow</strong> lets Claude create and update files in your Drive without asking again in that conversation. For a working spreadsheet I always prefer "once". It's one more confirmation, but it avoids surprises.</p>
+
+      <h2>The result</h2>
+      <p>The proposal tab got visual hierarchy, alternating row stripes and the fixed formula.</p>
+      <picture>
+        <source srcset="img/08-resultado-sheets-1.webp" type="image/webp">
+        <img src="img/08-resultado-sheets-1.png" alt="Proposal tab of the spreadsheet after being reformatted by Claude, with an organized header and table" loading="lazy" width="1600" height="761">
+      </picture>
+      <p>The other three tabs came out in the same style, without me asking for each one individually: service catalog, finance with an automatically generated chart, and client list.</p>
+      <picture>
+        <source srcset="img/09-resultado-sheets-2.webp" type="image/webp">
+        <img src="img/09-resultado-sheets-2.png" alt="Service Catalog tab already in the same visual style as the Proposal tab" loading="lazy" width="1600" height="757">
+      </picture>
+      <picture>
+        <source srcset="img/10-resultado-sheets-3.webp" type="image/webp">
+        <img src="img/10-resultado-sheets-3.png" alt="Finance tab with a summary and a revenue-by-category chart generated by Claude" loading="lazy" width="1600" height="761">
+      </picture>
+      <picture>
+        <source srcset="img/11-resultado-sheets-4.webp" type="image/webp">
+        <img src="img/11-resultado-sheets-4.png" alt="Clients tab with conditional formatting by status and a pipeline total row" loading="lazy" width="1600" height="754">
+      </picture>
+
+      <h2>What I wouldn't skip</h2>
+      <p>Three warnings, and they matter more than the rest of this post.</p>
+      <div class="post__avisos">
+        <p>The connector reads and writes any file your Google account can reach. If the account is shared, or holds third-party data, review the permission before turning this on.</p>
+        <p>"Always allow" stays in effect for the rest of that conversation. If you're going to test several spreadsheets, confirm one at a time at the start.</p>
+        <p>And Claude preserves what already exists by default, but you're the one who approves the final version. Check the numbers that matter before accepting. I compared the before and after totals, and that's how I confirmed the formula fix was actually correct.</p>
+      </div>
+
+      <h2>Next step</h2>
+      <p>If you have one of these spreadsheets sitting around, the test is quick. Duplicate it to keep the original intact, connect Drive in Claude and paste the prompt above. In under ten minutes you'll know if it works for you.</p>
     </article>
 
     <div class="post__compartilhar" data-compartilhar aria-label="Compartilhar este post"></div>
