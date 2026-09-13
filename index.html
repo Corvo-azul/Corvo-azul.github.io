@@ -186,9 +186,14 @@
     <!-- HERO: foto real + glow azul em CSS (o arquivo não é editado) -->
     <section class="hero" id="hero">
       <!-- Vídeo real (corvo no muro, 27–33 s do original, mudo, 1280 px, ~260 KB). Sem filtro de cor no
-           arquivo: o azul é o glow em CSS. Poster = quadro do próprio vídeo. -->
+           arquivo: o azul é o glow em CSS. Poster = quadro do próprio vídeo.
+           [13/09] Sem autoplay/preload aqui de propósito: autoplay é instrução, não
+           dica, e faz o navegador buscar os 290 KiB do arquivo assim que a tag é
+           parseada -- preload="none" sozinho não segura isso. A decisão de tocar
+           (e então buscar os bytes) sai do HTML e vira opt-in em script.js, só
+           para quem não pediu menos movimento e não está no celular. -->
       <div class="hero-corvo" id="hero-corvo" aria-hidden="true">
-        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/corvo-poster.webp">
+        <video id="hero-video" muted loop playsinline preload="none" poster="assets/corvo-poster.webp">
           <source src="assets/corvo.mp4" type="video/mp4">
         </video>
       </div>

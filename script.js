@@ -124,14 +124,23 @@
   // (2a visita, movimento reduzido, ou o script dela removeu o elemento), entra ja.
   if (document.getElementById('abertura')) window.addEventListener('abertura:fim', entrarHero, { once: true });
   else entrarHero();
-  /* Vídeo do hero: se falhar, cai no sheen da variante A; com reduced-motion, fica no poster */
+  /* Vídeo do hero: se falhar, cai no sheen da variante A; com reduced-motion, fica no poster.
+     [13/09] autoplay/preload="auto" saíram do HTML: autoplay é instrução, não dica --
+     buscava os 290 KiB assim que a tag era parseada, antes deste script rodar, e
+     removeAttribute('autoplay') depois disso só parava a reprodução, não a
+     transferência (quem pedia menos movimento pagava o download e não via o vídeo).
+     Decisão passa a ser toda daqui, opt-in: só desktop sem reduced-motion busca e
+     toca; celular e reduced-motion ficam no poster (23 KiB), que o atributo poster
+     já cobre sozinho, sem precisar de nenhum dos dois ramos abaixo. */
   const heroVideo = document.getElementById('hero-video');
   if (heroVideo) {
     const falhou = () => { const h = heroVideo.closest('.hero'); if (h) h.classList.add('sem-foto'); heroVideo.parentElement.remove(); };
     heroVideo.querySelector('source').addEventListener('error', falhou);
     heroVideo.addEventListener('error', falhou);
-    if (reduz) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
-    else heroVideo.play().catch(() => {});
+    if (!reduz && !mqMobile.matches) {
+      heroVideo.preload = 'auto';
+      heroVideo.play().catch(() => {});
+    }
   }
   const heroCorvo = document.getElementById('hero-corvo');
   if (heroCorvo && !reduz && temGsap) {

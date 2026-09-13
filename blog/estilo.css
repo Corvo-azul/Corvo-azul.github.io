@@ -448,6 +448,12 @@ article > picture:hover::after { opacity: 1; }
    esses glifos, então eles vinham da fonte do sistema e mudavam de desenho em
    cada aparelho. Em SVG ficam iguais em todos e não esperam fonte carregar. */
 .icone { width: 0.7em; height: 0.7em; display: inline-block; vertical-align: -0.02em; margin-right: 0.4em; flex: none; }
+/* [13/09] display:inline-block acima e regra de autor e vence o `[hidden] {
+   display:none}` do navegador (autor sempre ganha do agente do usuario, mesmo
+   com especificidade parecida) -- alternar hidden num .icone nao escondia
+   nada. Achado tentando trocar o icone de ouvir/parar do post: o estado no DOM
+   mudava, a tela nao. */
+.icone[hidden] { display: none; }
 
 /* 11. Alvos de toque no celular. Os links de navegacao tinham 17 a 22px de
    altura. A WCAG 2.5.8 exige 24px, e eles passavam de raspao so pela excecao

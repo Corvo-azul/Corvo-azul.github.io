@@ -102,12 +102,15 @@
       });
       // O botão de ouvir troca o próprio texto ao falar: os rótulos das duas
       // fases precisam acompanhar o idioma, senão ele volta ao português ao parar.
+      // [13/09] Escreve no <span data-rotulo>, não no botão: o botão também tem
+      // os dois <svg> do ícone, e sobrescrever o próprio botão os apagava.
       var ouvir = document.querySelector("[data-ouvir]");
       if (ouvir) {
         var d = ouvir.dataset;
+        var rotuloOuvir = ouvir.querySelector("[data-rotulo]");
         d.rotuloAtivoOuvir = id === "en" && d.rotuloOuvirEn ? d.rotuloOuvirEn : d.rotuloOuvir;
         d.rotuloAtivoParar = id === "en" && d.rotuloPararEn ? d.rotuloPararEn : d.rotuloParar;
-        if (!ouvir.dataset.falando) ouvir.textContent = d.rotuloAtivoOuvir;
+        if (!ouvir.dataset.falando && rotuloOuvir) rotuloOuvir.textContent = d.rotuloAtivoOuvir;
       }
       gravar(CHAVE_IDIOMA, id);
       aoTrocarIdioma.forEach(function (fn) { try { fn(id); } catch (e) { if (window.console) console.error("blog: reacao a troca de idioma falhou", e); } });
@@ -126,6 +129,22 @@
     if (!botao) return;
     if (!("speechSynthesis" in window)) { botao.hidden = true; return; }
     var falando = false;
+    var rotulo = botao.querySelector("[data-rotulo]");
+    var iconeOuvir = botao.querySelector("[data-icone-ouvir]");
+    var iconeParar = botao.querySelector("[data-icone-parar]");
+    // [13/09] Um só lugar decide o que aparece: o rótulo (texto) e qual ícone
+    // fica visível. Troca do botão.textContent pelo span evita apagar os <svg>.
+    // setAttribute/removeAttribute, não `.hidden`: em SVGElement essa
+    // propriedade não reflete no atributo (testado -- ficava true no objeto JS
+    // e a tela não mudava), só em HTMLElement.
+    function alternar(el, oculto) { if (!el) return; if (oculto) el.setAttribute("hidden", ""); else el.removeAttribute("hidden"); }
+    function mostrar(falandoAgora) {
+      if (rotulo) rotulo.textContent = falandoAgora
+        ? (botao.dataset.rotuloAtivoParar || botao.dataset.rotuloParar)
+        : (botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir);
+      alternar(iconeOuvir, falandoAgora);
+      alternar(iconeParar, !falandoAgora);
+    }
     // A voz padrao do sistema costuma ser a pior pt-BR disponivel (SAPI legado
     // no Windows). Preferencia: neural/online > nomes conhecidos > qualquer
     // pt-BR que nao seja "Desktop". O Chrome carrega a lista de forma assincrona,
@@ -142,7 +161,7 @@
     }
     window.speechSynthesis.getVoices();
     botao.addEventListener("click", function () {
-      if (falando) { window.speechSynthesis.cancel(); falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; return; }
+      if (falando) { window.speechSynthesis.cancel(); falando = false; delete botao.dataset.falando; mostrar(false); return; }
       var corpo = corpoAtivo();
       if (!corpo) return;
       var falandoEn = corpo.hasAttribute("data-post-corpo-en");
@@ -152,11 +171,11 @@
       // trocar de idioma no meio da fala e caso raro o bastante pra nao pesar aqui.
       var voz = falandoEn ? null : melhorVoz();
       if (voz) utter.voice = voz;
-      utter.onend = function () { falando = false; delete botao.dataset.falando; botao.textContent = botao.dataset.rotuloAtivoOuvir || botao.dataset.rotuloOuvir; };
+      utter.onend = function () { falando = false; delete botao.dataset.falando; mostrar(false); };
       window.speechSynthesis.speak(utter);
       falando = true;
       botao.dataset.falando = "1";
-      botao.textContent = botao.dataset.rotuloAtivoParar || botao.dataset.rotuloParar;
+      mostrar(true);
     });
   }
 

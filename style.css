@@ -16,7 +16,7 @@
   --azul-claro: #7EA2E4;   /* azul claro do manual; a placa do CTA le via color-mix, os glows usam o rgba literal */
   --azul-corvo: #2E5AAC;
   --cinza: #8E98A8;
-  --papel: #EDE9E1;
+  --papel: #F2EFE9;   /* [13/09] era #EDE9E1 (16,46:1); troca sem cruzar limite -- AAA pede 7, os dois passam com folga */
   /* [09/09] Era #9C6A3F, que nao e o cobre da marca. A identidade e as instrucoes
      do projeto dizem #B06A3B; o site publicava uma cor propria ha semanas. */
   --cobre: #B06A3B;

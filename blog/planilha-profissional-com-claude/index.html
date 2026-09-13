@@ -121,10 +121,23 @@
       <a href="../?tag=produtividade">#produtividade</a>
     </p>
 
+    <!-- [13/09] Emoji saiu do texto: renderiza sempre (todo SO tem fonte de
+         emoji), mas colorido e com desenho diferente por aparelho dentro de
+         uma pilula em mono, e sem aria-label o nome acessivel virava o nome do
+         emoji antes do rotulo. SVG substitui, escondido de leitor de tela; o
+         rotulo visivel e o nome acessivel agora sao o mesmo texto, um so. -->
     <button class="post__ouvir" data-ouvir
-            data-rotulo-ouvir="🔊 Ouvir este post" data-rotulo-parar="⏸ Parar"
-            data-rotulo-ouvir-en="🔊 Listen to this post" data-rotulo-parar-en="⏸ Stop"
-            data-i18n-pt="🔊 Ouvir este post" data-i18n-en="🔊 Listen to this post">🔊 Ouvir este post</button>
+            data-rotulo-ouvir="Ouvir este post" data-rotulo-parar="Parar"
+            data-rotulo-ouvir-en="Listen to this post" data-rotulo-parar-en="Stop">
+      <svg class="icone" data-icone-ouvir viewBox="0 0 16 14" aria-hidden="true" focusable="false">
+        <path d="M1 5h3l4-4v12L4 9H1V5Z" fill="currentColor"/>
+        <path d="M11 4.5c1.2 1 1.2 4 0 5M13 2.5c2.2 2 2.2 7.5 0 9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <svg class="icone" data-icone-parar viewBox="0 0 10 10" aria-hidden="true" focusable="false" hidden>
+        <path d="M2 1h2v8H2zM6 1h2v8H6z" fill="currentColor"/>
+      </svg>
+      <span data-rotulo data-i18n-pt="Ouvir este post" data-i18n-en="Listen to this post">Ouvir este post</span>
+    </button>
 
     <div class="post__toc" data-sumario>
       <p class="post__toc-titulo" data-i18n-pt="Neste post" data-i18n-en="In this post">Neste post</p>

@@ -278,8 +278,17 @@ if (orfaos.length) {
       for (const c of dados.codepoints) cobertos.add(c);
     }
   }
-  // Emoji nunca vem da fonte do site: o sistema desenha, e isso e esperado.
-  const ehEmoji = (c) => /\p{Extended_Pictographic}/u.test(String.fromCodePoint(c));
+  // [13/09] Extended_Pictographic tambem cobre caracteres que sao tipografia,
+  // nao emoji: ©, ▶ e ⏸ tem essa propriedade e nunca renderizaram como emoji
+  // aqui -- testado, /\p{Extended_Pictographic}/u da true pros tres. A isencao
+  // os deixava invisiveis ao guarda mesmo sendo texto que precisa vir da fonte
+  // do site; foi assim que o © do rodape sumiu num recorte de fonte sem o
+  // guarda acusar (o comentario abaixo, de antes desta correcao, dizia que
+  // isso tinha sido fechado so por incluir home/404 no escopo -- nao fechava
+  // nada enquanto a isencao cobrisse o proprio caractere). Emoji_Presentation
+  // e mais estreita: cobre so o que renderiza como emoji por padrao (testado:
+  // 🔊 sim, ©/▶/⏸ nao).
+  const ehEmoji = (c) => /\p{Emoji_Presentation}/u.test(String.fromCodePoint(c));
   // A home e o 404 entram na checagem: foi por eles ficarem de fora que o © do
   // rodape passou despercebido quando um recorte de fonte o derrubou.
   const arquivos = [
@@ -287,20 +296,36 @@ if (orfaos.length) {
     join(RAIZ, 'privacidade', 'index.html'),
     join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html')),
   ];
+  // [13/09] data-i18n-pt/en e data-i18n-ph-pt/en viram texto e placeholder
+  // visiveis via JS (initIdioma em blog/script.js), mas moram dentro da tag --
+  // o replace de tags abaixo os apaga junto. Foi assim que o guarda deixou de
+  // ver 4 das 5 ocorrencias do 🔊 do botao de ouvir (so a que estava fora da
+  // tag, no texto do botao, sobrevivia ao replace). Varridos a parte, do HTML
+  // ainda com as tags, restrito a esses quatro nomes -- nao um "pega tudo que
+  // parece atributo", que enxergaria href/class/id e coisas que nunca
+  // renderizam.
+  const ATRIBUTOS_I18N = ['data-i18n-pt', 'data-i18n-en', 'data-i18n-ph-pt', 'data-i18n-ph-en'];
   const fora = new Map();
   for (const arq of arquivos) {
     if (!existsSync(arq)) continue;
-    const texto = readFileSync(arq, 'utf8')
-      // Comentario HTML sai ANTES das tags: `<[^>]+>` quebraria um comentario em
-      // pedacos no primeiro `>` que houvesse dentro dele e deixaria o miolo passar
-      // como texto. Sem isto o guarda acusava o `~` de dois comentarios do
-      // index.html, que nao renderizam em lugar nenhum -- falso positivo provado
-      // pelo agente local: tirando o unico `~` visivel, o aviso continuava.
-      .replace(/<!--[\s\S]*?-->/g, ' ')
+    const bruto = readFileSync(arq, 'utf8');
+    // Comentario HTML sai ANTES das tags: `<[^>]+>` quebraria um comentario em
+    // pedacos no primeiro `>` que houvesse dentro dele e deixaria o miolo passar
+    // como texto. Sem isto o guarda acusava o `~` de dois comentarios do
+    // index.html, que nao renderizam em lugar nenhum -- falso positivo provado
+    // pelo agente local: tirando o unico `~` visivel, o aviso continuava.
+    const semComentario = bruto.replace(/<!--[\s\S]*?-->/g, ' ');
+    const texto = semComentario
       .replace(/<script[\s\S]*?<\/script>/g, '')
       .replace(/<style[\s\S]*?<\/style>/g, '')
       .replace(/<[^>]+>/g, ' ');
-    for (const ch of texto) {
+    let textoAtributos = '';
+    for (const nome of ATRIBUTOS_I18N) {
+      const re = new RegExp(nome + '="([^"]*)"', 'g');
+      let m;
+      while ((m = re.exec(semComentario))) textoAtributos += m[1] + ' ';
+    }
+    for (const ch of texto + textoAtributos) {
       const c = ch.codePointAt(0);
       if (c < 0x20 || cobertos.has(c) || ehEmoji(c)) continue;
       if (!fora.has(ch)) fora.set(ch, new Set());
