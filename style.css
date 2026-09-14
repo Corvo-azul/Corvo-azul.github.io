@@ -7,7 +7,6 @@
   color-scheme: dark;
 
   --preto: #07090D;
-  --grafite: #07090D;      /* mesmo fundo da página: é o "grafite" do gradiente de legibilidade */
   --carvao: #0E1219;
   --navy: #141F38;
   --aco: #2B4C8C;
@@ -180,7 +179,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   background:
     radial-gradient(60% 70% at 35% 45%, rgba(26, 31, 38, 0.45), transparent 75%),
     linear-gradient(rgba(26, 31, 38, 0.35), rgba(26, 31, 38, 0.6)),
-    linear-gradient(to top, var(--grafite) 0%, transparent 35%);
+    linear-gradient(to top, var(--preto) 0%, transparent 35%);
 }
 /* Fallback sem foto: blobs de sheen da variante A */
 .hero__fundo { position: absolute; inset: 0; z-index: -1; }
@@ -483,7 +482,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   background: radial-gradient(40% 50% at 50% 42%, rgba(126,162,228,.6), transparent 70%), linear-gradient(200deg, rgba(46,90,172,.3), transparent 60%);
   mix-blend-mode: color-dodge; animation: glowDeriva 9s ease-in-out infinite alternate; transform-origin: 50% 42%;
 }
-.final-corvo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, var(--grafite) 0%, rgba(7,9,13,.55) 45%, var(--grafite) 100%); }
+.final-corvo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, var(--preto) 0%, rgba(7,9,13,.55) 45%, var(--preto) 100%); }
 .final__glow { position: absolute; left: 50%; top: 50%; border-radius: 50%; filter: blur(70px); mix-blend-mode: screen; transform: translate(-50%, -50%); will-change: transform, opacity; }
 .final__glow--azul { width: 70vw; height: 70vw; max-width: 900px; max-height: 900px; background: radial-gradient(closest-side, rgba(126,162,228,.55), rgba(46,90,172,.25) 45%, transparent 70%); animation: pulsoAzul 6s ease-in-out infinite; }
 .final__glow--cobre { width: 40vw; height: 40vw; max-width: 520px; max-height: 520px; margin-left: 14vw; margin-top: 10vh; background: radial-gradient(closest-side, rgba(176,106,59,.45), transparent 70%); animation: pulsoCobre 8s ease-in-out infinite; }
