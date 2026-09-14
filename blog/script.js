@@ -110,7 +110,7 @@
         var rotuloOuvir = ouvir.querySelector("[data-rotulo]");
         d.rotuloAtivoOuvir = id === "en" && d.rotuloOuvirEn ? d.rotuloOuvirEn : d.rotuloOuvir;
         d.rotuloAtivoParar = id === "en" && d.rotuloPararEn ? d.rotuloPararEn : d.rotuloParar;
-        if (!ouvir.dataset.falando && rotuloOuvir) rotuloOuvir.textContent = d.rotuloAtivoOuvir;
+        if (rotuloOuvir) rotuloOuvir.textContent = ouvir.dataset.falando ? d.rotuloAtivoParar : d.rotuloAtivoOuvir;
       }
       gravar(CHAVE_IDIOMA, id);
       aoTrocarIdioma.forEach(function (fn) { try { fn(id); } catch (e) { if (window.console) console.error("blog: reacao a troca de idioma falhou", e); } });
