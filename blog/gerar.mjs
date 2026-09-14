@@ -309,6 +309,16 @@ if (orfaos.length) {
   // enxergaria href/class/id e coisas que nunca renderizam.
   const PREFIXO_ATRIBUTOS_TEXTO = /\bdata-(?:i18n|rotulo)-[a-z-]+="([^"]*)"/g;
   const fora = new Map();
+  // [14/09] Segundo aviso, categoria diferente do de cobertura de fonte acima.
+  // Emoji num rotulo de controle (data-i18n-*/data-rotulo-*) e o mesmo defeito
+  // ja corrigido no botao de ouvir -- emoji sem aria-label, apagado pelo
+  // textContent do JS -- reaparecendo se um post novo nascer de copiar/colar
+  // o antigo. Por isso este laco NAO tem a isencao de Emoji_Presentation do
+  // guarda de fonte acima: ele acusa justamente o emoji que o outro deixa
+  // passar (o sistema cobre o glifo, mas o glifo nao devia estar no rotulo).
+  // Emoji em corpo de post continua legitimo -- este laco nunca olha o corpo,
+  // so o texto que sai de dentro dessas duas familias de atributo.
+  const rotulos = new Map();
   for (const arq of arquivos) {
     if (!existsSync(arq)) continue;
     const bruto = readFileSync(arq, 'utf8');
@@ -325,7 +335,14 @@ if (orfaos.length) {
     let textoAtributos = '';
     let m;
     PREFIXO_ATRIBUTOS_TEXTO.lastIndex = 0;
-    while ((m = PREFIXO_ATRIBUTOS_TEXTO.exec(semComentario))) textoAtributos += m[1] + ' ';
+    while ((m = PREFIXO_ATRIBUTOS_TEXTO.exec(semComentario))) {
+      textoAtributos += m[1] + ' ';
+      for (const ch of m[1]) {
+        if (!/\p{Emoji_Presentation}/u.test(ch)) continue;
+        if (!rotulos.has(ch)) rotulos.set(ch, new Set());
+        rotulos.get(ch).add(arq.replace(RAIZ, '').replace(/\\/g, '/'));
+      }
+    }
     for (const ch of texto + textoAtributos) {
       const c = ch.codePointAt(0);
       if (c < 0x20 || cobertos.has(c) || ehEmoji(c)) continue;
@@ -336,6 +353,11 @@ if (orfaos.length) {
   if (fora.size) {
     for (const [ch, onde] of fora) {
       console.warn(`aviso: "${ch}" (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}) esta fora do subconjunto das fontes e vai sair na fonte do sistema, com desenho diferente em cada aparelho: ${[...onde].join(', ')}`);
+    }
+  }
+  if (rotulos.size) {
+    for (const [ch, onde] of rotulos) {
+      console.warn(`aviso: "${ch}" (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}) esta num rotulo de controle (data-i18n-*/data-rotulo-*) -- emoji ai fica sem aria-label e some no textContent do JS, o defeito ja corrigido no botao de ouvir: ${[...onde].join(', ')}`);
     }
   }
 }
