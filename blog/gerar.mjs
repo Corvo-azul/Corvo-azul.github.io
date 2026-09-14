@@ -301,10 +301,13 @@ if (orfaos.length) {
   // o replace de tags abaixo os apaga junto. Foi assim que o guarda deixou de
   // ver 4 das 5 ocorrencias do 🔊 do botao de ouvir (so a que estava fora da
   // tag, no texto do botao, sobrevivia ao replace). Varridos a parte, do HTML
-  // ainda com as tags, restrito a esses quatro nomes -- nao um "pega tudo que
-  // parece atributo", que enxergaria href/class/id e coisas que nunca
-  // renderizam.
-  const ATRIBUTOS_I18N = ['data-i18n-pt', 'data-i18n-en', 'data-i18n-ph-pt', 'data-i18n-ph-en'];
+  // ainda com as tags. [14/09] Era lista fechada de quatro nomes; o botao de
+  // ouvir tambem guarda rotulo em data-rotulo-ouvir/parar(-en), que a lista
+  // nao cobria -- funcionava por acaso, so porque o texto visivel do span
+  // duplicava o mesmo valor. Trocado para prefixo `data-i18n-`/`data-rotulo-`,
+  // ainda restrito a esses dois -- nao um "pega tudo que parece atributo", que
+  // enxergaria href/class/id e coisas que nunca renderizam.
+  const PREFIXO_ATRIBUTOS_TEXTO = /\bdata-(?:i18n|rotulo)-[a-z-]+="([^"]*)"/g;
   const fora = new Map();
   for (const arq of arquivos) {
     if (!existsSync(arq)) continue;
@@ -320,11 +323,9 @@ if (orfaos.length) {
       .replace(/<style[\s\S]*?<\/style>/g, '')
       .replace(/<[^>]+>/g, ' ');
     let textoAtributos = '';
-    for (const nome of ATRIBUTOS_I18N) {
-      const re = new RegExp(nome + '="([^"]*)"', 'g');
-      let m;
-      while ((m = re.exec(semComentario))) textoAtributos += m[1] + ' ';
-    }
+    let m;
+    PREFIXO_ATRIBUTOS_TEXTO.lastIndex = 0;
+    while ((m = PREFIXO_ATRIBUTOS_TEXTO.exec(semComentario))) textoAtributos += m[1] + ' ';
     for (const ch of texto + textoAtributos) {
       const c = ch.codePointAt(0);
       if (c < 0x20 || cobertos.has(c) || ehEmoji(c)) continue;
