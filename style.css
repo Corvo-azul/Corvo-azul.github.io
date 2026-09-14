@@ -7,13 +7,11 @@
   color-scheme: dark;
 
   --preto: #07090D;
-  /* [14/09] Grafite de verdade (o da marca), nao o fundo da pagina -- ate 13/09
-     era var(--grafite) = #07090D, mesmo valor de --preto, e a mesma declaracao
-     do veu do hero misturava rgba(26,31,38,...) (este grafite aqui) com
-     var(--grafite) resolvendo pra outra cor. Nenhuma superficie do site usa
-     este tom: ele vive na thumbnail, no banner e no fundo de video, que saem
-     do Canva/OBS -- o site ser mais escuro que essas pecas e escolha (decisao
-     4), nao inconsistencia. */
+  /* [14/09] Grafite da MARCA (decisao 4), nao o fundo da pagina -- ate 13/09 este
+     nome era alias de #07090D, o mesmo valor de --preto, e a declaracao do veu do
+     hero misturava os dois sentidos. Usado aqui no veu de legibilidade do hero
+     (via color-mix) e, fora do site, no campo da thumbnail, no banner e no fundo
+     de video. O site ser mais escuro que essas pecas e escolha, nao inconsistencia. */
   --grafite: #1A1F26;
   --carvao: #0E1219;
   --navy: #141F38;
