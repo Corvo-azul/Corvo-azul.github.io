@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GHV4D0XHY8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GHV4D0XHY8');
+  </script>
+  <!-- End Google Analytics 4 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newsletter — Corvo Azul</title>
+  <meta name="description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou no caminho e o commit que resolveu. Sem curso para vender.">
+  <meta name="theme-color" content="#07090D">
+  <link rel="canonical" href="https://corvoazul.com/newsletter/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Corvo Azul">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:url" content="https://corvoazul.com/newsletter/">
+  <meta property="og:title" content="Newsletter — Corvo Azul">
+  <meta property="og:description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou e o commit que resolveu.">
+  <meta property="og:image" content="https://corvoazul.com/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Newsletter — Corvo Azul">
+  <meta name="twitter:description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou e o commit que resolveu.">
+  <meta name="twitter:image" content="https://corvoazul.com/assets/og.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../assets/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180.png">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <a class="pular" href="#newsletter-topo">Pular para o conteúdo</a>
+
+  <header class="nav" id="nav">
+    <a class="nav__marca" href="/" aria-label="Corvo Azul — início">
+      <img src="../assets/corvo-glifo.svg" alt="" width="28" height="28" decoding="async">
+      <span>Corvo Azul</span>
+    </a>
+    <nav class="nav__links" id="nav-links" aria-label="Seções">
+      <a href="/#o-que-e">O que é</a>
+      <a href="/#eixos">Eixos</a>
+      <a href="/#log">Log</a>
+      <a href="/#contato">Contato</a>
+      <a class="so-mobile" href="/blog/">Blog</a>
+      <a class="so-mobile" href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
+      <a class="so-mobile nav__links-cta" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
+      <a class="so-mobile nav__links-mail" href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>
+    </nav>
+    <nav class="nav__extras" aria-label="Blog e quiz">
+      <a href="/blog/">Blog</a>
+      <a href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
+    </nav>
+    <a class="nav__cta nav__cta--cheio" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
+    <button class="nav__menu" id="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </header>
+
+  <main id="newsletter-topo">
+    <section class="newsletter">
+      <div class="newsletter__corpo">
+        <p class="rotulo">Newsletter · quinta-feira</p>
+        <h1>Seis meses de registro, <span class="acento">na sua caixa.</span></h1>
+        <p class="lead">No dia em que o vídeo sai, um e-mail com o que foi construído na semana, o que quebrou no caminho e o commit que resolveu.</p>
+
+        <div class="terminal terminal--estatico">
+          <div class="terminal__barra"><i></i><i></i><i></i><span class="terminal__titulo">assinar · corvoazul.com</span></div>
+          <pre class="terminal__corpo"><span class="p">$</span> assinar --log semanal
+<span class="d">edição nº 1 sai na quinta, junto com o vídeo</span>
+<span class="d">sem curso para vender · cancelar em um clique</span>
+<span class="ok">arquivo público em corvoazul.com/blog</span></pre>
+        </div>
+
+        <!-- [14/09] Sem backend de e-mail configurado ainda (sem Buttondown/ConvertKit/
+             Mailchimp/etc. no projeto). Decisão registrada: publicar o formulário
+             visualmente, com preventDefault, até escolher um serviço -- mesmo estado
+             do mockup no canvas do Claude Design. Não finge que envia. -->
+        <form class="newsletter__form" onsubmit="event.preventDefault()">
+          <label for="newsletter-email">Seu e-mail</label>
+          <input type="email" id="newsletter-email" name="email" placeholder="voce@dominio.com" required>
+          <button class="btn btn--primario" type="submit">
+            <span>Entrar no log</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <div class="newsletter__chega">
+        <p class="rotulo">O que chega</p>
+        <ol class="newsletter__lista">
+          <li><span class="newsletter__num">01</span><span><b>O vídeo da semana,</b> com o resumo em três linhas para quem vai assistir depois.</span></li>
+          <li><span class="newsletter__num">02</span><span><b>O commit que resolveu,</b> com link para o diff e a decisão por escrito.</span></li>
+          <li><span class="newsletter__num">03</span><span><b>O que não funcionou,</b> antes de virar vídeo — ou em vez de virar vídeo.</span></li>
+        </ol>
+        <p class="newsletter__nota">Um e-mail por semana. Sem curso para vender. Cancelar em um clique.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="rodape__marca">
+      <img src="../assets/corvo-glifo.svg" alt="" width="36" height="36" decoding="async">
+      <span class="wordmark">Corvo Azul</span>
+    </div>
+    <div class="rodape__links">
+      <a href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>
+      <a href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://github.com/Corvo-azul" target="_blank" rel="noopener">GitHub</a>
+      <a href="/privacidade/">Privacidade</a>
+    </div>
+    <small>© 2026 · Software de verdade construído com IA.</small>
+  </footer>
+
+  <!-- Página secundária, sem hero/cortina/scroll-linked: não carrega script.js
+       (feito para o index, assume #progresso/#final/#vivo que não existem aqui —
+       mesmo motivo já registrado em privacidade/index.html). Só o menu mobile e a
+       sombra da nav ao rolar, que é tudo que esta página precisa da barra. -->
+  <script>
+    (function () {
+      var nav = document.getElementById('nav');
+      var onScroll = function () { nav.classList.toggle('rolou', window.scrollY > 24); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      var menuBtn = document.getElementById('menu-btn');
+      var links = document.getElementById('nav-links');
+      function setMenu(aberto) {
+        links.classList.toggle('aberto', aberto);
+        nav.classList.toggle('menu-aberto', aberto);
+        document.body.classList.toggle('menu-aberto', aberto);
+        menuBtn.setAttribute('aria-expanded', String(aberto));
+        menuBtn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      }
+      menuBtn.addEventListener('click', function () { setMenu(!links.classList.contains('aberto')); });
+      links.addEventListener('click', function (e) { if (e.target === links) setMenu(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+    })();
+  </script>
+</body>
+</html>
