@@ -357,7 +357,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 
 /* Link gigante do GitHub (da C): texto sobe e o marquee entra por baixo; o clique dispara a onda */
 .link-gigante { display: block; position: relative; padding: 0.5rem 0 1.5rem; margin-bottom: 3rem; border-bottom: 1px solid var(--linha-forte); overflow: hidden; }
-.link-gigante__texto { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(1.9rem, 6.4vw, 6rem); letter-spacing: -0.05em; line-height: 1.12; padding-bottom: 0.06em; transition: transform 0.7s var(--ease), color 0.4s; }
+.link-gigante__texto { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(1.9rem, 6.4vw, 6rem); letter-spacing: -0.04em; line-height: 1.12; padding-bottom: 0.06em; transition: transform 0.7s var(--ease), color 0.4s; }
 .link-gigante__marquee { position: absolute; left: 0; bottom: 0; width: 100%; height: 1.4rem; overflow: hidden; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gelo); transform: translateY(100%); transition: transform 0.6s var(--ease); white-space: nowrap; }
 .link-gigante__marquee span { display: inline-block; animation: correr 16s linear infinite; }
 @keyframes correr { to { transform: translateX(-50%); } }
