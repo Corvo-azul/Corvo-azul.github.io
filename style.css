@@ -458,6 +458,11 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 @media (max-width: 860px) { .contato__glifo { display: none; } }
 .link-gigante--mail { margin-top: 0.5rem; margin-bottom: 0; }
 .link-gigante--mail .link-gigante__texto { font-size: clamp(1.4rem, 3.6vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+/* [14/09] .contato__corpo tem so 2 filhos diretos (marca, lado) -- newsletter e
+   links moram JUNTOS dentro de .contato__lado, senao um terceiro item no grid de
+   2 colunas quebra a linha e o link-gigante recebe os links embaixo dele, na
+   coluna errada. */
+.contato__lado { display: flex; flex-direction: column; }
 .contato__newsletter { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--linha-forte); }
 .contato__newsletter p { margin: 0; color: var(--cinza); font-size: 0.92rem; line-height: 1.5; max-width: 30ch; }
 .contato__links { display: flex; flex-direction: column; font-family: var(--mono); font-size: 0.85rem; color: var(--cinza); }
