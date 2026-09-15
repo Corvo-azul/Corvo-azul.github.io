@@ -474,4 +474,87 @@
   }
 
   document.querySelectorAll('main img:not([fetchpriority])').forEach((img) => img.setAttribute('loading', 'lazy'));
+
+  /* ---------- Neve na secao de Contato ----------
+     So a secao de contato, nao a pagina inteira: poucos pontos, devagar, baixa
+     opacidade -- reforca o clima sem competir com o texto. So desenha enquanto a
+     secao esta na tela (IntersectionObserver) e nunca roda com motion reduzido. */
+  (function () {
+    const canvas = document.querySelector('.contato__neve');
+    if (!canvas || reduz) return;
+    const ctx = canvas.getContext('2d');
+    const secao = canvas.closest('.contato');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let pontos = [];
+    let ativo = false;
+    let raf = null;
+    let ultimo = 0;
+
+    function criarPonto(w, h, aleatorioY) {
+      return {
+        x: Math.random() * w,
+        y: aleatorioY ? Math.random() * h : -4,
+        r: 0.6 + Math.random() * 1.6,
+        vy: 6 + Math.random() * 10,
+        vx: (Math.random() - 0.5) * 6,
+        op: 0.12 + Math.random() * 0.3,
+      };
+    }
+
+    function dimensionar() {
+      const r = secao.getBoundingClientRect();
+      canvas.width = r.width * dpr;
+      canvas.height = r.height * dpr;
+      canvas.style.width = r.width + 'px';
+      canvas.style.height = r.height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // 1 ponto por ~26.000px² de secao, entre 18 e 46 -- bastante em qualquer
+      // tela sem virar neblina em telas grandes.
+      const alvo = Math.max(18, Math.min(46, Math.round((r.width * r.height) / 26000)));
+      pontos = Array.from({ length: alvo }, () => criarPonto(r.width, r.height, true));
+    }
+
+    function quadro(t) {
+      if (!ativo) return;
+      const dt = ultimo ? Math.min((t - ultimo) / 1000, 0.05) : 0;
+      ultimo = t;
+      const w = canvas.width / dpr, h = canvas.height / dpr;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--gelo').trim() || '#B9CCF0';
+      for (const p of pontos) {
+        p.y += p.vy * dt;
+        p.x += p.vx * dt;
+        if (p.y > h + 4) Object.assign(p, criarPonto(w, h, false));
+        ctx.globalAlpha = p.op;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(quadro);
+    }
+
+    function ligar() {
+      if (ativo) return;
+      ativo = true; ultimo = 0;
+      raf = requestAnimationFrame(quadro);
+    }
+    function desligar() {
+      ativo = false;
+      if (raf) cancelAnimationFrame(raf);
+    }
+
+    dimensionar();
+    window.addEventListener('resize', dimensionar, { passive: true });
+
+    const io = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => { if (e.isIntersecting) ligar(); else desligar(); });
+    }, { threshold: 0.05 });
+    io.observe(secao);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) desligar();
+      else if (secao.getBoundingClientRect().top < window.innerHeight) ligar();
+    });
+  })();
 })();

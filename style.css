@@ -446,7 +446,12 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 /* ---------- 04 — Contato (da B) ---------- */
 .contato { position: relative; padding: var(--ritmo-alto) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }
 .contato::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(40% 70% at 0% 100%, rgba(126,162,228,.22), transparent 70%); mix-blend-mode: screen; }
+/* Neve: canvas cobrindo a secao inteira, sem o max-width/centro que .contato > *
+   da aos outros filhos -- por isso a regra dele vem depois e pisa a anterior
+   (mesma especificidade, ordem de fonte decide). Sem JS ou com motion reduzido
+   o elemento so fica vazio, nunca escondido a forca -- ver script.js. */
 .contato > * { position: relative; max-width: var(--largura); margin-left: auto; margin-right: auto; }
+.contato__neve { position: absolute; inset: 0; max-width: none; margin: 0; pointer-events: none; display: block; }
 /* Duas colunas sobre a mesma regua: o e-mail a esquerda, os links a direita,
    alinhados pela base. Antes os dois links ficavam sozinhos numa linha de 1280px.
    O e-mail perde tamanho e aperto de letras (era 800/5.6rem/-0.05em): em 5.6rem o
