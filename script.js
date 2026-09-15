@@ -497,7 +497,7 @@
         r: 0.6 + Math.random() * 1.6,
         vy: 6 + Math.random() * 10,
         vx: (Math.random() - 0.5) * 6,
-        op: 0.12 + Math.random() * 0.3,
+        op: 0.15 + Math.random() * 0.35,
       };
     }
 
@@ -508,9 +508,9 @@
       canvas.style.width = r.width + 'px';
       canvas.style.height = r.height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // 1 ponto por ~26.000px² de secao, entre 18 e 46 -- bastante em qualquer
-      // tela sem virar neblina em telas grandes.
-      const alvo = Math.max(18, Math.min(46, Math.round((r.width * r.height) / 26000)));
+      // [14/09] 1 ponto por ~13.000px² de secao, entre 32 e 90 -- dobrado em
+      // relacao a versao original (26.000px²/18-46), que ficou sutil demais.
+      const alvo = Math.max(32, Math.min(90, Math.round((r.width * r.height) / 13000)));
       pontos = Array.from({ length: alvo }, () => criarPonto(r.width, r.height, true));
     }
 
