@@ -1,0 +1,115 @@
+/* Páginas de serviço. Carrega depois do style.css e usa os tokens dele.
+   Sem script.js aqui: nada começa invisível, nada depende de biblioteca. */
+
+.sv { --largura-sv: 72rem; }
+.sv main { overflow-x: clip; }
+
+/* ---------- topo ---------- */
+.sv-topo {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 2rem;
+  padding: 0.9rem var(--lateral);
+  background: rgba(7, 9, 13, 0.72);
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--linha);
+}
+.sv-marca { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--display); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--papel); }
+.sv-nav { display: flex; gap: 1.75rem; margin-left: auto; font-size: 0.95rem; color: var(--cinza); }
+.sv-nav a { padding: 0.6rem 0; transition: color 0.3s; }
+.sv-nav a:hover { color: var(--papel); }
+.sv-topo .nav__cta { white-space: nowrap; }
+@media (max-width: 40rem) {
+  .sv-topo { gap: 1rem; }
+  .sv-nav { gap: 1rem; font-size: 0.9rem; }
+  .sv-marca span { display: none; }
+  .sv-topo .nav__cta { display: none; }
+}
+
+/* ---------- hero ---------- */
+.sv-hero {
+  max-width: var(--largura-sv); margin: 0 auto;
+  padding: clamp(2.5rem, 7vh, 5rem) var(--lateral) var(--ritmo-meio);
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+}
+.sv-hero--lista { grid-template-columns: 1fr; padding-bottom: 0; }
+.sv-hero h1 { font-size: clamp(2.3rem, 5.2vw, 4.2rem); text-wrap: balance; }
+.sv-hero .lead { max-width: 46ch; }
+.sv-migalha { display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 1.6rem; font-family: var(--mono); font-size: 0.8rem; color: var(--cinza); transition: color 0.3s; }
+.sv-migalha:hover { color: var(--papel); }
+.sv-acoes { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+.sv-visual { width: 100%; aspect-ratio: 4 / 3; }
+.sv-visual .eixo__glifo { width: 66%; }
+.sv-visual .eixo__num { font-size: clamp(4rem, 8vw, 7.5rem); }
+@media (max-width: 52rem) {
+  .sv-hero { grid-template-columns: 1fr; }
+  .sv-visual { order: -1; aspect-ratio: 16 / 9; }
+  .sv-visual .eixo__num { font-size: clamp(3.5rem, 16vw, 6rem); }
+  .sv-visual .eixo__glifo { width: 48%; }
+}
+
+/* ---------- blocos ---------- */
+.sv-bloco { max-width: var(--largura-sv); margin: 0 auto; padding: var(--ritmo-meio) var(--lateral); border-top: 1px solid var(--linha); }
+.sv-bloco > h2, .sv-outros > h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); margin-bottom: 1.6rem; }
+
+.sv-precos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.sv-caixa { border: 1px solid var(--linha); border-radius: 14px; padding: 1.4rem 1.5rem; background: var(--carvao); }
+.sv-caixa p { color: var(--cinza); font-size: 0.97rem; line-height: 1.55; }
+.sv-caixa--nosso { border-color: rgba(108, 155, 234, 0.45); background: linear-gradient(160deg, rgba(46, 90, 172, 0.22), var(--carvao) 70%); }
+.sv-caixa__rotulo { font-family: var(--mono); font-size: 0.7rem !important; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brilho) !important; margin-bottom: 0.7rem; }
+.sv-caixa .sv-valor { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(1.45rem, 2.4vw, 1.9rem); line-height: 1.1; color: var(--papel); margin-bottom: 0.6rem; }
+.sv-caixa .sv-valor--menor { font-size: clamp(1.15rem, 1.8vw, 1.4rem); }
+.sv-nota { margin-top: 1.2rem; font-size: 0.85rem; color: var(--cinza); max-width: 70ch; line-height: 1.6; }
+@media (max-width: 52rem) { .sv-precos { grid-template-columns: 1fr; } }
+
+.sv-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem 2.5rem; }
+.sv-lista li { position: relative; padding-left: 1.9rem; color: var(--papel); line-height: 1.55; }
+.sv-lista li::before {
+  content: ""; position: absolute; left: 0; top: 0.42em; width: 0.9rem; height: 0.5rem;
+  border-left: 2px solid var(--brilho); border-bottom: 2px solid var(--brilho); transform: rotate(-45deg);
+}
+.sv-lista--nao li { color: var(--cinza); }
+.sv-lista--nao li::before { width: 0.75rem; height: 2px; border: 0; background: var(--cinza); transform: none; top: 0.75em; }
+@media (max-width: 52rem) { .sv-lista { grid-template-columns: 1fr; } }
+
+.sv-passos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+.sv-passos li { display: flex; gap: 1rem; border: 1px solid var(--linha); border-radius: 14px; padding: 1.3rem 1.4rem; }
+.sv-passos__n { font-family: var(--mono); font-size: 0.8rem; color: var(--brilho); padding-top: 0.25rem; }
+.sv-passos h3 { font-size: 1.12rem; letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 0.45rem; }
+.sv-passos p { color: var(--cinza); font-size: 0.95rem; line-height: 1.55; }
+
+.sv-condicoes { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.4rem 2.5rem; }
+.sv-condicoes dt { font-family: var(--display); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.3rem; }
+.sv-condicoes dd { margin: 0; color: var(--cinza); font-size: 0.95rem; line-height: 1.55; }
+
+/* ---------- fechamento ---------- */
+.sv-fecho { max-width: var(--largura-sv); margin: 0 auto; padding: var(--ritmo) var(--lateral); border-top: 1px solid var(--linha); text-align: center; display: flex; flex-direction: column; align-items: center; }
+.sv-fecho h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); text-wrap: balance; }
+.sv-fecho .lead { margin: 1rem auto 2.2rem; }
+
+.sv-outros { max-width: var(--largura-sv); margin: 0 auto; padding: 0 var(--lateral) var(--ritmo); }
+.sv-outros ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.6rem; }
+.sv-outros a { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 0.25rem 0.7rem; padding: 1rem 1.1rem; border: 1px solid var(--linha); border-radius: 12px; transition: border-color 0.3s, background 0.3s; min-height: 44px; }
+.sv-outros a:hover { border-color: var(--brilho); background: rgba(108, 155, 234, 0.06); }
+.sv-outros__n { font-family: var(--mono); font-size: 0.75rem; color: var(--brilho); }
+.sv-outros__nome { font-weight: 600; line-height: 1.3; }
+.sv-outros__preco { grid-column: 2; font-family: var(--mono); font-size: 0.72rem; color: var(--cinza); }
+
+/* ---------- lista em /servicos/ ---------- */
+.eixos--lista { padding-top: var(--ritmo-meio); }
+
+/* ---------- rodapé e CTA do celular ---------- */
+.sv-rodape { border-top: 1px solid var(--linha); padding: 2rem var(--lateral) 6rem; text-align: center; color: var(--cinza); font-size: 0.85rem; display: grid; gap: 0.4rem; }
+.sv-rodape a { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--linha-forte); }
+.sv-rodape a:hover { color: var(--papel); }
+.sv-cta-movel { display: none; }
+@media (max-width: 52rem) {
+  .sv-cta-movel {
+    display: inline-flex; align-items: center; gap: 0.5rem; position: fixed; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 35;
+    padding: 0.85rem 1.4rem; border-radius: 999px; background: var(--papel); color: var(--preto); font-weight: 600; font-size: 0.95rem;
+    box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.7); white-space: nowrap;
+  }
+  .sv-cta-movel { transition: opacity 0.3s, transform 0.3s var(--ease); }
+  .sv-cta-movel--oculto { opacity: 0; pointer-events: none; transform: translate(-50%, 1rem); }
+  .sv-rodape { padding-bottom: 7rem; }
+}
+@media (prefers-reduced-motion: reduce) { .sv * { transition: none !important; } }

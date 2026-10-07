@@ -176,6 +176,7 @@ writeFileSync(join(AQUI, 'feed.xml'), rss);
 
 // ---- sitemap (site + blog inteiro) ----
 const hoje = new Date().toISOString().slice(0, 10);
+const servicosJson = JSON.parse(readFileSync(join(RAIZ, 'servicos', 'servicos.json'), 'utf8'));
 const urls = [
   { loc: `${SITE}/`, mod: hoje, freq: 'weekly', pri: '1.0' },
   { loc: `${SITE}/blog/`, mod: posts[0]?.data || hoje, freq: 'weekly', pri: '0.9' },
@@ -183,6 +184,9 @@ const urls = [
   // lastmod vem da mtime do arquivo, nao de `hoje`: senao o sitemap diria ao
   // buscador que a politica mudou toda vez que este script roda, o que e mentira.
   { loc: `${SITE}/privacidade/`, mod: statSync(join(RAIZ, 'privacidade', 'index.html')).mtime.toISOString().slice(0, 10), freq: 'yearly', pri: '0.3' },
+  // [07/10] Paginas de servico, geradas por servicos/gerar.mjs a partir do servicos.json.
+  { loc: `${SITE}/servicos/`, mod: servicosJson.atualizado, freq: 'monthly', pri: '0.9' },
+  ...servicosJson.servicos.map((s) => ({ loc: `${SITE}/servicos/${s.slug}/`, mod: servicosJson.atualizado, freq: 'monthly', pri: '0.8' })),
   ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.atualizado || p.data, freq: 'monthly', pri: '0.8' })),
   ...tags.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
 ];
@@ -294,6 +298,7 @@ if (orfaos.length) {
   const arquivos = [
     join(RAIZ, 'index.html'), join(RAIZ, '404.html'),
     join(RAIZ, 'privacidade', 'index.html'),
+    join(RAIZ, 'servicos', 'index.html'), ...servicosJson.servicos.map((s) => join(RAIZ, 'servicos', s.slug, 'index.html')),
     join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html')),
   ];
   // [13/09] data-i18n-pt/en e data-i18n-ph-pt/en viram texto e placeholder

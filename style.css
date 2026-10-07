@@ -347,6 +347,29 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   .tags { margin-top: 1rem; }
 }
 
+/* [07/10] Cards de servico em grade (home e /servicos/). O card inteiro e clicavel:
+   o link do titulo estica um ::after sobre o card, entao imagem e texto levam a
+   pagina do servico e o leitor de tela ouve so o nome. */
+.eixos__grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 3rem); }
+.eixo--card { position: relative; display: flex; flex-direction: column; gap: 1.25rem; padding: 0; border-top: 0; align-items: stretch; }
+.eixo--card .eixo__visual { aspect-ratio: 16 / 9; }
+.eixo--card .eixo__num { font-size: clamp(3.5rem, 7vw, 6.5rem); }
+.eixo--card .eixo__glifo { width: 46%; }
+.eixo--card h3 { font-size: clamp(1.35rem, 2vw, 1.75rem); }
+.eixo--card .eixo__texto p { margin-top: 0.6rem; }
+.eixo--card .tags { margin-top: 1rem; }
+.eixo__link::after { content: ""; position: absolute; inset: 0; z-index: 4; border-radius: 16px; }
+.eixo__link:focus-visible { outline: none; }
+.eixo__link:focus-visible::after { outline: 2px solid var(--brilho); outline-offset: 6px; }
+.eixo__mais { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--brilho); transition: transform 0.4s var(--ease); }
+.eixo--card:hover .eixo__mais { transform: translateX(4px); }
+.eixo--card:hover h3 { color: var(--gelo); }
+.eixo__visual[data-glow="5"] { --gx: 58%; --gy: 50%; }
+.eixo__visual[data-glow="6"] { --gx: 52%; --gy: 48%; }
+.eixo__visual[data-glow="7"] { --gx: 50%; --gy: 42%; }
+.eixo__visual[data-glow="8"] { --gx: 55%; --gy: 46%; }
+@media (max-width: 52rem) { .eixos__grade { grid-template-columns: 1fr; } .eixo--card .eixo__glifo { width: 50%; } }
+
 /* ---------- 03 — Log (da B) ---------- */
 .log { position: relative; background: var(--carvao); border-top: 1px solid var(--linha); border-bottom: 1px solid var(--linha); overflow: hidden; }
 .log::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(50% 60% at 100% 0%, rgba(46,90,172,.28), transparent 70%); mix-blend-mode: screen; }
@@ -442,6 +465,8 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .faq__corpo { display: grid; grid-template-rows: 0fr; }
 .faq details[open] .faq__corpo { grid-template-rows: 1fr; }
 .faq__corpo > * { overflow: hidden; }
+.faq__corpo a { color: var(--gelo); text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--linha-forte); }
+.faq__corpo a:hover { text-decoration-color: currentColor; }
 
 /* ---------- 04 — Contato (da B) ---------- */
 .contato { position: relative; padding: var(--ritmo-alto) var(--lateral); border-top: 1px solid var(--linha); background: var(--carvao); overflow: hidden; }

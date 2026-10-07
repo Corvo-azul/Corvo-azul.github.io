@@ -1,0 +1,424 @@
+{
+  "_leia": "Fonte das paginas /servicos/. Depois de editar, rode: node servicos/gerar.mjs (e node blog/gerar.mjs para o sitemap). Precos de mercado: pesquisa de 06/10/2026 (planilha Precos_de_mercado_Corvo_Azul.xlsx). 'n' e o numero do card na home e a chave de MOTIVOS no script.js.",
+  "atualizado": "2026-10-07",
+  "servicos": [
+    {
+      "n": 1,
+      "slug": "perfil-google",
+      "nome": "Perfil no Google",
+      "titulo_seo": "Perfil da empresa no Google: criar e otimizar",
+      "resumo": "Seu negócio aparecendo no Google Maps e na busca do bairro, com horário certo, fotos e botão de WhatsApp.",
+      "card": "Criar ou corrigir o perfil da empresa no Google: categorias, horários, descrição, fotos, link para o WhatsApp e pedido de verificação.",
+      "tipo": "projeto",
+      "preco": "a partir de R$200",
+      "faixa": "R$200 a R$400, conforme o estado do perfil (criar do zero ou recuperar um abandonado)",
+      "preco_min": 200,
+      "pagamento": "100% no aceite da proposta, porque o valor é baixo.",
+      "prazo": "3 dias úteis",
+      "prazo_nota": "A verificação é feita pelo próprio Google e pode levar mais alguns dias. Esse tempo não depende da gente.",
+      "mercado": {
+        "mediana": "R$270",
+        "faixa": "R$90 e R$600",
+        "amostra": "23 ofertas"
+      },
+      "inclui": [
+        "Criar o perfil ou recuperar um que já existe e está abandonado ou duplicado",
+        "Categoria principal e secundárias certas, que é o que mais pesa para aparecer na busca",
+        "Horário de funcionamento, inclusive feriados",
+        "Descrição com o que você vende, onde atende e como pedir",
+        "Até 10 fotos suas, cortadas e no tamanho que o Google pede",
+        "Link para o seu WhatsApp e para o seu site, se tiver",
+        "Pedido de verificação e acompanhamento até o perfil aparecer",
+        "Um guia curto de como responder avaliações"
+      ],
+      "como": [
+        [
+          "Você manda o básico",
+          "Nome, endereço ou área de atendimento, horário, telefone e as fotos que já tem. Pelo WhatsApp mesmo."
+        ],
+        [
+          "A gente confere o que já existe",
+          "Muita empresa já tem um perfil criado por outra pessoa, ou dois perfis brigando entre si. Isso é resolvido antes de tudo."
+        ],
+        [
+          "Preenchimento e verificação",
+          "Tudo preenchido, fotos no ar e o pedido de verificação enviado. O Google pode ligar, mandar código por e-mail ou pedir um vídeo curto do local."
+        ],
+        [
+          "Entrega no seu nome",
+          "Você fica como proprietário do perfil. A gente sai como administrador quando você quiser."
+        ]
+      ],
+      "nao_inclui": [
+        "Postagens e respostas a avaliações todo mês (gestão mensal, orçada à parte)",
+        "Fotos profissionais",
+        "Anúncios pagos no Google",
+        "Promessa de primeira posição: ninguém controla o ranking do Google, e quem promete isso está mentindo"
+      ]
+    },
+    {
+      "n": 2,
+      "slug": "landing-page",
+      "nome": "Landing page",
+      "titulo_seo": "Landing page para pequeno negócio",
+      "resumo": "Uma página só, feita para divulgar um produto, serviço ou campanha e levar a pessoa direto para o seu WhatsApp.",
+      "card": "Uma página para divulgar um produto, serviço ou campanha, feita primeiro para o celular, com botão de WhatsApp e formulário.",
+      "tipo": "projeto",
+      "preco": "a partir de R$500",
+      "faixa": "R$500 a R$1.200, conforme o número de seções e o que precisa ser escrito",
+      "preco_min": 500,
+      "pagamento": "50% no aceite da proposta e 50% na entrega.",
+      "prazo": "7 dias úteis",
+      "prazo_nota": "Contados do pagamento do sinal e do recebimento de textos, fotos e logotipo.",
+      "mercado": {
+        "mediana": "R$490",
+        "faixa": null,
+        "amostra": "18 ofertas de landing page e site",
+        "obs": "A mediana considera só as landing pages da pesquisa."
+      },
+      "inclui": [
+        "Uma página com até 6 seções (por exemplo: chamada, benefícios, como funciona, depoimentos, perguntas e contato)",
+        "Feita primeiro para o celular, que é por onde chega a maior parte de quem clica num anúncio ou num link",
+        "Botão de WhatsApp com mensagem pronta e formulário de contato",
+        "Revisão dos seus textos para ficarem curtos e diretos",
+        "Endereço seguro (HTTPS) e publicação no seu domínio",
+        "Medição de visitas e de cliques no WhatsApp"
+      ],
+      "como": [
+        [
+          "Conversa rápida",
+          "Dez perguntas sobre o que você vende, para quem e o que a pessoa deve fazer ao chegar na página."
+        ],
+        [
+          "Estrutura para aprovar",
+          "Antes de desenhar, você recebe a lista de seções com o texto de cada uma. Mudar aqui é barato."
+        ],
+        [
+          "Primeira versão num link de teste",
+          "Você abre no seu celular, mostra para quem quiser e manda os ajustes. São até 2 rodadas."
+        ],
+        [
+          "Publicação",
+          "A página vai para o seu domínio, com medição de visitas ligada e o acesso entregue a você."
+        ]
+      ],
+      "nao_inclui": [
+        "Domínio e hospedagem, que ficam no seu nome e no seu cartão (o custo aparece na proposta antes de você aceitar)",
+        "Logotipo e fotos profissionais",
+        "Anúncios pagos para levar gente até a página",
+        "Loja com carrinho e pagamento (veja Loja virtual)"
+      ]
+    },
+    {
+      "n": 3,
+      "slug": "site",
+      "nome": "Site institucional",
+      "titulo_seo": "Site institucional para pequena empresa",
+      "resumo": "Um site de até 5 páginas que explica o que você faz, mostra onde fica e transforma visita em mensagem no WhatsApp.",
+      "card": "Site de até 5 páginas, feito primeiro para o celular, com WhatsApp, mapa, formulário e o básico para aparecer no Google.",
+      "tipo": "projeto",
+      "preco": "a partir de R$1.200",
+      "faixa": "R$1.200 a R$2.500, conforme o número de páginas e de recursos",
+      "preco_min": 1200,
+      "pagamento": "50% no aceite da proposta e 50% na entrega.",
+      "prazo": "15 dias úteis",
+      "prazo_nota": "Contados do pagamento do sinal e do recebimento de textos, fotos e logotipo.",
+      "mercado": {
+        "mediana": "cerca de R$1.650",
+        "faixa": null,
+        "amostra": "18 ofertas de landing page e site",
+        "obs": "A mediana considera só os sites institucionais da pesquisa."
+      },
+      "inclui": [
+        "Até 5 páginas (por exemplo: início, sobre, serviços, contato e política de privacidade)",
+        "Feito primeiro para o celular",
+        "WhatsApp, mapa do Google e formulário de contato",
+        "O básico para aparecer no Google: título e descrição de cada página, mapa do site e cadastro no Google Search Console",
+        "Política de privacidade e aviso de cookies, como pede a LGPD",
+        "Endereço seguro (HTTPS), publicação no seu domínio e medição de visitas"
+      ],
+      "como": [
+        [
+          "Conversa rápida",
+          "O que você faz, quem é o seu cliente, quais páginas fazem falta e quais sites você acha bonitos."
+        ],
+        [
+          "Mapa das páginas",
+          "Você aprova a lista de páginas e o que vai em cada uma antes de qualquer desenho."
+        ],
+        [
+          "Página inicial primeiro",
+          "A página inicial define o visual. Depois dela aprovada, as outras seguem o mesmo padrão."
+        ],
+        [
+          "Ajustes e publicação",
+          "Até 2 rodadas de ajuste, publicação no seu domínio, cadastro no Google e todos os acessos no seu nome."
+        ]
+      ],
+      "nao_inclui": [
+        "Domínio e hospedagem, que ficam no seu nome e no seu cartão (o custo aparece na proposta)",
+        "Textos do zero, logotipo e fotos profissionais",
+        "Blog com publicação mensal, área de cliente ou sistema com login",
+        "Anúncios pagos"
+      ]
+    },
+    {
+      "n": 4,
+      "slug": "loja-virtual",
+      "nome": "Loja virtual",
+      "titulo_seo": "Loja virtual na Nuvemshop ou na Shopify",
+      "resumo": "Sua loja na Nuvemshop ou na Shopify, com produtos cadastrados, pagamento e frete funcionando e as informações que a lei exige de quem vende online.",
+      "card": "Loja na Nuvemshop ou na Shopify: tema, produtos, pagamento, frete e as informações que a lei exige de quem vende online.",
+      "tipo": "projeto",
+      "preco": "a partir de R$1.200",
+      "faixa": "R$1.200 a R$3.000, conforme o número de produtos e de integrações (na Shopify pode chegar a R$4.000)",
+      "preco_min": 1200,
+      "pagamento": "50% no aceite da proposta e 50% na entrega.",
+      "prazo": "15 dias úteis",
+      "prazo_nota": "Contados do pagamento do sinal e do recebimento da planilha de produtos com fotos.",
+      "mercado": {
+        "mediana": "R$1.459",
+        "faixa": "R$412 e R$2.896",
+        "amostra": "20 ofertas"
+      },
+      "inclui": [
+        "Ajuda para escolher entre Nuvemshop e Shopify, com o custo mensal de cada uma no seu caso",
+        "Tema configurado com a sua marca e feito para o celular",
+        "Até 20 produtos cadastrados, com variações (mais que isso, orçado à parte)",
+        "O meio de pagamento que você escolher (Pix, cartão e boleto), configurado e testado com uma compra de verdade",
+        "Frete configurado, com as opções que a plataforma oferece",
+        "As informações que o Decreto 7.962/2013 exige: CNPJ ou CPF, endereço, contato, política de troca e de desistência",
+        "Política de privacidade e domínio próprio",
+        "30 minutos de explicação para você cadastrar produtos e acompanhar pedidos sozinho"
+      ],
+      "como": [
+        [
+          "Escolha da plataforma",
+          "Comparação curta de mensalidade e taxas da Nuvemshop e da Shopify para o seu volume de vendas."
+        ],
+        [
+          "Planilha de produtos",
+          "Você preenche uma planilha modelo com nome, preço, medidas e fotos de cada produto."
+        ],
+        [
+          "Montagem e teste",
+          "Loja configurada, produtos no ar e uma compra real de teste, com estorno, para garantir que o dinheiro chega."
+        ],
+        [
+          "Ajustes, publicação e treino",
+          "Até 2 rodadas de ajuste, loja no seu domínio e uma chamada para você assumir o dia a dia."
+        ]
+      ],
+      "nao_inclui": [
+        "Mensalidade da plataforma e taxas de pagamento, que ficam no seu nome e no seu cartão",
+        "Fotos dos produtos",
+        "Atendimento, separação e envio dos pedidos",
+        "Anúncios pagos e gestão de redes sociais"
+      ]
+    },
+    {
+      "n": 5,
+      "slug": "marketplace",
+      "nome": "Anúncios no Mercado Livre e na Shopee",
+      "nome_curto": "Mercado Livre e Shopee",
+      "titulo_seo": "Cadastro de anúncios no Mercado Livre e na Shopee",
+      "resumo": "Seus produtos anunciados no Mercado Livre e na Shopee com título que aparece na busca, ficha técnica completa e preço que cobre as taxas.",
+      "card": "Produtos anunciados com título pensado para a busca, ficha técnica completa e preço conferido contra as taxas do marketplace.",
+      "tipo": "projeto",
+      "preco": "a partir de R$200",
+      "faixa": "R$15 a R$25 por anúncio: 10 anúncios saem por cerca de R$200 a R$250, 30 por R$450 a R$600 e 50 por R$700 a R$900. Criar a conta ou a loja oficial, quando ainda não existe, custa mais R$200 a R$400",
+      "preco_min": 200,
+      "pagamento": "100% no aceite até R$400; acima disso, 50% no aceite e 50% na entrega.",
+      "prazo": "5 dias úteis para 10 anúncios",
+      "prazo_nota": "Contados do recebimento da planilha com fotos. Pacotes maiores têm o prazo na proposta.",
+      "mercado": {
+        "mediana": "R$12 por anúncio",
+        "faixa": "R$5 e R$22",
+        "amostra": "21 ofertas",
+        "obs": "Boa parte das ofertas mais baratas é só subir dados prontos em massa, sem escrever título nem conferir taxa."
+      },
+      "inclui": [
+        "Título escrito para a busca do marketplace, com as palavras que o comprador digita",
+        "Categoria certa e ficha técnica completa, que pesam na posição do anúncio",
+        "Descrição clara, com medidas, material e o que vem na caixa",
+        "Suas fotos na ordem e no tamanho que a plataforma pede",
+        "Variações de cor e tamanho num anúncio só",
+        "Conta de quanto sobra para você em cada venda, depois de comissão e frete"
+      ],
+      "como": [
+        [
+          "Planilha de produtos",
+          "Você manda nome, preço, custo, medidas e fotos numa planilha modelo."
+        ],
+        [
+          "Conferência de taxa",
+          "Para cada produto, a gente calcula comissão e frete e avisa se o preço dá prejuízo."
+        ],
+        [
+          "Publicação",
+          "Anúncios no ar, com título, ficha e variações."
+        ],
+        [
+          "Revisão com você",
+          "Você confere os anúncios e pede ajustes antes de fecharmos."
+        ]
+      ],
+      "nao_inclui": [
+        "Responder perguntas, emitir nota e despachar pedidos",
+        "Anúncios patrocinados dentro do marketplace",
+        "Fotos dos produtos",
+        "Comissões e tarifas do Mercado Livre e da Shopee"
+      ]
+    },
+    {
+      "n": 6,
+      "slug": "pagamento",
+      "nome": "Pagamento online",
+      "titulo_seo": "Configurar Pix, cartão e checkout na sua loja ou site",
+      "resumo": "Pix, cartão e boleto funcionando na sua loja ou no seu site, testados com uma compra de verdade antes de ir para o ar.",
+      "card": "Pix, cartão e boleto configurados no meio que você escolher e testados com uma compra real. Já vem incluso na loja virtual.",
+      "tipo": "projeto",
+      "preco": "a partir de R$150",
+      "faixa": "R$150 a R$400 quando contratado sozinho. Na Loja virtual, já vem incluso",
+      "preco_min": 150,
+      "pagamento": "100% no aceite da proposta, porque o valor é baixo.",
+      "prazo": "3 dias úteis",
+      "prazo_nota": "Contados da liberação da sua conta na empresa de pagamento, que às vezes pede documentos e leva alguns dias.",
+      "mercado": {
+        "mediana": "R$70",
+        "faixa": "R$50 e R$200",
+        "amostra": "12 ofertas avulsas",
+        "obs": "Quase todas são pacotes de entrada em sites de freelancer, sem teste de compra nem conferência de taxa."
+      },
+      "inclui": [
+        "Configuração do meio de pagamento que você escolher, na sua loja ou no seu site",
+        "Pix, cartão e boleto, conforme o que a empresa de pagamento oferece",
+        "Uma compra real de teste, com estorno, para provar que o dinheiro chega",
+        "Conferência de taxas e do prazo em que o dinheiro cai na sua conta",
+        "E-mail de confirmação do pedido para o cliente",
+        "Explicação de onde você vê cada pagamento recebido"
+      ],
+      "como": [
+        [
+          "Escolha sua",
+          "Você escolhe a empresa de pagamento. A gente mostra as taxas lado a lado, se você quiser, mas não recebe comissão de nenhuma delas."
+        ],
+        [
+          "Conta no seu nome",
+          "A conta é aberta no seu CPF ou CNPJ. A gente só configura."
+        ],
+        [
+          "Configuração e teste",
+          "Pagamento ligado na loja ou no site e uma compra real de teste, com estorno."
+        ],
+        [
+          "Entrega",
+          "Você recebe um resumo de taxas, prazos e onde acompanhar tudo."
+        ]
+      ],
+      "nao_inclui": [
+        "Taxas da empresa de pagamento, que são cobradas dela para você",
+        "Integração com sistema feito sob medida (orçado à parte)",
+        "Análise de risco e antifraude além do que a empresa de pagamento já oferece"
+      ]
+    },
+    {
+      "n": 7,
+      "slug": "manutencao",
+      "nome": "Manutenção mensal",
+      "titulo_seo": "Manutenção mensal de site e loja virtual",
+      "resumo": "Seu site ou sua loja atualizados, com backup e funcionando todo mês, para nada parar sem você saber.",
+      "card": "Atualizações, backup, segurança e verificação todo mês, com pequenas alterações no plano maior. Sem fidelidade.",
+      "tipo": "mensal",
+      "preco": "a partir de R$80/mês",
+      "faixa": "R$80 a R$150/mês só a parte técnica; R$200 a R$350/mês com 1 a 2 horas de alterações por mês",
+      "preco_min": 80,
+      "pagamento": "Todo mês, adiantado. Sem fidelidade: cancela com 30 dias de aviso.",
+      "prazo": "Resposta em até 1 dia útil",
+      "prazo_nota": "Pedidos pelo WhatsApp ou e-mail.",
+      "mercado": {
+        "mediana": "R$100/mês",
+        "faixa": "R$60 e R$319",
+        "amostra": "13 ofertas"
+      },
+      "inclui": [
+        "Atualização da plataforma, do tema e dos plugins",
+        "Backup e teste de que o backup volta",
+        "Endereço seguro (HTTPS) e domínio em dia, com aviso antes de vencer",
+        "Verificação todo mês: site no ar, formulário e botão de WhatsApp funcionando",
+        "Relatório curto de visitas do mês",
+        "No plano com alterações: até 1 ou 2 horas por mês de mudanças em texto, foto, preço ou banner"
+      ],
+      "como": [
+        [
+          "Inventário dos acessos",
+          "Lista de onde está cada coisa (domínio, hospedagem, plataforma) e de quem é. Tudo no seu nome."
+        ],
+        [
+          "Checklist mensal",
+          "Atualizações, backup e testes, todo mês, na mesma ordem."
+        ],
+        [
+          "Relatório",
+          "Uma mensagem curta com o que foi feito e quantas pessoas visitaram."
+        ],
+        [
+          "Pedidos",
+          "Você manda o que quer mudar pelo WhatsApp e recebe resposta em até 1 dia útil."
+        ]
+      ],
+      "nao_inclui": [
+        "Horas de alteração além do plano, orçadas antes e só feitas com sua aprovação",
+        "Páginas ou funções novas, que viram projeto à parte",
+        "Custo de domínio, hospedagem e plataforma"
+      ]
+    },
+    {
+      "n": 8,
+      "slug": "diagnostico",
+      "nome": "Diagnóstico de presença digital",
+      "nome_curto": "Diagnóstico grátis",
+      "titulo_seo": "Diagnóstico grátis de presença digital",
+      "resumo": "Um retrato de como o seu negócio aparece hoje para quem procura na internet, com as 3 coisas que mais valem a pena consertar primeiro.",
+      "card": "Como o seu negócio aparece hoje no Google, no celular e nos marketplaces, com as 3 prioridades em ordem. Sem compromisso.",
+      "tipo": "gratis",
+      "preco": "grátis",
+      "faixa": "Grátis, um por negócio. Você não precisa contratar nada depois",
+      "preco_min": 0,
+      "pagamento": "Não tem.",
+      "prazo": "2 dias úteis",
+      "prazo_nota": "Você recebe um resumo de 1 página pelo WhatsApp.",
+      "mercado": {
+        "mediana": "R$135",
+        "faixa": "R$81 e R$270",
+        "amostra": "21 ofertas",
+        "obs": "É quanto o mercado cobra por um diagnóstico parecido."
+      },
+      "inclui": [
+        "Como o seu negócio aparece no Google: perfil, horário, avaliações e fotos",
+        "Se o seu site abre bem no celular e se o WhatsApp está a um toque",
+        "Como estão os seus anúncios no Mercado Livre ou na Shopee, se você vende por lá",
+        "As 3 prioridades em ordem, com o preço de cada uma, para você decidir se faz sozinho ou com a gente"
+      ],
+      "como": [
+        [
+          "Você manda nome e cidade",
+          "Só isso. Não pedimos senha nem acesso a nenhuma conta."
+        ],
+        [
+          "A gente olha o que é público",
+          "Busca no Google e no Maps, o site no celular e os anúncios, como um cliente veria."
+        ],
+        [
+          "Resumo em 1 página",
+          "Em até 2 dias úteis, pelo WhatsApp, com as 3 prioridades em ordem."
+        ]
+      ],
+      "nao_inclui": [
+        "Acesso às suas contas: o diagnóstico olha só o que qualquer cliente vê",
+        "Auditoria de segurança",
+        "Compromisso de contratação"
+      ]
+    }
+  ]
+}

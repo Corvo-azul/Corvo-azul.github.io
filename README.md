@@ -1,6 +1,6 @@
 # corvoazul.com
 
-Site do **Corvo Azul**: criação de sites, lojas virtuais e Perfil da Empresa no Google para pequenos negócios, e um canal que explica como a tecnologia funciona. Desde 07/10/2026 a página principal vende o serviço; o canal aparece como prova de competência.
+Site do **Corvo Azul**: criação de sites, lojas virtuais e Perfil da Empresa no Google para pequenos negócios, e um canal que explica como a tecnologia funciona. Desde 07/10/2026 a página principal vende o serviço; o canal aparece como prova de competência. Cada serviço tem página própria em `/servicos/`.
 
 **No ar:** <https://corvoazul.com>
 
@@ -17,7 +17,8 @@ Isso tem um custo assumido: as animações vêm de bibliotecas em CDN, e não h�
 ## Estrutura
 
 ```
-index.html    página única
+index.html    página principal
+servicos/     uma página por serviço, geradas (ver Serviços)
 404.html      página de erro, caminhos absolutos (o Pages a serve em qualquer profundidade)
 style.css     tokens da marca + componentes
 script.js     animação, terminal simulado, menu mobile, prova do GitHub
@@ -113,3 +114,18 @@ Os chips de tag do topo da lista são escritos à mão em `blog/index.html`, por
 O CTA do quiz no fim de cada post só aparece quando `blog/config.json` tiver `quiz.url` preenchido. Vazio, o bloco fica oculto.
 
 Os prints do post são servidos em WebP, com o PNG como reserva via `<picture>`. Os dois formatos ficam no repositório; o PNG é a fonte sem perda e só é baixado por navegador que não entende WebP.
+
+## Serviços
+
+`servicos/` é gerado. A fonte é `servicos/servicos.json`: nome, preço de partida, faixa, prazo, preço médio do mercado, o que inclui, como é feito e o que não inclui. Depois de mexer nele, rode:
+
+```bash
+node servicos/gerar.mjs
+node blog/gerar.mjs
+```
+
+O primeiro reescreve `servicos/index.html`, uma página por serviço e os cards da home entre `<!-- servicos:inicio -->` e `<!-- servicos:fim -->`. **Não edite esses cards à mão**: a próxima geração apaga. O segundo põe as páginas no `sitemap.xml` e confere se algum caractere fugiu do subconjunto das fontes.
+
+O desenho de cada card (o corvo mais o motivo do serviço) vem do `MOTIVOS` do `script.js`, chaveado pelo campo `n` do JSON. O gerador lê esse objeto de lá, então mudar um motivo é mexer num lugar só. Na home o corvo é desenhado pelo `script.js`, com animação; nas páginas de serviço ele já sai pronto no HTML e não depende de JavaScript.
+
+Os preços médios de mercado vêm da pesquisa de 06/10/2026 (cerca de 230 ofertas públicas abertas uma a uma). Valem como referência datada: refaça a pesquisa antes de mudar os preços.
