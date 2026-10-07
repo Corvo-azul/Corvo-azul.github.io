@@ -93,7 +93,7 @@ O domínio aponta para os quatro endereços do Pages, com `www` apontando para o
 
 ## Licença
 
-Código sob MIT. As fontes são da Open Font License. As fotos e o vídeo vieram de bancos de uso livre. O nome, o glifo e a identidade visual do Corvo Azul não estão incluídos.
+Código sob MIT. As fontes são da Open Font License. As fotos (inclusive as dos serviços, do Unsplash) e o vídeo vieram de bancos de uso livre. O nome, o glifo e a identidade visual do Corvo Azul não estão incluídos.
 
 ## Blog
 
@@ -127,5 +127,7 @@ node blog/gerar.mjs
 O primeiro reescreve `servicos/index.html`, uma página por serviço e os cards da home entre `<!-- servicos:inicio -->` e `<!-- servicos:fim -->`. **Não edite esses cards à mão**: a próxima geração apaga. O segundo põe as páginas no `sitemap.xml` e confere se algum caractere fugiu do subconjunto das fontes.
 
 O desenho de cada card (o corvo mais o motivo do serviço) vem do `MOTIVOS` do `script.js`, chaveado pelo campo `n` do JSON. O gerador lê esse objeto de lá, então mudar um motivo é mexer num lugar só. Na home o corvo é desenhado pelo `script.js`, com animação; nas páginas de serviço ele já sai pronto no HTML e não depende de JavaScript.
+
+As fotos de fundo dos cards vêm do Unsplash (licença de uso livre) e ficam em `assets/servicos/`, em 640 e 1200 px. O id de cada uma está no campo `foto` do JSON; o CSS as passa para cinza e tinge de azul, então qualquer foto nova entra no mesmo tom. Foto clara demais pede `luz` menor no JSON.
 
 Os preços médios de mercado vêm da pesquisa de 06/10/2026 (cerca de 230 ofertas públicas abertas uma a uma). Valem como referência datada: refaça a pesquisa antes de mudar os preços.

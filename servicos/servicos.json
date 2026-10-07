@@ -54,7 +54,10 @@
         "Fotos profissionais",
         "Anúncios pagos no Google",
         "Promessa de primeira posição: ninguém controla o ranking do Google, e quem promete isso está mentindo"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1759256243611-502772ac391b"
+      }
     },
     {
       "n": 2,
@@ -107,7 +110,11 @@
         "Logotipo e fotos profissionais",
         "Anúncios pagos para levar gente até a página",
         "Loja com carrinho e pagamento (veja Loja virtual)"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1454165804606-c3d57bc86b40",
+        "luz": 0.5
+      }
     },
     {
       "n": 3,
@@ -160,7 +167,10 @@
         "Textos do zero, logotipo e fotos profissionais",
         "Blog com publicação mensal, área de cliente ou sistema com login",
         "Anúncios pagos"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1467232004584-a241de8bcf5d"
+      }
     },
     {
       "n": 4,
@@ -214,7 +224,11 @@
         "Fotos dos produtos",
         "Atendimento, separação e envio dos pedidos",
         "Anúncios pagos e gestão de redes sociais"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1563013544-824ae1b704d3",
+        "luz": 0.42
+      }
     },
     {
       "n": 5,
@@ -268,7 +282,10 @@
         "Anúncios patrocinados dentro do marketplace",
         "Fotos dos produtos",
         "Comissões e tarifas do Mercado Livre e da Shopee"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1766040923580-16ad32fae8b4"
+      }
     },
     {
       "n": 6,
@@ -320,7 +337,11 @@
         "Taxas da empresa de pagamento, que são cobradas dela para você",
         "Integração com sistema feito sob medida (orçado à parte)",
         "Análise de risco e antifraude além do que a empresa de pagamento já oferece"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1599050751795-6cdaafbc2319",
+        "luz": 0.5
+      }
     },
     {
       "n": 7,
@@ -371,7 +392,10 @@
         "Horas de alteração além do plano, orçadas antes e só feitas com sua aprovação",
         "Páginas ou funções novas, que viram projeto à parte",
         "Custo de domínio, hospedagem e plataforma"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1461749280684-dccba630e2f6"
+      }
     },
     {
       "n": 8,
@@ -418,7 +442,12 @@
         "Acesso às suas contas: o diagnóstico olha só o que qualquer cliente vê",
         "Auditoria de segurança",
         "Compromisso de contratação"
-      ]
+      ],
+      "foto": {
+        "unsplash": "1551288049-bebda4e38f71",
+        "luz": 0.55
+      }
     }
-  ]
+  ],
+  "_fotos": "Fotos de fundo dos cards: Unsplash (licença Unsplash, uso livre), baixadas em 640 e 1200 px para assets/servicos/<slug>-<largura>.webp. 'unsplash' é o id da imagem em images.unsplash.com/photo-<id>. 'luz' (opcional, padrão 0,62) é o brilho da foto depois de virar cinza: foto clara pede valor menor, senão o corvo some."
 }

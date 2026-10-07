@@ -66,13 +66,20 @@ const SETA = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke
 const MARCA = readFileSync(join(RAIZ, 'privacidade', 'index.html'), 'utf8').match(/<svg viewBox="0 0 800 685\.8"[\s\S]*?<\/svg>/)[0]
   .replace(/style="[^"]*"/, '').replace(/width="\d+"/, 'width="22"');
 
+// Foto de fundo do card: decorativa (alt vazio), o nome do serviço já está no título.
+function foto(s, preguica = true) {
+  const b = `/assets/servicos/${s.slug}`;
+  return `<img class="eixo__foto" src="${b}-640.webp" srcset="${b}-640.webp 640w, ${b}-1200.webp 1200w" sizes="(max-width: 52rem) 100vw, 45vw" width="1200" height="675" alt=""${s.foto?.luz ? ` style="--foto-luz: ${s.foto.luz}"` : ''}${preguica ? ' loading="lazy"' : ''} decoding="async">`;
+}
+
 // ---- card (home e /servicos/) ----
 // `estatico`: SVG pronto no HTML. Na home vai vazio e o script.js desenha.
 function card(s, estatico) {
   const svg = estatico ? glifoSVG(s.n) : `<svg class="eixo__glifo" data-glifo="${s.n}" viewBox="0 0 240 200" aria-hidden="true"></svg>`;
   const tags = [s.preco, s.prazo].map((t) => `<li>${esc(t)}</li>`).join('');
   return `      <article class="eixo eixo--card"${estatico ? '' : ' data-reveal'}>
-        <div class="eixo__visual" data-glow="${s.n}">
+        <div class="eixo__visual eixo__visual--foto" data-glow="${s.n}">
+          ${foto(s)}
           <span class="eixo__num">${num(s.n)}</span>
           ${svg}
         </div>
@@ -216,7 +223,8 @@ ${topo(link)}
           <a class="btn btn--fantasma" href="#como">Como funciona</a>
         </div>
       </div>
-      <div class="eixo__visual sv-visual" data-glow="${s.n}">
+      <div class="eixo__visual eixo__visual--foto sv-visual" data-glow="${s.n}">
+        ${foto(s, false)}
         <span class="eixo__num">${num(s.n)}</span>
         ${glifoSVG(s.n)}
       </div>

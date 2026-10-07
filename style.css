@@ -364,6 +364,18 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .eixo__mais { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--brilho); transition: transform 0.4s var(--ease); }
 .eixo--card:hover .eixo__mais { transform: translateX(4px); }
 .eixo--card:hover h3 { color: var(--gelo); }
+/* Foto de fundo do card: em tons do azul da marca (luminosity sobre o carvao), escura o
+   bastante para o corvo em linha e o numero continuarem lendo por cima. */
+.eixo__foto { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15) brightness(var(--foto-luz, 0.62)); transition: filter 0.8s var(--ease), transform 1.2s var(--ease); }
+.eixo__visual--foto { background: var(--carvao); }
+.eixo__visual--foto::before {
+  z-index: 1; -webkit-mask-image: none; mask-image: none;
+  background-image:
+    radial-gradient(55% 65% at 50% 52%, rgba(7, 9, 13, 0.55), rgba(7, 9, 13, 0) 75%),
+    linear-gradient(160deg, rgba(46, 90, 172, 0.55), rgba(20, 31, 56, 0.6) 55%, rgba(7, 9, 13, 0.8)),
+    repeating-linear-gradient(112deg, rgba(185,204,240,.08) 0 1px, transparent 1px 8px);
+}
+.eixo--card:hover .eixo__foto { filter: grayscale(1) contrast(1.15) brightness(calc(var(--foto-luz, 0.62) + 0.12)); transform: scale(1.03); }
 .eixo__visual[data-glow="5"] { --gx: 58%; --gy: 50%; }
 .eixo__visual[data-glow="6"] { --gx: 52%; --gy: 48%; }
 .eixo__visual[data-glow="7"] { --gx: 50%; --gy: 42%; }
