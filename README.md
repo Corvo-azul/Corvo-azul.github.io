@@ -1,6 +1,6 @@
 # corvoazul.com
 
-Site do **Corvo Azul**, canal sobre construir software de verdade com IA, usando Claude Code como ferramenta principal. Um vídeo por semana, código aberto.
+Site do **Corvo Azul**: criação de sites, lojas virtuais e Perfil da Empresa no Google para pequenos negócios, e um canal que explica como a tecnologia funciona. Desde 07/10/2026 a página principal vende o serviço; o canal aparece como prova de competência.
 
 **No ar:** <https://corvoazul.com>
 
@@ -44,7 +44,7 @@ O glifo do corvo é vetor, gerado do arquivo canônico. O bico aponta para a dir
 
 ## Conteúdo
 
-Nenhum número inventado. Não há contagem de inscritos, depoimento ou prova social, porque o canal está no primeiro dia. Os únicos números são os do próprio experimento, e o registro de atividades marca como pendente o que ainda não existe.
+Nenhum número inventado. Não há contagem de inscritos, depoimento ou prova social enquanto não houver cliente que autorize. Os números da página são condições do serviço (garantia, rodadas de ajuste, prazo de resposta), e o registro de atividades marca como pendente o que ainda não existe.
 
 O bloco de prova consulta a interface pública do GitHub para mostrar repositórios e último envio. Essa interface permite sessenta consultas por hora por endereço de internet, e quem acessa por operadora com endereço compartilhado divide essa cota com desconhecidos. Por isso o bloco nunca desaparece: sem resposta, ele mostra uma versão fixa, sem o ponto verde que significaria dado ao vivo.
 
