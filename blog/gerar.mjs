@@ -74,13 +74,13 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta property="og:url" content="${url}">
   <meta property="og:title" content="${esc(titulo)}">
   <meta property="og:description" content="${esc(descricao)}">
-  <meta property="og:image" content="${SITE}/assets/og.jpg">
+  <meta property="og:image" content="${SITE}/assets/og.jpg?v=2">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(titulo)}">
   <meta name="twitter:description" content="${esc(descricao)}">
-  <meta name="twitter:image" content="${SITE}/assets/og.jpg">
+  <meta name="twitter:image" content="${SITE}/assets/og.jpg?v=2">
   <meta name="yandex-verification" content="e96e78913d7ec786">
   <script type="application/ld+json">
   {
@@ -187,6 +187,8 @@ const urls = [
   // [07/10] Paginas de servico, geradas por servicos/gerar.mjs a partir do servicos.json.
   { loc: `${SITE}/servicos/`, mod: servicosJson.atualizado, freq: 'monthly', pri: '0.9' },
   ...servicosJson.servicos.map((s) => ({ loc: `${SITE}/servicos/${s.slug}/`, mod: servicosJson.atualizado, freq: 'monthly', pri: '0.8' })),
+  // [08/10] Portfolio: um caso por pagina, escrito a mao.
+  { loc: `${SITE}/portfolio/corvoazul/`, mod: statSync(join(RAIZ, 'portfolio', 'corvoazul', 'index.html')).mtime.toISOString().slice(0, 10), freq: 'monthly', pri: '0.7' },
   ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.atualizado || p.data, freq: 'monthly', pri: '0.8' })),
   ...tags.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
 ];
@@ -299,6 +301,7 @@ if (orfaos.length) {
     join(RAIZ, 'index.html'), join(RAIZ, '404.html'),
     join(RAIZ, 'privacidade', 'index.html'),
     join(RAIZ, 'servicos', 'index.html'), ...servicosJson.servicos.map((s) => join(RAIZ, 'servicos', s.slug, 'index.html')),
+    join(RAIZ, 'portfolio', 'corvoazul', 'index.html'),
     join(AQUI, 'index.html'), ...posts.map((p) => join(AQUI, p.slug, 'index.html')),
   ];
   // [13/09] data-i18n-pt/en e data-i18n-ph-pt/en viram texto e placeholder

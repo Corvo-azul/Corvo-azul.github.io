@@ -117,7 +117,7 @@ function cabeca({ titulo, descricao, url, jsonld }) {
   <meta property="og:url" content="${url}">
   <meta property="og:title" content="${esc(titulo)}">
   <meta property="og:description" content="${esc(descricao)}">
-  <meta property="og:image" content="${SITE}/assets/og.jpg">
+  <meta property="og:image" content="${SITE}/assets/og.jpg?v=2">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">

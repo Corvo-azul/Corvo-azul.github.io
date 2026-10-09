@@ -158,7 +158,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .hero-corvo { position: absolute; inset: 0; z-index: -2; --glow: 0.85; }
 .hero-corvo video, .hero-corvo img {
   display: block; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
-  filter: grayscale(0%) saturate(1.15) contrast(1.06) brightness(1.08);
+  filter: grayscale(15%) contrast(1.08) brightness(0.92);
 }
 /* Glow azul sobre a área da asa (onde a foto já tem sheen). mix-blend-mode em vez de
    opacity crua, para não lavar a foto. */
@@ -183,11 +183,9 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .hero-corvo::before {
   content: ""; position: absolute; inset: 0; z-index: 1;
   background:
-    radial-gradient(55% 65% at 28% 52%, color-mix(in srgb, var(--grafite) 55%, transparent), transparent 75%),
-    radial-gradient(40% 50% at 8% 95%, rgba(176, 106, 59, 0.22), transparent 70%),
-    linear-gradient(color-mix(in srgb, var(--grafite) 12%, transparent), color-mix(in srgb, var(--grafite) 40%, transparent)),
-    linear-gradient(to top, var(--preto) 0%, transparent 28%),
-    linear-gradient(to bottom, color-mix(in srgb, var(--preto) 70%, transparent) 0%, transparent 22%);
+    radial-gradient(60% 70% at 35% 45%, color-mix(in srgb, var(--grafite) 45%, transparent), transparent 75%),
+    linear-gradient(color-mix(in srgb, var(--grafite) 35%, transparent), color-mix(in srgb, var(--grafite) 60%, transparent)),
+    linear-gradient(to top, var(--preto) 0%, transparent 35%);
 }
 /* Fallback sem foto: blobs de sheen da variante A */
 .hero__fundo { position: absolute; inset: 0; z-index: -1; }
@@ -213,16 +211,13 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
   .hero__scroll { display: none; }
 }
 .hero__conteudo { position: relative; z-index: 2; max-width: var(--largura); width: 100%; margin: 0 auto; }
-.hero__eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gelo); margin-bottom: 1.6rem; padding: 0.45rem 0.9rem; border: 1px solid var(--linha-forte); border-radius: 999px; background: rgba(7, 9, 13, 0.35); backdrop-filter: blur(6px); }
-.hero__ponto { width: 8px; height: 8px; border-radius: 50%; background: #5BD68A; box-shadow: 0 0 0 0 rgba(91, 214, 138, 0.6); animation: pulsar 2.4s ease-out infinite; }
-@keyframes pulsar { to { box-shadow: 0 0 0 10px rgba(91, 214, 138, 0); } }
+.hero__eyebrow { display: block; font-family: var(--mono); font-size: 0.8rem; font-weight: 400; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cinza); margin-bottom: 2rem; }
 .hero__sub { max-width: 34rem; font-size: clamp(1.05rem, 1.4vw, 1.3rem); line-height: 1.55; color: var(--papel); opacity: 0.88; margin: -1rem 0 2.2rem; }
 .hero__provas { list-style: none; margin: 1.8rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--mono); font-size: 0.86rem; color: var(--papel); text-shadow: 0 1px 3px rgba(0,0,0,.6); }
 .hero__provas li { display: inline-flex; align-items: center; gap: 0.5rem; }
-.hero__provas li::before { content: ""; width: 12px; height: 7px; border-left: 2px solid var(--brilho); border-bottom: 2px solid var(--brilho); transform: rotate(-45deg) translateY(-2px); }
+.hero__provas li::before { content: ""; width: 12px; height: 7px; border-left: 2px solid var(--azul-claro); border-bottom: 2px solid var(--azul-claro); transform: rotate(-45deg) translateY(-2px); }
 .hero__provas strong { color: var(--papel); font-weight: 500; }
 .hero__provas a { color: var(--gelo); text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: var(--linha-forte); }
-@media (prefers-reduced-motion: reduce) { .hero__ponto { animation: none; } }
 .hero__titulo { font-size: clamp(2.5rem, 6.2vw, 5.75rem); font-weight: 800; line-height: 0.98; letter-spacing: -0.035em; margin-bottom: 2.5rem; }
 .hero__titulo .linha { display: block; text-wrap: balance; }
 .hero__titulo .word { overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
@@ -437,6 +432,7 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .commits li:hover { background: rgba(108,155,234,.04); padding-left: 0.75rem; }
 .commits time { font-family: var(--mono); font-size: 0.8rem; color: var(--brilho); }
 .commits .msg { color: var(--cinza); }
+.commits .msg a { color: var(--gelo); text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: var(--linha-forte); white-space: nowrap; }
 .commits .msg b { color: var(--papel); font-weight: 600; }
 /* [09/09] Era var(--cobre). Cobre como TEXTO a 12,8px dava 4,06:1 sobre este fundo,
    abaixo dos 4,5 que a WCAG AA exige -- e a propria tabela de paleta do projeto ja
@@ -704,13 +700,13 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 
 /* ---------- CTA fixo (mobile) ---------- */
 .cta-mobile {
-  position: fixed; left: 50%; bottom: calc(1rem + env(safe-area-inset-bottom)); z-index: 45;
-  display: none; align-items: center; gap: 0.5rem; padding: 0.9rem 1.4rem; border-radius: 999px;
-  background: var(--papel); color: var(--preto); font-weight: 600; font-size: 0.95rem; overflow: hidden;
-  box-shadow: 0 20px 50px -15px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.3), 0 0 60px -20px rgba(126,162,228,.6);
-  transform: translate(-50%, 140%); transition: transform 0.6s var(--ease);
+  position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: calc(1rem + env(safe-area-inset-bottom)); z-index: 45;
+  display: none; align-items: center; gap: 0.45rem; padding: 0.75rem 1.1rem; border-radius: 999px;
+  background: var(--papel); color: var(--preto); font-weight: 600; font-size: 0.9rem; overflow: hidden; white-space: nowrap;
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.3);
+  transform: translateY(160%); transition: transform 0.5s var(--ease);
 }
-.cta-mobile.visivel { transform: translate(-50%, 0); }
+.cta-mobile.visivel { transform: translateY(0); }
 @media (max-width: 52rem) { .cta-mobile { display: inline-flex; } }
 .cta-mobile .onda { mix-blend-mode: multiply; background: radial-gradient(circle, rgba(46,90,172,.9) 0%, rgba(126,162,228,.6) 35%, rgba(126,162,228,0) 70%); }
 

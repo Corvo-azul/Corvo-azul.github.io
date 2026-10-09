@@ -32,6 +32,16 @@
   const heroEl = document.getElementById('hero');
   const mqMobile = window.matchMedia('(max-width: 52rem)');
   let ultimoY = window.scrollY;
+  // Some quando outro botão de orçamento já está na tela: dois botões iguais
+  // empilhados cobrem o conteúdo sem ajudar ninguém.
+  const outrosCtasVisiveis = new Set();
+  if (ctaMobile && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => (e.isIntersecting ? outrosCtasVisiveis.add(e.target) : outrosCtasVisiveis.delete(e.target)));
+      onScroll();
+    });
+    document.querySelectorAll('main a[href*="wa.me"], #contato, #final').forEach((el) => { if (el !== ctaMobile) io.observe(el); });
+  }
   const onScroll = () => {
     nav.classList.toggle('rolou', window.scrollY > 24);
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -47,7 +57,7 @@
       ultimoY = window.scrollY;
       const depoisDoHero = window.scrollY > heroEl.offsetHeight - 80;
       const pertoDoFim = window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 220;
-      const mostrar = depoisDoHero && !pertoDoFim && !subindo;
+      const mostrar = depoisDoHero && !pertoDoFim && !subindo && outrosCtasVisiveis.size === 0;
       ctaMobile.classList.toggle('visivel', mostrar);
       ctaMobile.setAttribute('aria-hidden', String(!mostrar));
       ctaMobile.tabIndex = mostrar ? 0 : -1;

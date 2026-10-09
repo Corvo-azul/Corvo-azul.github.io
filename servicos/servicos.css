@@ -104,12 +104,20 @@
 .sv-cta-movel { display: none; }
 @media (max-width: 52rem) {
   .sv-cta-movel {
-    display: inline-flex; align-items: center; gap: 0.5rem; position: fixed; left: 50%; bottom: max(1rem, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 35;
-    padding: 0.85rem 1.4rem; border-radius: 999px; background: var(--papel); color: var(--preto); font-weight: 600; font-size: 0.95rem;
+    display: inline-flex; align-items: center; gap: 0.5rem; position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 35;
+    padding: 0.75rem 1.1rem; border-radius: 999px; background: var(--papel); color: var(--preto); font-weight: 600; font-size: 0.9rem;
     box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.7); white-space: nowrap;
   }
   .sv-cta-movel { transition: opacity 0.3s, transform 0.3s var(--ease); }
-  .sv-cta-movel--oculto { opacity: 0; pointer-events: none; transform: translate(-50%, 1rem); }
+  .sv-cta-movel--oculto { opacity: 0; pointer-events: none; transform: translateY(1rem); }
   .sv-rodape { padding-bottom: 7rem; }
 }
 @media (prefers-reduced-motion: reduce) { .sv * { transition: none !important; } }
+
+/* [08/10] Portfolio: texto corrido nos blocos e captura de tela sem o tratamento
+   cinza das fotos de servico (a captura e o produto, precisa aparecer como e). */
+.sv-bloco > p { max-width: 46rem; margin: 0 0 1.1rem; line-height: 1.65; }
+.sv-bloco > p + .sv-lista { margin-top: 0.5rem; }
+.sv-visual--captura { aspect-ratio: 16 / 9; align-self: center; }
+.sv-visual--captura .eixo__foto { filter: none; }
+.sv-visual--captura::before, .sv-visual--captura::after { display: none; }
