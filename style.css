@@ -735,6 +735,9 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .js [data-reveal] { opacity: 0; transform: translateY(32px); will-change: transform, opacity; }
 .js [data-reveal="right"] { transform: translateX(40px); }
 .js [data-fade] { opacity: 0; }
+/* [13/10] No celular o subtitulo do hero e o elemento de LCP: sem fade, ele pinta
+   junto com o resto da pagina (LCP simulado ~5,7 s -> ~3,5 s). No desktop, nada muda. */
+@media (max-width: 52rem) { .js .hero__sub[data-fade] { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }

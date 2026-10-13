@@ -95,6 +95,8 @@
       font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:26px;color:#B9CCF0}
     @keyframes abrirTraco{to{stroke-dashoffset:0}}
     @media (prefers-reduced-motion:reduce){.abertura{display:none}}
+    /* [13/10] Sem cortina no celular: ela segurava o hero por 1 s no aparelho mais lento. */
+    @media (max-width:52rem){.abertura{display:none}}
   </style>
   <!-- Sem JS o script que tira a cortina (mais abaixo, no <body>) nunca roda,
        e position:fixed + z-index:9999 cobririam a pagina inteira para sempre. -->
@@ -114,7 +116,7 @@
     if (!cap) return;
     function fora(){ cap.remove(); }
     try {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return fora();
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || matchMedia('(max-width: 52rem)').matches) return fora();
       // storage pode lançar em modo restrito; aí tratamos como primeira visita.
       try { if (sessionStorage.getItem('abertura')) return fora(); sessionStorage.setItem('abertura','1'); } catch (e) {}
     } catch (e) { return fora(); }
