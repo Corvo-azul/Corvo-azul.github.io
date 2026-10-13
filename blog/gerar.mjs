@@ -43,7 +43,7 @@ const modelo = readFileSync(join(AQUI, 'index.html'), 'utf8');
 const topo = modelo.slice(modelo.indexOf('<header'), modelo.indexOf('</header>') + 9);
 const canal = '<div class="blog__canal" data-canal-slot></div>';
 
-function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
+function pagina({ base, titulo, descricao, url, h1, sub, itens, robots }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR" data-blog-base="${base}">
 <head>
@@ -60,7 +60,7 @@ function pagina({ base, titulo, descricao, url, h1, sub, itens }) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(titulo)}</title>
   <meta name="description" content="${esc(descricao)}">
-  <link rel="canonical" href="${url}">
+  <link rel="canonical" href="${url}">${robots ? `\n  <meta name="robots" content="${robots}">` : ''}
   <link rel="alternate" type="application/rss+xml" title="Corvo Azul — Blog" href="${SITE}/blog/feed.xml">
   <link rel="icon" type="image/svg+xml" href="${base}/../assets/favicon.svg">
   <link rel="apple-touch-icon" href="${base}/../assets/favicon-180.png">
@@ -123,7 +123,14 @@ const item = (p, base) => `      <a class="blog__item" href="${base}/${p.slug}/"
       </a>`;
 
 // ---- páginas de tag ----
+// [12/10] Search Console: as 3 tags estavam em "Descoberta, mas não indexada".
+// Com 1 post, cada tag repete a lista do blog e é página rasa. Abaixo de
+// TAG_MIN_POSTS a tag continua existindo (o link funciona), mas sai com noindex
+// e fica fora do sitemap; ao passar do mínimo, entra sozinha.
+const TAG_MIN_POSTS = 3;
 const tags = [...new Set(posts.flatMap((p) => p.tags || []))].sort();
+const postsDaTag = (t) => posts.filter((p) => (p.tags || []).includes(t));
+const tagsIndexaveis = tags.filter((t) => postsDaTag(t).length >= TAG_MIN_POSTS);
 if (existsSync(join(AQUI, 'tag'))) rmSync(join(AQUI, 'tag'), { recursive: true, force: true });
 for (const t of tags) {
   const dela = posts.filter((p) => (p.tags || []).includes(t));
@@ -137,6 +144,7 @@ for (const t of tags) {
     h1: `#${t}`,
     sub: `${dela.length} ${dela.length === 1 ? 'post' : 'posts'} com esta tag.`,
     itens: dela.map((p) => item(p, '../..')).join('\n'),
+    robots: dela.length < TAG_MIN_POSTS ? 'noindex, follow' : undefined,
   }));
 }
 
@@ -190,7 +198,7 @@ const urls = [
   // [08/10] Portfolio: um caso por pagina, escrito a mao.
   { loc: `${SITE}/portfolio/corvoazul/`, mod: statSync(join(RAIZ, 'portfolio', 'corvoazul', 'index.html')).mtime.toISOString().slice(0, 10), freq: 'monthly', pri: '0.7' },
   ...posts.map((p) => ({ loc: `${SITE}/blog/${p.slug}/`, mod: p.atualizado || p.data, freq: 'monthly', pri: '0.8' })),
-  ...tags.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
+  ...tagsIndexaveis.map((t) => ({ loc: `${SITE}/blog/tag/${t}/`, mod: posts[0]?.data || hoje, freq: 'monthly', pri: '0.6' })),
 ];
 writeFileSync(join(RAIZ, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
