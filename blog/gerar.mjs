@@ -158,7 +158,7 @@ const rss = `<?xml version="1.0" encoding="UTF-8"?>
   <channel>
     <title>Corvo Azul — Blog</title>
     <link>${SITE}/blog/</link>
-    <description>Tutoriais práticos de IA no dia a dia, com print de tela. Sem curso, sem hype.</description>
+    <description>Tutoriais práticos de IA no dia a dia, com print de tela. Sem hype.</description>
     <language>pt-BR</language>
     <atom:link href="${SITE}/blog/feed.xml" rel="self" type="application/rss+xml"/>
 ${posts.map((p) => `    <item>
