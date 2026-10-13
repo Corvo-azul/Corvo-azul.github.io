@@ -48,6 +48,9 @@
        por ~870ms no celular; estes dois preloads cobrem o texto que pinta primeiro. -->
   <link rel="preload" href="assets/fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- [12/10] Archivo entra no preload: o subtitulo do hero (Archivo) virou o elemento
+       de LCP no celular depois da troca do hero em 08/10. 20 KiB. -->
+  <link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
   <meta name="yandex-verification" content="e96e78913d7ec786">
@@ -124,6 +127,10 @@
       // O aviso sai JUNTO com o inicio da subida, nao no fim dela. A cortina abre
       // de baixo para cima e o titulo mora embaixo: avisando so no fim, o hero
       // ficava 1,1s visivel com o titulo ainda invisivel. Agora ele entra durante.
+      // [12/10] A marca fica no window porque o script.js pode chegar DEPOIS deste
+      // evento (scripts no fim do body, rede lenta). Sem ela, quem carregava entre
+      // 1,0 s e 2,15 s ouvia um evento que ja tinha passado e o hero ficava invisivel.
+      window.__aberturaFim = true;
       window.dispatchEvent(new Event('abertura:fim'));
       setTimeout(function(){ cap.remove(); }, 1150);
     }
@@ -537,9 +544,13 @@
   <!-- integrity: o navegador recusa o arquivo se o conteudo mudar, entao um CDN
        comprometido nao consegue injetar codigo nesta pagina. Ao trocar a versao de
        qualquer biblioteca, recalcule o hash (sha384, base64) ou o script deixa de carregar. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js" integrity="sha384-wQImCCD/id1jPTwSloatzKlEpnEAQ5aH8H2Ud27FnNcJ1lf2+hB75ctoWnWxyD8X" crossorigin="anonymous"></script>
+  <!-- [12/10] GSAP 3.12.5, ScrollTrigger e SplitType 0.3.4 servidos daqui, nao da CDN:
+       sao os mesmos bytes (hash SRI conferido contra os arquivos do npm). Duas origens
+       a menos = duas conexoes (DNS+TLS) a menos antes do titulo do hero aparecer, que
+       no celular lento era o que segurava o LCP. -->
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/split-type.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

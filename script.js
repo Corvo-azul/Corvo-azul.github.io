@@ -132,7 +132,9 @@
   }
   // Quem dispara a entrada e o fim da cortina, nao um delay chutado. Sem cortina
   // (2a visita, movimento reduzido, ou o script dela removeu o elemento), entra ja.
-  if (document.getElementById('abertura')) window.addEventListener('abertura:fim', entrarHero, { once: true });
+  // [12/10] Se a cortina ja saiu antes deste script rodar (window.__aberturaFim),
+  // o evento ja passou: entra direto em vez de esperar um aviso que nao vem mais.
+  if (document.getElementById('abertura') && !window.__aberturaFim) window.addEventListener('abertura:fim', entrarHero, { once: true });
   else entrarHero();
   /* Vídeo do hero: se falhar, cai no sheen da variante A; com reduced-motion, fica no poster.
      [13/09] autoplay/preload="auto" saíram do HTML: autoplay é instrução, não dica --
