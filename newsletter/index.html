@@ -14,7 +14,7 @@
   <!-- End Google Analytics 4 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Newsletter — Corvo Azul</title>
-  <meta name="description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou no caminho e o commit que resolveu. Sem curso para vender.">
+  <meta name="description" content="Um e-mail por semana com os vídeos novos do Corvo Azul, o resumo de cada um e os links do que foi mostrado. A lista abre com o primeiro vídeo.">
   <meta name="theme-color" content="#07090D">
   <link rel="canonical" href="https://corvoazul.com/newsletter/">
 
@@ -23,11 +23,11 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:url" content="https://corvoazul.com/newsletter/">
   <meta property="og:title" content="Newsletter — Corvo Azul">
-  <meta property="og:description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou e o commit que resolveu.">
+  <meta property="og:description" content="Um e-mail por semana com os vídeos novos do Corvo Azul, o resumo de cada um e os links do que foi mostrado. A lista abre com o primeiro vídeo.">
   <meta property="og:image" content="https://corvoazul.com/assets/og.jpg?v=2">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Newsletter — Corvo Azul">
-  <meta name="twitter:description" content="Toda quinta, no dia em que o vídeo sai: o que foi construído na semana, o que quebrou e o commit que resolveu.">
+  <meta name="twitter:description" content="Um e-mail por semana com os vídeos novos do Corvo Azul, o resumo de cada um e os links do que foi mostrado. A lista abre com o primeiro vídeo.">
   <meta name="twitter:image" content="https://corvoazul.com/assets/og.jpg?v=2">
 
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
@@ -47,60 +47,59 @@
       <span>Corvo Azul</span>
     </a>
     <nav class="nav__links" id="nav-links" aria-label="Seções">
-      <a href="/#o-que-e">O que é</a>
-      <a href="/#eixos">Eixos</a>
+      <a href="/#servicos">Serviços</a>
+      <a href="/#o-que-e">Como funciona</a>
       <a href="/#log">Log</a>
       <a href="/#contato">Contato</a>
       <a class="so-mobile" href="/blog/">Blog</a>
-      <a class="so-mobile" href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
-      <a class="so-mobile nav__links-cta" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
+      <a class="so-mobile" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
+      <a class="so-mobile nav__links-cta" href="https://wa.me/5521969891805?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento." target="_blank" rel="noopener">Pedir orçamento</a>
       <a class="so-mobile nav__links-mail" href="mailto:contato@corvoazul.com">contato@corvoazul.com</a>
     </nav>
-    <nav class="nav__extras" aria-label="Blog e quiz">
+    <nav class="nav__extras" aria-label="Blog e canal">
       <a href="/blog/">Blog</a>
-      <a href="https://tally.so/r/J94xJz" target="_blank" rel="noopener">Quiz</a>
+      <a href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
     </nav>
-    <a class="nav__cta nav__cta--cheio" href="https://www.youtube.com/@Corvo-Azul" target="_blank" rel="noopener">Canal</a>
+    <a class="nav__cta nav__cta--cheio" href="https://wa.me/5521969891805?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento." target="_blank" rel="noopener">Orçamento</a>
     <button class="nav__menu" id="menu-btn" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
   </header>
 
   <main id="newsletter-topo">
     <section class="newsletter">
       <div class="newsletter__corpo">
-        <p class="rotulo">Newsletter · quinta-feira</p>
-        <h1>Seis meses de registro, <span class="acento">na sua caixa.</span></h1>
-        <p class="lead">No dia em que o vídeo sai, um e-mail com o que foi construído na semana, o que quebrou no caminho e o commit que resolveu.</p>
+        <p class="rotulo">Newsletter · abre com o primeiro vídeo</p>
+        <h1>O que saiu no canal, <span class="acento">na sua caixa.</span></h1>
+        <p class="lead">Um e-mail por semana com os vídeos novos, o resumo de cada um e os links do que foi mostrado. A lista abre quando o primeiro vídeo estiver no ar.</p>
 
         <div class="terminal terminal--estatico">
           <div class="terminal__barra"><i></i><i></i><i></i><span class="terminal__titulo">assinar · corvoazul.com</span></div>
-          <pre class="terminal__corpo"><span class="p">$</span> assinar --log semanal
-<span class="d">edição nº 1 sai na quinta, junto com o vídeo</span>
-<span class="d">sem curso para vender · cancelar em um clique</span>
+          <pre class="terminal__corpo"><span class="p">$</span> assinar --semanal
+<span class="d">a lista abre com o primeiro vídeo</span>
+<span class="d">um e-mail por semana · cancelar em um clique</span>
 <span class="ok">arquivo público em corvoazul.com/blog</span></pre>
         </div>
 
-        <!-- [14/09] Sem backend de e-mail configurado ainda (sem Buttondown/ConvertKit/
-             Mailchimp/etc. no projeto). Decisão registrada: publicar o formulário
-             visualmente, com preventDefault, até escolher um serviço -- mesmo estado
-             do mockup no canvas do Claude Design. Não finge que envia. -->
-        <form class="newsletter__form" onsubmit="event.preventDefault()">
-          <label for="newsletter-email">Seu e-mail</label>
-          <input type="email" id="newsletter-email" name="email" placeholder="voce@dominio.com" required>
-          <button class="btn btn--primario" type="submit">
-            <span>Entrar no log</span>
+        <!-- [12/10] O formulário antigo tinha preventDefault e não gravava e-mail em
+             lugar nenhum. Até a lista existir (MailerLite, depois do V1), o caminho é o
+             diagnóstico no Tally, que já pede o e-mail. Quando a lista abrir, o
+             formulário volta aqui ligado ao MailerLite. -->
+        <div class="newsletter__acao">
+          <p>Enquanto a lista não abre, deixe o e-mail no diagnóstico de 60 segundos. Quem deixar recebe a primeira edição.</p>
+          <a class="btn btn--primario" href="https://tally.so/r/J94xJz?v=newsletter" target="_blank" rel="noopener">
+            <span>Fazer o diagnóstico</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
-          </button>
-        </form>
+          </a>
+        </div>
       </div>
 
       <div class="newsletter__chega">
         <p class="rotulo">O que chega</p>
         <ol class="newsletter__lista">
-          <li><span class="newsletter__num">01</span><span><b>O vídeo da semana,</b> com o resumo em três linhas para quem vai assistir depois.</span></li>
-          <li><span class="newsletter__num">02</span><span><b>O commit que resolveu,</b> com link para o diff e a decisão por escrito.</span></li>
-          <li><span class="newsletter__num">03</span><span><b>O que não funcionou,</b> antes de virar vídeo — ou em vez de virar vídeo.</span></li>
+          <li><span class="newsletter__num">01</span><span><b>Os vídeos da semana,</b> com o resumo em três linhas para quem vai assistir depois.</span></li>
+          <li><span class="newsletter__num">02</span><span><b>O material de cada vídeo,</b> com o código no GitHub quando o vídeo constrói alguma coisa.</span></li>
+          <li><span class="newsletter__num">03</span><span><b>O que vem depois,</b> o próximo curso ou explicação, antes de sair.</span></li>
         </ol>
-        <p class="newsletter__nota">Um e-mail por semana. Sem curso para vender. Cancelar em um clique.</p>
+        <p class="newsletter__nota">Um e-mail por semana. Cancelar em um clique.</p>
       </div>
     </section>
   </main>
@@ -116,7 +115,7 @@
       <a href="https://github.com/Corvo-azul" target="_blank" rel="noopener">GitHub</a>
       <a href="/privacidade/">Privacidade</a>
     </div>
-    <small>© 2026 · Sites, lojas e Google para pequenos negócios.</small>
+    <small>© 2026 · Sites, lojas e Perfil no Google para pequenos negócios. Rio de Janeiro.</small>
   </footer>
 
   <!-- Página secundária, sem hero/cortina/scroll-linked: não carrega script.js

@@ -543,6 +543,8 @@ main[id], main section[id] { scroll-margin-top: 5rem; }
 .newsletter__form input { width: 100%; box-sizing: border-box; padding: 1rem; min-height: 52px; background: var(--preto); border: 1px solid var(--linha-forte); border-radius: 10px; color: var(--papel); font-family: var(--mono); font-size: 0.9rem; }
 .newsletter__form input:focus { outline: 2px solid var(--brilho); outline-offset: 2px; border-color: var(--brilho); }
 .newsletter__form .btn { justify-self: start; }
+.newsletter__acao { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; max-width: 30rem; }
+.newsletter__acao p { margin: 0; color: var(--cinza); line-height: 1.55; }
 .newsletter__chega { background: var(--carvao); border: 1px solid var(--linha); border-radius: 16px; padding: 1.75rem; align-self: start; }
 .newsletter__lista { list-style: none; margin: 1rem 0 0; padding: 0; }
 .newsletter__lista li { display: grid; grid-template-columns: 2rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--linha); align-items: baseline; }
